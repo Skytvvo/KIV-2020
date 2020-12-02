@@ -17,6 +17,10 @@
 #define LENGHT_PARAMS_COUNT 1				//кол-во параметров у функции lenght
 #define SIN_PARAMS_COUNT 1				//кол-во параметров у функции sin
 #define CONCAT_PARAMS_COUNT 2				 //кол-во параметров у функции pow
+#define POW_PARAMS_CNT 2				 //кол-во параметров у функции pow
+#define RANDOM_PARAMS_CNT 1				 //кол-во параметров у функции rand
+#define LENGHT_PARAMS_CNT 1				//кол-во параметров у функции lenght
+
 
 //ILya2002 types
 #define TI_UINT_MAXSIZE   UINT32_MAX
@@ -35,9 +39,9 @@
 #define TI_SHORT_DEFAULT 0x0000	 
 
 namespace IT {
-	enum IDDATATYPE { INT = 1, STR = 2, SYM = 3,PROC = 4, UNDEF = 5,UINT = 6,SHORT = 7 , DOUBLE = 8};								//типы данных идентификаторов: числовой, строковый,символьный неопределенный
-	enum IDTYPE { V = 1, F = 2, P = 3, L = 4, S = 5, Z = 6 };									//типы идентификаторов: V = переменная, F = функция, P =параметр, L =литерал, S = стандартная функция Z - знак
-	enum STDFNC { F_POW, F_RANDOM, F_LENGTH, F_NOT_STD, F_CONCAT, F_SIN, };											//стандартные функции
+	enum IDDATATYPE { INT = 1, STR = 2, SYM = 3,PROC = 4, UNDEF = 5,UINT = 6,SHORT = 7 , DOUBLE = 8};//типы данных идентификаторов: числовой, строковый,символьный неопределенный
+	enum IDTYPE { V = 1, F = 2, P = 3, L = 4, S = 5, Z = 6 };//типы идентификаторов: V = переменная, F = функция, P =параметр, L =литерал, S = стандартная функция Z - знак
+	enum STDFNC { F_POW, F_RANDOM, F_LENGTH, F_NOT_STD, F_CONCAT, F_SIN, };//стандартные функции
 	static const IDDATATYPE POW_PARAMS[] = { IT::IDDATATYPE::INT, IT::IDDATATYPE::INT };
 	static const IDDATATYPE RANDOM_PARAMS[] = { IT::IDDATATYPE::INT };
     static const IDDATATYPE SIN_PARAMS[] = { IT::IDDATATYPE::INT };

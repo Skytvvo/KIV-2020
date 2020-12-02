@@ -28,15 +28,18 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		IT::IdTable idtable = IT::Create(in.size);
 
 		LA::Scan(lextable, idtable, in, parm, log);
-		for (int i = 0; i < idtable.size; i++)
+		/*for (int i = 0; i < idtable.size; i++)
 		{
 			std::cout << idtable.table[i].id << '\t' << idtable.table[i].iddatatype << '\t' << idtable.table[i].idtype << '\t' << idtable.table[i].scope << '\t' << ( idtable.table[i].value.vint  )<< std::endl;
-		}
-		/*MFST_TRACE_START
+		}*/
+		MFST_TRACE_START
 			MFST::Mfst mfst(lextable, GRB::getGreibach());
-		mfst.start(*log.stream);*/
+		mfst.start(*log.stream);
 		
-
+		/*for (int i = 0; i < lextable.size; i++)
+		{
+			std::cout << lextable.table[i].lexeme << std::endl;
+		}*/
 
 		LT::Delete(lextable);
 		IT::Delete(idtable);

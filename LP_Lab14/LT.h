@@ -18,7 +18,7 @@
 #define LEX_SIN					'N' //функция высчитывания синуса
 #define LEX_MOD					'M' //получение остатка от деления
 #define LEX_CONCAT				'C' //функция возвращает объединение 2-х строк
-#define LEX_LENGTH
+#define LEX_LENGTH				'L' //функция возвращает длину строки
 
 #define LEX_LITERAL				'l'
 #define LEX_FUNCTION			'f'
