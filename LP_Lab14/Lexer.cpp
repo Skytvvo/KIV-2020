@@ -127,6 +127,10 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			{
 				IT::Add(idtable, { lextable.size,  curScope.c_str(), "conca", iddatatype, IT::IDTYPE::F });
 			}
+			else if (token == LEX_SIN)
+			{
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "sin", iddatatype, IT::IDTYPE::F });
+			}
 			else if (token == LEX_STRING_LITERAL) {
 				std::string literal = accumulator.substr(1, accumulator.size() - 2);
 				std::string id = prevId.substr(0, ID_MAXSIZE);
@@ -140,7 +144,7 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			
 				
 			}
-			else if (token == LEX_ID || token == LEX_POW || token == LEX_LENGTH || token == LEX_RAND) {
+			else if (token == LEX_ID || token == LEX_POW || token == LEX_LENGTH || token == LEX_RAND || token == LEX_SIN) {
 				std::string id = accumulator.substr(0, ID_MAXSIZE);
 				ti_idx = IT::IsId(idtable, curScope.c_str(), id.c_str());
 				

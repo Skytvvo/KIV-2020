@@ -9,7 +9,6 @@
 #pragma region FST
 
 #pragma region INTEGER
-
 #define FST_INTEGER FST::FST(8,\
 FST::NODE(1, FST::RELATION('i', 1)),\
 FST::NODE(1, FST::RELATION('n', 2)),\
@@ -19,11 +18,10 @@ FST::NODE(1, FST::RELATION('g', 5)),\
 FST::NODE(1, FST::RELATION('e', 6)),\
 FST::NODE(1, FST::RELATION('r', 7)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region SHORT
 
+#pragma region SHORT
 #define FST_SHORT FST::FST(6,\
 FST::NODE(1, FST::RELATION('s', 1)),\
 FST::NODE(1, FST::RELATION('h', 2)),\
@@ -31,21 +29,20 @@ FST::NODE(1, FST::RELATION('o', 3)),\
 FST::NODE(1, FST::RELATION('r', 4)),\
 FST::NODE(1, FST::RELATION('t', 5)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region UNSINT
 
+#pragma region UNSINT
 #define FST_UINT FST::FST(5,\
 FST::NODE(1, FST::RELATION('u', 1)),\
 FST::NODE(1, FST::RELATION('i', 2)),\
 FST::NODE(1, FST::RELATION('n', 3)),\
 FST::NODE(1, FST::RELATION('t', 4)),\
 FST::NODE())
-
 #pragma endregion
-#pragma region DOUBLE
 
+
+#pragma region DOUBLE
 #define FST_DOUBLE FST::FST(7,\
 FST::NODE(1, FST::RELATION('d', 1)),\
 FST::NODE(1, FST::RELATION('o', 2)),\
@@ -55,8 +52,6 @@ FST::NODE(1, FST::RELATION('l', 5)),\
 FST::NODE(1, FST::RELATION('e', 6)),\
 FST::NODE())
 
-
-//траблы со скобкой ')'
 #define FST_DOUBLE_LITERAL FST::FST(4,\
 FST::NODE(20,\
 FST::RELATION('0', 0), FST::RELATION('0', 1),\
@@ -84,15 +79,10 @@ FST::RELATION('8', 2), FST::RELATION('8', 3),\
 FST::RELATION('9', 2), FST::RELATION('9', 3)\
 ),\
 FST::NODE())
-
 #pragma endregion
 
 
-
-
-
 #pragma region STRING
-
 #define FST_STRING FST::FST(7,\
 FST::NODE(1, FST::RELATION('s', 1)),\
 FST::NODE(1, FST::RELATION('t', 2)),\
@@ -101,11 +91,10 @@ FST::NODE(1, FST::RELATION('i', 4)),\
 FST::NODE(1, FST::RELATION('n', 5)),\
 FST::NODE(1, FST::RELATION('g', 6)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region FUNCTION
 
+#pragma region FUNCTION
 #define FST_FUNCTION FST::FST(9,\
 FST::NODE(1, FST::RELATION('f', 1)),\
 FST::NODE(1, FST::RELATION('u', 2)),\
@@ -116,11 +105,10 @@ FST::NODE(1, FST::RELATION('i', 6)),\
 FST::NODE(1, FST::RELATION('o', 7)),\
 FST::NODE(1, FST::RELATION('n', 8)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region DECLARE
 
+#pragma region DECLARE
 #define FST_DECLARE FST::FST(8,\
 FST::NODE(1, FST::RELATION('d', 1)),\
 FST::NODE(1, FST::RELATION('e', 2)),\
@@ -130,11 +118,10 @@ FST::NODE(1, FST::RELATION('a', 5)),\
 FST::NODE(1, FST::RELATION('r', 6)),\
 FST::NODE(1, FST::RELATION('e', 7)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region RETURN
 
+#pragma region RETURN
 #define FST_RETURN FST::FST(7,\
 FST::NODE(1, FST::RELATION('r', 1)),\
 FST::NODE(1, FST::RELATION('e', 2)),\
@@ -143,11 +130,10 @@ FST::NODE(1, FST::RELATION('u', 4)),\
 FST::NODE(1, FST::RELATION('r', 5)),\
 FST::NODE(1, FST::RELATION('n', 6)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region PRINT
 
+#pragma region PRINT
 #define FST_PRINT FST::FST(6,\
 FST::NODE(1, FST::RELATION('p', 1)),\
 FST::NODE(1, FST::RELATION('r', 2)),\
@@ -155,118 +141,140 @@ FST::NODE(1, FST::RELATION('i', 3)),\
 FST::NODE(1, FST::RELATION('n', 4)),\
 FST::NODE(1, FST::RELATION('t', 5)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region MAIN
 
+#pragma region MAIN
 #define FST_MAIN FST::FST(5,\
 FST::NODE(1, FST::RELATION('m', 1)),\
 FST::NODE(1, FST::RELATION('a', 2)),\
 FST::NODE(1, FST::RELATION('i', 3)),\
 FST::NODE(1, FST::RELATION('n', 4)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region LEFTHESIS
 
+#pragma region LEFTHESIS
 #define FST_LEFTHESIS FST::FST(2,\
 FST::NODE(1, FST::RELATION('(', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region RIGHTHESIS
 
+#pragma region RIGHTHESIS
 #define FST_RIGHTHESIS FST::FST(2,\
 FST::NODE(1, FST::RELATION(')', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region SEMICOLON
 
+#pragma region SEMICOLON
 #define FST_SEMICOLON FST::FST(2,\
 FST::NODE(1, FST::RELATION(';', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region COMMA
 
+#pragma region COMMA
 #define FST_COMMA FST::FST(2,\
 FST::NODE(1, FST::RELATION(',', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region LEFTBRACE
 
+#pragma region LEFTBRACE
 #define FST_LEFTBRACE FST::FST(2,\
 FST::NODE(1, FST::RELATION('{', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region BRACELET
 
+#pragma region BRACELET
 #define FST_BRACELET FST::FST(2,\
 FST::NODE(1, FST::RELATION('}', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region PLUS
 
+#pragma region PLUS
 #define FST_PLUS FST::FST(2,\
 FST::NODE(1, FST::RELATION('+', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region MINUS
 
+#pragma region MINUS
 #define FST_MINUS FST::FST(2,\
 FST::NODE(1, FST::RELATION('-', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region STAR
 
+#pragma region STAR
 #define FST_STAR FST::FST(2,\
 FST::NODE(1, FST::RELATION('*', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region DIRSLASH
 
+#pragma region DIRSLASH
 #define FST_DIRSLASH FST::FST(2,\
 FST::NODE(1, FST::RELATION('/', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma	region MOD
 
+#pragma	region MOD
 #define FST_MOD FST::FST(2,\
 	FST::NODE(1, FST::RELATION('%',1)),\
 	FST::NODE())
-
 #pragma endregion
 
-#pragma region EQUALS
 
+#pragma region EQUALS
 #define FST_EQUALS FST::FST(2,\
 FST::NODE(1, FST::RELATION('=', 1)),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region IDENTIFIER
 
+#pragma region BIGGERTHAN
+#define FST_BIGGERTHAN FST::FST(2,\
+FST::NODE(1, FST::RELATION('>', 1)),\
+FST::NODE())
+#pragma endregion
+
+
+#pragma region SMALLERTHEN
+#define FST_SMALLERTHAN FST::FST(2,\
+FST::NODE(1, FST::RELATION('<', 1)),\
+FST::NODE())
+#pragma endregion
+
+
+#pragma region NOTEQUAL
+#define FST_NOTEQUAL FST::FST(2,\
+FST::NODE(1, FST::RELATION('!', 1)),\
+FST::NODE())
+#pragma endregion
+
+
+#pragma region SMALLEROREQUAL
+#define FST_SMALLEROREQUAL FST::FST(2,\
+FST::NODE(1, FST::RELATION('=', 1)),\
+FST::NODE())
+#pragma endregion
+
+
+#pragma region BIGGEROREQUAL
+#define FST_BIGGEROREQUAL FST::FST(2,\
+FST::NODE(1, FST::RELATION('»', 1)),\
+FST::NODE())
+#pragma endregion
+
+
+
+#pragma region IDENTIFIER
 #define FST_ID FST::FST(2, \
 FST::NODE(116,\
 FST::RELATION('a', 0), FST::RELATION('a', 1),\
@@ -329,11 +337,10 @@ FST::RELATION('ю', 0), FST::RELATION('ю', 1),\
 FST::RELATION('я', 0), FST::RELATION('я', 1)\
 ),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region STRING_LITERAL
 
+#pragma region STRING_LITERAL
 #define FST_STRING_LITERAL FST::FST(3,\
 FST::NODE(1, FST::RELATION('\'', 1)),\
 FST::NODE(70,\
@@ -409,11 +416,10 @@ FST::RELATION(' ', 1),\
 FST::RELATION('\'', 2)\
 ),\
 FST::NODE())
-
 #pragma endregion
 
-#pragma region INTEGER_LITERAL
 
+#pragma region INTEGER_LITERAL
 #define FST_INTEGER_LITERAL FST::FST(2,\
 FST::NODE(20,\
 FST::RELATION('0', 0), FST::RELATION('0', 1),\
@@ -428,16 +434,19 @@ FST::RELATION('8', 0), FST::RELATION('8', 1),\
 FST::RELATION('9', 0), FST::RELATION('9', 1)\
 ),\
 FST::NODE())
-
-
-
 #pragma endregion 
+
+
+#pragma region POW
 #define GRAPH_POW FST::FST( 4,\
 	FST::NODE(1,FST::RELATION('p',1)),\
 	FST::NODE(1,FST::RELATION('o',2)),\
 	FST::NODE(1,FST::RELATION('w',3)),\
 	FST::NODE())
+#pragma endregion 
 
+
+#pragma region RANDOM
 #define GRAPH_RANDOM FST::FST(7,\
 	FST::NODE(1,FST::RELATION('r',1)),\
 	FST::NODE(1,FST::RELATION('a',2)),\
@@ -446,7 +455,10 @@ FST::NODE())
 	FST::NODE(1,FST::RELATION('o',5)),\
 	FST::NODE(1,FST::RELATION('m',6)),\
 	FST::NODE())
+#pragma endregion
 
+
+#pragma region LENGTH
 #define GRAPH_LENGTH FST::FST(7,\
 	FST::NODE(1,FST::RELATION('l',1)),\
 	FST::NODE(1,FST::RELATION('e',2)),\
@@ -455,12 +467,19 @@ FST::NODE())
 	FST::NODE(1,FST::RELATION('t',5)),\
 	FST::NODE(1,FST::RELATION('h',6)),\
 	FST::NODE())
+#pragma endregion
 
+
+#pragma region SIN
 #define GRAPH_SIN FST::FST(4,\
 	FST::NODE(1,FST::RELATION('s',1)),\
 	FST::NODE(1,FST::RELATION('i',2)),\
 	FST::NODE(1,FST::RELATION('n',3)),\
 	FST::NODE())
+#pragma endregion
+
+
+#pragma region CONCAT
 #define GRAPH_CONCAT FST::FST(7,\
 	FST::NODE(1,FST::RELATION('c',1)),\
 	FST::NODE(1,FST::RELATION('o',2)),\
@@ -469,11 +488,7 @@ FST::NODE())
     FST::NODE(1,FST::RELATION('a',5)),\
     FST::NODE(1,FST::RELATION('t',6)),\
 	FST::NODE())
-
-
-
-
-//можно еще аут
+#pragma endregion
 
 #pragma endregion
 

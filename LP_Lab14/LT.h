@@ -16,7 +16,7 @@
 #define LEX_POW					'P' //функция возведения в степень
 #define LEX_RAND				'R' //функция генерация случайных чисел
 #define LEX_SIN					'N' //функция высчитывания синуса
-#define LEX_MOD					'M' //получение остатка от деления
+#define LEX_MOD					'%' //получение остатка от деления
 #define LEX_CONCAT				'C' //функция возвращает объединение 2-х строк
 #define LEX_LENGTH				'L' //функция возвращает длину строки
 
@@ -37,6 +37,12 @@
 #define LEX_STAR				'*'
 #define LEX_DIRSLASH			'/'
 #define LEX_EQUALS				'='
+
+#define LEX_BIGGERTHEN          '>'
+#define LEX_SMALLERTHEN         '<'
+#define LEX_NOTEQUAL            '!='
+#define LEX_SMALLEROREQUAL      '<='
+#define LEX_BIGGEROREQUAL       '>='        
 
 //
 //
