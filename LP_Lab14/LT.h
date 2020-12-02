@@ -40,9 +40,10 @@
 
 #define LEX_BIGGERTHEN          '>'
 #define LEX_SMALLERTHEN         '<'
-#define LEX_NOTEQUAL            '!='
-#define LEX_SMALLEROREQUAL      '<='
-#define LEX_BIGGEROREQUAL       '>='        
+#define LEX_NOTEQUAL            '!'
+#define LEX_SMALLEROREQUAL      '«'
+#define LEX_BIGGEROREQUAL       '»'    
+#define LEX_EQUAL_ID            '~'    
 
 //
 //

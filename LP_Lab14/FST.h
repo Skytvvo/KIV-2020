@@ -237,6 +237,11 @@ FST::NODE(1, FST::RELATION('=', 1)),\
 FST::NODE())
 #pragma endregion
 
+#pragma region EQUALS_ID
+#define FST_EQUALS_TWO FST::FST(2,\
+FST::NODE(1, FST::RELATION('~', 1)),\
+FST::NODE())
+#pragma endregion
 
 #pragma region BIGGERTHAN
 #define FST_BIGGERTHAN FST::FST(2,\
@@ -261,7 +266,7 @@ FST::NODE())
 
 #pragma region SMALLEROREQUAL
 #define FST_SMALLEROREQUAL FST::FST(2,\
-FST::NODE(1, FST::RELATION('=', 1)),\
+FST::NODE(1, FST::RELATION('«', 1)),\
 FST::NODE())
 #pragma endregion
 
