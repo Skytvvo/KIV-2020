@@ -47,6 +47,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		}
 
 		SeAn::CheckingReturnInMain(lextable,idtable);
+		SeAn::CheckReturnInUserFunc(lextable, idtable);
 		
 
 		LT::Delete(lextable);

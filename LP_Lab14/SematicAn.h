@@ -18,7 +18,7 @@ namespace SeAn
 	void CheckParamsOfFunc();
 	void CheckParamsStdFunc();
 	void Types();
-	void CheckReturnInUserFunc();
+	void CheckReturnInUserFunc(LT::LexTable& lextable, IT::IdTable& idtable);
 	void CheckFuncByAmountParams();
 
 	void BeginToCheck(Log::LOG& log);
