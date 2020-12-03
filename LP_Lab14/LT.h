@@ -12,6 +12,7 @@
 #define LEX_STRING_LITERAL		'2'
 #define LEX_DOUBLE_LITERAL		'3'
 
+#define LEX_IF					'u'
 
 #define LEX_POW					'P' //функция возведения в степень
 #define LEX_RAND				'R' //функция генерация случайных чисел
@@ -45,6 +46,8 @@
 #define LEX_BIGGEROREQUAL       '»'    
 #define LEX_EQUAL_ID            '~'    
 
+#define LEX_RIGHT_SQUARE_BRACE	']'
+#define LEX_LEFT_SQUARE_BRACE	'['
 //
 //
 namespace LT {

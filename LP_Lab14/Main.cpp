@@ -11,12 +11,17 @@
 #include "Parm.h"
 #include "PolishNotation.h"
 
+
+
 int _tmain(int argc, _TCHAR* argv[]) {
 	setlocale(LC_ALL, "rus");
-
+	
 	Log::LOG log = Log::INITLOG;
 
 	try {
+
+		
+
 		Parm::PARM parm = Parm::getparm(argc, argv);
 		log = Log::getlog(parm.log);
 		Log::Write(log, L"Тест:", L" без ошибок ", "\n", L"");
@@ -28,24 +33,28 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		IT::IdTable idtable = IT::Create(in.size);
 
 		LA::Scan(lextable, idtable, in, parm, log);
-		/*for (int i = 0; i < idtable.size; i++)
+		for (int i = 0; i < idtable.size; i++)
 		{
-			std::cout << idtable.table[i].id << '\t' << idtable.table[i].iddatatype << '\t' << idtable.table[i].idtype << '\t' << idtable.table[i].scope << '\t' << ( idtable.table[i].value.vint  )<< std::endl;
-		}*/
-		MFST_TRACE_START
+			std::cout <<"ID:"<< idtable.table[i].id << '\t' << "iddatatype:" << idtable.table[i].iddatatype << '\t' << "idtype:" << idtable.table[i].idtype << '\t' << "scope:" << idtable.table[i].scope << '\t' << "vint:" << ( idtable.table[i].value.vint  ) << "vstr:" << (idtable.table[i].value.vstr.str) << "vdouble:" << (idtable.table[i].value.vdouble) << std::endl;
+		}
+	/*	MFST_TRACE_START
 			MFST::Mfst mfst(lextable, GRB::getGreibach());
-		mfst.start(*log.stream);
+		mfst.start(*log.stream);*/
 		
-		/*for (int i = 0; i < lextable.size; i++)
+		for (int i = 0; i < lextable.size; i++)
 		{
-			std::cout << lextable.table[i].lexeme << std::endl;
-		}*/
+			std::cout << lextable.table[i].lexeme<<'\t'<< lextable.table[i].idxTI << std::endl;
+		}
+
+		SeAn::CheckingReturnInMain(lextable,idtable);
+		
 
 		LT::Delete(lextable);
 		IT::Delete(idtable);
 		Log::Close(log);
 	}
 	catch (Error::ERROR e) {
+
 		Log::WriteError(log, e);
 	}
 

@@ -31,3 +31,4 @@
 #include "MFST.h"
 #include "PolishNotation.h"
 #include "Generator.h"
+#include "SematicAn.h"

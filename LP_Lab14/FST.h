@@ -20,6 +20,13 @@ FST::NODE(1, FST::RELATION('r', 7)),\
 FST::NODE())
 #pragma endregion
 
+#pragma region IF
+#define FST_IF FST::FST(3,\
+FST::NODE(1, FST::RELATION('i', 1)),\
+FST::NODE(1, FST::RELATION('f', 2)),\
+FST::NODE())
+#pragma endregion
+
 
 #pragma region SHORT
 #define FST_SHORT FST::FST(6,\
@@ -270,6 +277,17 @@ FST::NODE(1, FST::RELATION('«', 1)),\
 FST::NODE())
 #pragma endregion
 
+#pragma region SQUARE_BRACE
+
+#define FST_LEFT_SQUARE_BRACE FST::FST(2,\
+FST::NODE(1, FST::RELATION('[', 1)),\
+FST::NODE())
+
+#define FST_RIGHT_SQUARE_BRACE FST::FST(2,\
+FST::NODE(1, FST::RELATION(']', 1)),\
+FST::NODE())
+
+#pragma endregion
 
 #pragma region BIGGEROREQUAL
 #define FST_BIGGEROREQUAL FST::FST(2,\
