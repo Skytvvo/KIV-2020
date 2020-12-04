@@ -86,7 +86,7 @@ namespace SeAn
 					break;
 				}
 				//когда нашли,скипаем параметры и переходим к телу функции
-				while (lextable.table[i].lexeme != LEX_LEFTBRACE && i< lextable.size)
+				while (lextable.table[i].lexeme != LEX_LEFTBRACE && i < lextable.size)
 				{
 					i++;
 				}
@@ -98,6 +98,7 @@ namespace SeAn
 				//1 - return не всегда возвращает значение
 				for (; i < lextable.size && lextable.table[i].lexeme!=LEX_BRACELET; i++)
 				{
+					//проверяем на вложенность 
 					if (lextable.table[i].lexeme == LEX_LEFT_SQUARE_BRACE)
 					{
 						nestingLevel++;
@@ -108,6 +109,7 @@ namespace SeAn
 					}
 					if (lextable.table[i].lexeme == LEX_RETURN)
 					{
+						//проверяем тип возвращаемого значения
 						if (lextable.table[i + 1].lexeme != literalType && idtable.table[lextable.table[i + 1].idxTI].iddatatype != CurrentTypeOfFunction)
 						{
 							throw ERROR_THROW(103);//возвращаемый тип не соответствует типу функцииж
@@ -133,5 +135,10 @@ namespace SeAn
 				}
 			}
 		}
+	}
+
+	void SeAn::CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable)
+	{
+
 	}
 }

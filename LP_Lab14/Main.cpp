@@ -37,10 +37,10 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		{
 			std::cout <<"ID:"<< idtable.table[i].id << '\t' << "iddatatype:" << idtable.table[i].iddatatype << '\t' << "idtype:" << idtable.table[i].idtype << '\t' << "scope:" << idtable.table[i].scope << '\t' << "vint:" << ( idtable.table[i].value.vint  ) << "vstr:" << (idtable.table[i].value.vstr.str) << "vdouble:" << (idtable.table[i].value.vdouble) << std::endl;
 		}
-	/*	MFST_TRACE_START
+		/*MFST_TRACE_START
 			MFST::Mfst mfst(lextable, GRB::getGreibach());
-		mfst.start(*log.stream);*/
-		
+		mfst.start(*log.stream);
+		*/
 		for (int i = 0; i < lextable.size; i++)
 		{
 			std::cout << lextable.table[i].lexeme<<'\t'<< lextable.table[i].idxTI << std::endl;
