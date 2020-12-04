@@ -109,28 +109,28 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			}
 			else if (token == LEX_LENGTH)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "lengt", iddatatype, IT::IDTYPE::F });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "lengt", iddatatype, IT::IDTYPE::S });
 			}
 			else if (token == LEX_POW)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "pow", iddatatype, IT::IDTYPE::F });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "pow", iddatatype, IT::IDTYPE::S });
 			}
 			else if (token == LEX_RAND)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "rand", iddatatype, IT::IDTYPE::F });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "rand", iddatatype, IT::IDTYPE::S });
 			}
 			else if (token == LEX_CONCAT)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "conca", iddatatype, IT::IDTYPE::F });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "conca", iddatatype, IT::IDTYPE::S });
 			}
 			else if (token == LEX_SIN)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "sin", iddatatype, IT::IDTYPE::F });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "sin", iddatatype, IT::IDTYPE::S });
 			}
 			else if (token == LEX_STRING_LITERAL) {
 				std::string literal = accumulator.substr(1, accumulator.size() - 2);
 				
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), literal.c_str(), IT::IDDATATYPE::STR, IT::IDTYPE::F });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), literal.c_str(), IT::IDDATATYPE::STR, IT::IDTYPE::L });
 				strcpy_s(idtable.table[idtable.size - 1].value.vstr.str, literal.c_str());
 				idtable.table[idtable.size - 1].value.vstr.len = literal.length();
 				strcpy_s(idtable.table[idtable.size - 1].id, literal.substr(0,4).c_str());
@@ -244,6 +244,37 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 	if (IT::IsId(idtable, "", "main") == TI_NULLIDX) {//есть ли main
 		throw ERROR_THROW(130);
 	}
-
+	LA::WriteDataForFunctions(lextable, idtable);
 	outfile.close();
+}
+void LA::WriteDataForFunctions(LT::LexTable& lextable, IT::IdTable& idtable)
+{
+	for (int  i = 0; i < lextable.size; i++)
+	{
+		if (lextable.table[i].lexeme == LEX_ID && idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F &&
+			lextable.table[i-1].lexeme==LEX_FUNCTION){ 
+			int currentFuncIndex = i;
+			short sizeParams = 0;
+			idtable.table[lextable.table[i].idxTI].value.params.amount = 0;
+			idtable.table[lextable.table[i].idxTI].value.params.types = new IT::IDDATATYPE;
+			i++;
+			i++;
+			while (lextable.table[i].lexeme!=LEX_RIGHTHESIS)
+			{
+				if (lextable.table[i].lexeme == LEX_ID)
+				{
+					idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.amount++;
+					int j = 0;
+					IT::IDDATATYPE* buffer = new IT::IDDATATYPE[idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.amount];
+					for (; j < idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.amount-1; j++)
+					{
+						buffer[j] = idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.types[j];
+					}
+					idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.types[j] = idtable.table[lextable.table[i].idxTI].iddatatype;
+				}
+				i++;
+			}
+
+		}
+	}
 }

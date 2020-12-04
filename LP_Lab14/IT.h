@@ -1,4 +1,5 @@
 #pragma once
+
 #define ID_MAXSIZE		5
 #define SCOPE_MAXSIZE	10
 #define TI_MAXSIZE		4096
@@ -61,6 +62,12 @@ namespace IT {
 				char str[TI_STR_MAXSIZE - 1];
 			} vstr;
 			double vdouble;
+			struct
+			{
+				IDDATATYPE* types;
+				
+				short amount;
+			} params;
 		} value;
 		Entry() = default;
 		Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtype, int value);

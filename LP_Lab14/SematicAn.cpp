@@ -139,6 +139,13 @@ namespace SeAn
 
 	void SeAn::CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable)
 	{
+		int currentFunction;
+		for (int i = 0; i < lextable.size; i++)
+		{
+			if (lextable.table[i].lexeme == LEX_ID && idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F)
+			{
 
+			}
+		}
 	}
 }
