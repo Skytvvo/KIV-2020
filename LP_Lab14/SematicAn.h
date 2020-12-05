@@ -16,11 +16,12 @@ namespace SeAn
 	};
 	void CheckingReturnInMain(LT::LexTable& lextable, IT::IdTable& idtable);
 	void CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable);
-	void CheckParamsStdFunc();
+	void CheckParamsStdFunc(LT::LexTable& lextable, IT::IdTable& idtable);
+	
 	void Types();
 	void CheckReturnInUserFunc(LT::LexTable& lextable, IT::IdTable& idtable);
-	void CheckFuncByAmountParams();
+	
 	
 	void BeginToCheck(Log::LOG& log);
-	unsigned char getTypeInUChar(IT::IDDATATYPE id);
+	bool FindSTD(unsigned char lex);
 }

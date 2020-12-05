@@ -109,7 +109,7 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			}
 			else if (token == LEX_LENGTH)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "lengt", iddatatype, IT::IDTYPE::S });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "length", iddatatype, IT::IDTYPE::S });
 			}
 			else if (token == LEX_POW)
 			{
@@ -117,11 +117,11 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			}
 			else if (token == LEX_RAND)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "rand", iddatatype, IT::IDTYPE::S });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "random", iddatatype, IT::IDTYPE::S });
 			}
 			else if (token == LEX_CONCAT)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "conca", iddatatype, IT::IDTYPE::S });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "concat", iddatatype, IT::IDTYPE::S });
 			}
 			else if (token == LEX_SIN)
 			{
@@ -195,6 +195,10 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 				else {
 					LT::Add(lextable, { token, line, ti_idx });
 				}
+			}
+			else if (SeAn::FindSTD(token))
+			{
+				LT::Add(lextable, { token, line, idtable.size - 1 });
 			}
 			else {
 				LT::Add(lextable, { token, line, LT_TI_NULLIDX });

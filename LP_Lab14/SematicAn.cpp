@@ -177,31 +177,84 @@ namespace SeAn
 			}
 		}
 	}
-}
-
-unsigned char SeAn::getTypeInUChar(IT::IDDATATYPE id)
-{
-	switch (id)
+	void SeAn::CheckParamsStdFunc(LT::LexTable& lextable, IT::IdTable& idtable)
 	{
-	case IT::INT:
-		return LEX_INTEGER_LITERAL;
-		break;
-	case IT::STR:
-		return LEX_STRING_LITERAL;
-		break;
+		for (int i = 0; i < lextable.size; i++)
+		{
+			if (SeAn::FindSTD(lextable.table[i].lexeme) && lextable.table[i - 1].lexeme == LEX_FUNCTION &&
+				idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::S)
+				throw ERROR_THROW(194);//попытка переопределить статическую функцию
 
-	case IT::UNDEF:
-		break;
-	case IT::UINT:
-		break;
-	case IT::SHORT:
-		break;
-	case IT::DOUBLE:
-		return LEX_DOUBLE_LITERAL;
-		break;
-	default:
-		
-		break;
+			if (SeAn::FindSTD(lextable.table[i].lexeme))
+			{
+			
+				short amountParams = 0;
+
+				switch (lextable.table[i].lexeme)
+				{
+				case LEX_LENGTH:
+					i++;
+					while (lextable.table[i].lexeme!=LEX_RIGHTHESIS && i<lextable.size)
+					{
+						if (lextable.table[i].lexeme == LEX_ID)
+							if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::STR)
+							{
+								throw ERROR_THROW(196);
+							}//тип арнгумента не соответсвует типу параметра
+							else
+							{
+								amountParams++;
+							}
+						if (lextable.table[i].idxTI != LT_TI_NULLIDX)
+							if(idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
+								if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::STR)
+								{
+									throw ERROR_THROW(197);//тип литерала не соответствует типу параметра
+								}
+								else {
+									amountParams++;
+								}
+					}
+					if (amountParams < 1)
+					{
+						throw ERROR_THROW(198);
+					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
+					else if(amountParams>1)
+					{
+						throw ERROR_THROW(199);//СЛИШКОМ МНОГО
+					}
+						
+					break;
+				case LEX_RAND:
+					break;
+				case LEX_POW:
+					break;
+				case LEX_SIN:
+					break;
+				default:
+					throw ERROR_THROW(195);//Ошибка компилятора: неопознаная статическая функция
+					break;
+				}
+			}
+		}
 	}
-	return '\0';
+	bool SeAn::FindSTD(unsigned char lex)
+	{
+		switch (lex)
+		{
+		case LEX_LENGTH:
+			return true;
+			break;
+		case LEX_RAND:
+			return true;
+		case LEX_POW:
+			return true;
+		case LEX_SIN:
+			return true;
+		default:
+			return false;
+			break;
+		}
+	}
 }
+
