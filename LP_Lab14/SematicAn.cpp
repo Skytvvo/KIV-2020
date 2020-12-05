@@ -139,13 +139,69 @@ namespace SeAn
 
 	void SeAn::CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable)
 	{
-		int currentFunction;
+		
 		for (int i = 0; i < lextable.size; i++)
 		{
-			if (lextable.table[i].lexeme == LEX_ID && idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F)
+			//ищем вызов пользовательской функции
+			if (lextable.table[i].lexeme == LEX_ID && lextable.table[i - 1].lexeme != LEX_FUNCTION &&
+				idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F)
 			{
-
+				int currentFuncIndex = i;//запоминаем позицию проверяемой функции
+				int currentIndexParam = 0;//номер аргумента
+				i++;
+				//проверяем до конца вызова функции
+				while (lextable.table[i].lexeme!=LEX_RIGHTHESIS && i < lextable.size)
+				{
+					// если это идентификатор или литерал
+					if (lextable.table[i].lexeme == LEX_ID || (lextable.table[i].idxTI!=TI_NULLIDX&&
+						idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L))
+					{
+					
+						
+							if (idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.amount <= currentIndexParam)
+								throw ERROR_THROW(190);//если аргументов больше чем параметров в функции
+							//проверка на соответствие типов параметров и аргументоав
+							if (idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.types[currentIndexParam] !=
+								idtable.table[lextable.table[i].idxTI].iddatatype
+								)
+							{
+								throw ERROR_THROW(191);//тип аргумента не соответствует типу параметра
+							}
+							currentIndexParam++;
+						
+					}
+					i++;
+				}
+				if (idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.amount != currentIndexParam)
+					throw ERROR_THROW(193);//СЛИШКОМ МАЛО АРГУМЕНТОВ ПЕРЕДАННО
 			}
 		}
 	}
+}
+
+unsigned char SeAn::getTypeInUChar(IT::IDDATATYPE id)
+{
+	switch (id)
+	{
+	case IT::INT:
+		return LEX_INTEGER_LITERAL;
+		break;
+	case IT::STR:
+		return LEX_STRING_LITERAL;
+		break;
+
+	case IT::UNDEF:
+		break;
+	case IT::UINT:
+		break;
+	case IT::SHORT:
+		break;
+	case IT::DOUBLE:
+		return LEX_DOUBLE_LITERAL;
+		break;
+	default:
+		
+		break;
+	}
+	return '\0';
 }

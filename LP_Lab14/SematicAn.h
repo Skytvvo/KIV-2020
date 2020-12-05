@@ -22,4 +22,5 @@ namespace SeAn
 	void CheckFuncByAmountParams();
 	
 	void BeginToCheck(Log::LOG& log);
+	unsigned char getTypeInUChar(IT::IDDATATYPE id);
 }
