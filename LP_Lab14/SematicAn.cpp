@@ -177,13 +177,13 @@ namespace SeAn
 			}
 		}
 	}
+	
 	void SeAn::CheckParamsStdFunc(LT::LexTable& lextable, IT::IdTable& idtable)
 	{
 		for (int i = 0; i < lextable.size; i++)
 		{
-			if (SeAn::FindSTD(lextable.table[i].lexeme) && lextable.table[i - 1].lexeme == LEX_FUNCTION &&
-				idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::S)
-				throw ERROR_THROW(194);//попытка переопределить статическую функцию
+			if (SeAn::FindSTD(lextable.table[i].lexeme) && lextable.table[i - 1].lexeme == LEX_FUNCTION)
+					throw ERROR_THROW(194);//попытка переопределить статическую функцию
 
 			if (SeAn::FindSTD(lextable.table[i].lexeme))
 			{
@@ -214,6 +214,7 @@ namespace SeAn
 								else {
 									amountParams++;
 								}
+						i++;
 					}
 					if (amountParams < 1)
 					{
@@ -226,10 +227,106 @@ namespace SeAn
 						
 					break;
 				case LEX_RAND:
+					i++;
+					while (lextable.table[i].lexeme != LEX_RIGHTHESIS && i < lextable.size)
+					{
+						if (lextable.table[i].lexeme == LEX_ID)
+							if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::INT)
+							{
+								throw ERROR_THROW(196);
+							}//тип арнгумента не соответсвует типу параметра
+							else
+							{
+								amountParams++;
+							}
+						if (lextable.table[i].idxTI != LT_TI_NULLIDX)
+							if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
+								if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::INT)
+								{
+									throw ERROR_THROW(197);//тип литерала не соответствует типу параметра
+								}
+								else {
+									amountParams++;
+								}
+						i++;
+					}
+					if (amountParams < 1)
+					{
+						throw ERROR_THROW(198);
+					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
+					else if (amountParams > 1)
+					{
+						throw ERROR_THROW(199);//СЛИШКОМ МНОГО
+					}
+
 					break;
 				case LEX_POW:
+					i++;
+					while (lextable.table[i].lexeme != LEX_RIGHTHESIS && i < lextable.size)
+					{
+						if (lextable.table[i].lexeme == LEX_ID)
+							if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::INT)
+							{
+								throw ERROR_THROW(196);
+							}//тип арнгумента не соответсвует типу параметра
+							else
+							{
+								amountParams++;
+							}
+						if (lextable.table[i].idxTI != LT_TI_NULLIDX)
+							if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
+								if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::INT)
+								{
+									throw ERROR_THROW(197);//тип литерала не соответствует типу параметра
+								}
+								else {
+									amountParams++;
+								}
+						i++;
+					}
+					if (amountParams < 2)
+					{
+						throw ERROR_THROW(198);
+					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
+					else if (amountParams > 2)
+					{
+						throw ERROR_THROW(199);//СЛИШКОМ МНОГО
+					}
+
 					break;
 				case LEX_SIN:
+					i++;
+					while (lextable.table[i].lexeme != LEX_RIGHTHESIS && i < lextable.size)
+					{
+						if (lextable.table[i].lexeme == LEX_ID)
+							if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::DOUBLE)
+							{
+								throw ERROR_THROW(196);
+							}//тип арнгумента не соответсвует типу параметра
+							else
+							{
+								amountParams++;
+							}
+						if (lextable.table[i].idxTI != LT_TI_NULLIDX)
+							if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
+								if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::DOUBLE)
+								{
+									throw ERROR_THROW(197);//тип литерала не соответствует типу параметра
+								}
+								else {
+									amountParams++;
+								}
+						i++;
+					}
+					if (amountParams < 1)
+					{
+						throw ERROR_THROW(198);
+					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
+					else if (amountParams > 1)
+					{
+						throw ERROR_THROW(199);//СЛИШКОМ МНОГО
+					}
+
 					break;
 				default:
 					throw ERROR_THROW(195);//Ошибка компилятора: неопознаная статическая функция
@@ -254,6 +351,57 @@ namespace SeAn
 		default:
 			return false;
 			break;
+		}
+	}
+
+	void SeAn::Types(LT::LexTable& lextable, IT::IdTable& idtable)
+	{
+		IT::IDDATATYPE currentType;
+		for (int i = 0; i < lextable.size; i++)
+		{
+			if (lextable.table[i].lexeme == LEX_EQUALS )
+			{
+				currentType = idtable.table[lextable.table[i - 1].idxTI].iddatatype;
+				while (lextable.table[i].lexeme!=LEX_SEMICOLON && i<lextable.size)
+				{
+					i++;
+					if ((lextable.table[i].lexeme == LEX_ID || lextable.table[i].lexeme == LEX_INTEGER_LITERAL || lextable.table[i].lexeme ==
+						LEX_STRING_LITERAL || lextable.table[i].lexeme == LEX_DOUBLE_LITERAL)
+						&& idtable.table[lextable.table[i].idxTI].iddatatype != currentType)
+					{
+						if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F)
+						{
+							throw ERROR_THROW(200);
+						}//ФУНКЦИЯ ВОЗВРАЩАЕТ НЕ ТОТ ТИП ДАННЫХ
+						else if(idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::V)
+						{
+							throw ERROR_THROW(201);
+						}//не верный тип данных используется
+					}
+					else if (lextable.table[i].lexeme == LEX_ID
+						&& idtable.table[lextable.table[i].idxTI].idtype != IT::IDTYPE::F
+						&& lextable.table[i + 1].lexeme == LEX_LEFTHESIS)
+					{
+						throw ERROR_THROW(709);//не верный вызов функции
+					}
+					else if (lextable.table[i].lexeme == LEX_LENGTH && currentType != IT::IDDATATYPE::INT)
+					{
+						throw ERROR_THROW(202);
+					}//тип идентификатора не совпадает с типом функции
+					else if (lextable.table[i].lexeme == LEX_RAND && currentType != IT::IDDATATYPE::INT)
+					{
+						throw ERROR_THROW(202);
+					}
+					else if (lextable.table[i].lexeme == LEX_POW && currentType != IT::IDDATATYPE::INT)
+					{
+						throw ERROR_THROW(202);
+					}
+					else if(lextable.table[i].lexeme == LEX_SIN && currentType !=IT::IDDATATYPE::DOUBLE)
+					{
+						throw ERROR_THROW(202);
+					}
+				}
+			}
 		}
 	}
 }

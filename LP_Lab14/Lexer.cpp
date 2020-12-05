@@ -188,13 +188,18 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 
 			
 
-			if (token == LEX_ID  || token == LEX_MAIN || token == LEX_INTEGER_LITERAL||token== LEX_STRING_LITERAL||token ==LEX_DOUBLE_LITERAL) {
+			if (token == LEX_ID  || token == LEX_MAIN) {
 				if (ti_idx == TI_NULLIDX) {
 					LT::Add(lextable, { token, line, idtable.size - 1 });
 				}
 				else {
 					LT::Add(lextable, { token, line, ti_idx });
 				}
+			}
+			else if (token == (char)LEX_INTEGER_LITERAL || token == (char)LEX_STRING_LITERAL || (char)token == LEX_DOUBLE_LITERAL)
+			{
+				LT::Add(lextable, { token, line, idtable.size - 1 });
+
 			}
 			else if (SeAn::FindSTD(token))
 			{

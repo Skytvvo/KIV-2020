@@ -18,10 +18,8 @@ namespace SeAn
 	void CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable);
 	void CheckParamsStdFunc(LT::LexTable& lextable, IT::IdTable& idtable);
 	
-	void Types();
+	void Types(LT::LexTable& lextable, IT::IdTable& idtable);
 	void CheckReturnInUserFunc(LT::LexTable& lextable, IT::IdTable& idtable);
 	
-	
-	void BeginToCheck(Log::LOG& log);
 	bool FindSTD(unsigned char lex);
 }
