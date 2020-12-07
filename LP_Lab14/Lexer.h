@@ -8,4 +8,6 @@ namespace LA {
 	char Tokenize(const char* string);
 	void Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PARM& parm, Log::LOG& log);
 	void WriteDataForFunctions(LT::LexTable& lextable, IT::IdTable& idtable);
+	void ShowIDtable(IT::IdTable& idtable);
+	void ShowLexTable(LT::LexTable& lextable);
 }

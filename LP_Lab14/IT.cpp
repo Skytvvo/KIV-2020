@@ -79,9 +79,7 @@ IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtyp
 {
 	memcpy_s(this->id, sizeof(this->id), id, sizeof(this->id));
 	memcpy_s(this->scope, sizeof(this->scope), scope, sizeof(this->scope));
-	this->value.vstr.str[0] = '\0';
-	this->value.vstr.len = 0;
-	this->value.vdouble = 0;
+
 	this->value.vint = value;
 }
 
@@ -90,9 +88,7 @@ IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtyp
 {
 	memcpy_s(this->id, sizeof(this->id), id, sizeof(this->id));
 	memcpy_s(this->scope, sizeof(this->scope), scope, sizeof(this->scope));
-	this->value.vstr.str[0] = '\0';
-	this->value.vstr.len = 0;
-	this->value.vint = 0;
+	
 	this->value.vdouble = value;
 }
 IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtype, const char* value)
@@ -100,9 +96,7 @@ IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtyp
 {
 	memcpy_s(this->id, sizeof(this->id), id, sizeof(this->id));
 	memcpy_s(this->scope, sizeof(this->scope), scope, sizeof(this->scope));
-	
-	this->value.vdouble = 0;
-	this->value.vint = 0;
+
 	this->value.vstr.len = (char)strlen(value);
 	strcpy_s(this->value.vstr.str, value);
 }

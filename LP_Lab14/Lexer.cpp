@@ -279,3 +279,83 @@ void LA::WriteDataForFunctions(LT::LexTable& lextable, IT::IdTable& idtable)
 		}
 	}
 }
+
+void LA::ShowIDtable(IT::IdTable& idtable)
+{
+	std::cout << "----------------------------------------------------[ID таблица]--------------------------------------------" << std::endl;
+	std::cout << "[ID]----------[SCOPE]---------[TYPE]-----------[IDTYPE]----------[value]--------------[LEidX]---------------" << std::endl;
+	for (int i = 0; i < idtable.size; i++)
+	{
+		std::cout << idtable.table[i].id << '\t' << idtable.table[i].scope << '\t';
+		switch (idtable.table[i].iddatatype)
+		{
+		case IT::INT:
+			std::cout << "INT\t";
+			break;
+		case IT::STR:
+			std::cout << "STR\t";
+			break;
+		case IT::DOUBLE:
+			std::cout << "DOUBLE\t";
+			break;
+		default:
+			break;
+		}
+
+		switch (idtable.table[i].idtype)
+		{
+		case IT::IDTYPE::V:
+			std::cout << "variable\t";
+			break;
+		case IT::IDTYPE::F:
+			std::cout << "function\t";
+			break;
+		case IT::IDTYPE::S:
+			std::cout << "std function\t";
+			break;
+		case IT::IDTYPE::L:
+			std::cout << "literal\t";
+			break;
+		case IT::IDTYPE::P:
+			std::cout << "params\t";
+			break;
+		default:
+			break;
+		}
+		if (idtable.table[i].idtype == IT::IDTYPE::L)
+		{
+			if (idtable.table[i].iddatatype == IT::IDDATATYPE::INT)
+			{
+				std::cout << idtable.table[i].value.vint;
+			}
+			if (idtable.table[i].iddatatype == IT::IDDATATYPE::DOUBLE)
+			{
+				std::cout << idtable.table[i].value.vdouble;
+			}
+			if (idtable.table[i].iddatatype == IT::IDDATATYPE::STR)
+			{
+				std::cout << idtable.table[i].value.vstr.str;
+			}
+		}
+		else {
+			std::cout << "NULL";
+		}
+		std::cout << '\t' << idtable.table[i].idxfirstLE << std::endl;
+	}
+	std::cout << "------------------------------------------------------------------------------------------------------------" << std::endl;
+}
+void LA::ShowLexTable(LT::LexTable& lextable)
+{
+	std::cout << "---------------------------------------[LEXTABLE]----------------------------------------------------------" << std::endl;
+	std::cout << "-[LEXEME]--------[строка]-----[idx]------------------------------------------------------------------------" << std::endl;
+	for (int i = 0; i < lextable.size; i++)
+	{
+		std::cout << lextable.table[i].lexeme << '\t' << lextable.table[i].sn<<'\t';
+		if (lextable.table[i].idxTI != TI_NULLIDX)
+			std::cout << lextable.table[i].idxTI;
+		else
+			std::cout << "NULL";
+		std::cout << std::endl;
+	}
+	std::cout << "-----------------------------------------------------------------------------------------------------------" << std::endl;
+}
