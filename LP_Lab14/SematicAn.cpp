@@ -26,17 +26,15 @@ namespace SeAn
 					if (lextable.table[lexIndexInMain].lexeme == LEX_RETURN)
 					{
 						
-						if (lextable.table[lexIndexInMain + 1].idxTI != LT_TI_NULLIDX && lextable.table[lexIndexInMain+1].lexeme==LEX_ID)
+						if (lextable.table[lexIndexInMain + 1].idxTI != LT_TI_NULLIDX && (lextable.table[lexIndexInMain+1].lexeme==LEX_ID)||
+							lextable.table[lexIndexInMain + 1].lexeme == LEX_LITERAL)
 						{
 							if (idtable.table[lextable.table[lexIndexInMain + 1].idxTI].iddatatype != IT::IDDATATYPE::INT)
 							{
 								throw ERROR_THROW(125);//возвращаемый тип не int
 							}
 						}
-						else if (lextable.table[lexIndexInMain + 1].lexeme != LEX_INTEGER_LITERAL)
-						{
-							throw ERROR_THROW(126);//ВОЗВРАЩАЕМЫЙ ТИП НЕ INT
-						}
+						
 
 						if (nestingLevel == 0)
 						{
@@ -70,7 +68,7 @@ namespace SeAn
 				//сохраняем текущий тип функции
 				IT::IDDATATYPE CurrentTypeOfFunction = idtable.table[lextable.table[i].idxTI].iddatatype;
 				//также и тип литерала
-				unsigned char literalType;
+				/*unsigned char literalType;
 				switch (CurrentTypeOfFunction)
 				{
 				case IT::INT:
@@ -84,7 +82,7 @@ namespace SeAn
 					break;
 				default:
 					break;
-				}
+				}*/
 				//когда нашли,скипаем параметры и переходим к телу функции
 				while (lextable.table[i].lexeme != LEX_LEFTBRACE && i < lextable.size)
 				{
@@ -110,7 +108,7 @@ namespace SeAn
 					if (lextable.table[i].lexeme == LEX_RETURN)
 					{
 						//проверяем тип возвращаемого значения
-						if (lextable.table[i + 1].lexeme != literalType && idtable.table[lextable.table[i + 1].idxTI].iddatatype != CurrentTypeOfFunction)
+						if (idtable.table[lextable.table[i + 1].idxTI].iddatatype != CurrentTypeOfFunction)
 						{
 							throw ERROR_THROW(103);//возвращаемый тип не соответствует типу функцииж
 						}
@@ -365,21 +363,23 @@ namespace SeAn
 				while (lextable.table[i].lexeme!=LEX_SEMICOLON && i<lextable.size)
 				{
 					i++;
-					if ((lextable.table[i].lexeme == LEX_ID || lextable.table[i].lexeme == LEX_INTEGER_LITERAL || lextable.table[i].lexeme ==
-						LEX_STRING_LITERAL || lextable.table[i].lexeme == LEX_DOUBLE_LITERAL)
+					if ((lextable.table[i].lexeme == LEX_ID || lextable.table[i].lexeme == LEX_LITERAL)
 						&& idtable.table[lextable.table[i].idxTI].iddatatype != currentType)
 					{
-						if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F)
+						if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F ||
+							idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::S)
 						{
 							throw ERROR_THROW(200);
 						}//ФУНКЦИЯ ВОЗВРАЩАЕТ НЕ ТОТ ТИП ДАННЫХ
-						else if(idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::V)
+						else if(idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::V ||
+							idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
 						{
 							throw ERROR_THROW(201);
 						}//не верный тип данных используется
 					}
 					else if (lextable.table[i].lexeme == LEX_ID
-						&& idtable.table[lextable.table[i].idxTI].idtype != IT::IDTYPE::F
+						&& (idtable.table[lextable.table[i].idxTI].idtype != IT::IDTYPE::F&&
+							idtable.table[lextable.table[i].idxTI].idtype != IT::IDTYPE::S)
 						&& lextable.table[i + 1].lexeme == LEX_LEFTHESIS)
 					{
 						throw ERROR_THROW(709);//не верный вызов функции
@@ -399,6 +399,12 @@ namespace SeAn
 					else if(lextable.table[i].lexeme == LEX_SIN && currentType !=IT::IDDATATYPE::DOUBLE)
 					{
 						throw ERROR_THROW(202);
+					}
+					if (SeAn::FindSTD(lextable.table[i].lexeme) ||
+						lextable.table[i].lexeme == LEX_FUNCTION)
+					{
+						while (lextable.table[i].lexeme != LEX_RIGHTHESIS && i < lextable.size)
+							i++;
 					}
 				}
 			}
