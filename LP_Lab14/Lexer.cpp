@@ -89,22 +89,13 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			else if (token == LEX_INTEGER_LITERAL ) {
 				IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::INT, IT::IDTYPE::L });
 				idtable.table[idtable.size - 1].value.vint = atoi(accumulator.c_str());
+				
 			}
 			else if (token == LEX_DOUBLE_LITERAL)
 			{				
 				IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::DOUBLE, IT::IDTYPE::L });
 				idtable.table[idtable.size - 1].value.vdouble = std::stod(accumulator.c_str());
-				//Добавить ошибку на неправильный литерл дабла
-				//пример: double x = 1g.02
-				/*double literalValue = std::stod(accumulator);
-				std::string id = prevId.substr(0, ID_MAXSIZE);
-				ti_idx = IT::IsId(idtable, curScope.c_str(), id.c_str());
-				if (ti_idx != TI_NULLIDX && prevId != "")
-				{
-					idtable.table[ti_idx].value.vdouble = literalValue;
-					prevId.clear();
-				}
-			*/
+				
 				
 			}
 			else if (token == LEX_LENGTH)

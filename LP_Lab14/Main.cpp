@@ -33,7 +33,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		IT::IdTable idtable = IT::Create(in.size);
 
 		LA::Scan(lextable, idtable, in, parm, log);
-		/*for (int i = 0; i < idtable.size; i++)
+		for (int i = 0; i < idtable.size; i++)
 		{
 			std::cout <<"ID:"<< idtable.table[i].id << '\t' << "iddatatype:" << idtable.table[i].iddatatype << '\t' << "idtype:" << idtable.table[i].idtype << '\t' << "scope:" << idtable.table[i].scope << '\t' << "vint:" << ( idtable.table[i].value.vint  ) << "vstr:" << (idtable.table[i].value.vstr.str) << "vdouble:" << (idtable.table[i].value.vdouble) << std::endl;
 		}
@@ -41,16 +41,23 @@ int _tmain(int argc, _TCHAR* argv[]) {
 			MFST::Mfst mfst(lextable, GRB::getGreibach());
 		mfst.start(*log.stream);
 		
-		for (int i = 0; i < lextable.size; i++)
-		{
-			std::cout << lextable.table[i].lexeme<<'\t'<< lextable.table[i].idxTI << std::endl;
-		}*/
+		
 
 		SeAn::CheckingReturnInMain(lextable,idtable);
 		SeAn::CheckReturnInUserFunc(lextable, idtable);
 		SeAn::CheckParamsOfFunc(lextable, idtable);
 		SeAn::CheckParamsStdFunc(lextable, idtable);
 		SeAn::Types(lextable, idtable);
+		for (int i = 0, k = 0; i < lextable.size; i++)
+		{
+			if (lextable.table[i].lexeme == LEX_EQUALS) {
+				PolishNotation(++i,lextable,idtable);
+			}
+		}
+		for (int i = 0; i < lextable.size; i++)
+		{
+			std::cout << lextable.table[i].lexeme ;
+		}
 		LT::Delete(lextable);
 		IT::Delete(idtable);
 		Log::Close(log);
@@ -65,5 +72,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
 #else
 	system("pause");
 #endif // _DEBUG
+	system("pause");
 	return 0;
 }

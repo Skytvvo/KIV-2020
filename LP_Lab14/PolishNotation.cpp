@@ -49,7 +49,8 @@ std::vector<LT::Entry> convert(std::vector<LT::Entry> entries) {
 				stack.pop();
 			}
 		}
-		else if (entry.lexeme == LEX_FUNCTION) {
+		else if (entry.lexeme == LEX_FUNCTION|| entry.lexeme == LEX_LENGTH || 
+			entry.lexeme == LEX_POW|| entry.lexeme == LEX_RAND|| entry.lexeme == LEX_SIN) {
 			LT::Entry tmp = entry;
 			tmp.lexeme = POLISH_FUNCTION;
 			stack.push(tmp);
@@ -76,7 +77,7 @@ bool PolishNotation(int lextable_pos, LT::LexTable& lextable, IT::IdTable& idtab
 
 	for (int i = lextable_pos; i < lextable.size; ++i) {
 		const char& lexeme = lextable.table[i].lexeme;
-
+		
 		if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F) {
 			LT::Entry tmp = LT::GetEntry(lextable, i);
 			tmp.lexeme = LEX_FUNCTION;
@@ -97,7 +98,7 @@ bool PolishNotation(int lextable_pos, LT::LexTable& lextable, IT::IdTable& idtab
 			rightesisCounter++;
 		else if (lexeme == LEX_PLUS || lexeme == LEX_MINUS || lexeme == LEX_STAR || lexeme == LEX_DIRSLASH)
 			operationsCounter++;
-		else if (lexeme == LEX_ID || lexeme == LEX_LITERAL)
+		else if (lexeme == LEX_ID || lexeme == LEX_INTEGER_LITERAL || lexeme == LEX_STRING_LITERAL || lexeme == LEX_DOUBLE_LITERAL)
 			operandsCounter++;
 
 		if (lexeme == LEX_SEMICOLON)

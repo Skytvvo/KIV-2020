@@ -175,6 +175,8 @@ bool MFST::Mfst::start(std::ostream& outputStream) {
 		MFST_TRACE4("------>NS_NORULE");
 		outputStream << "-------------------------------------------------------------------------------------" << std::endl;
 		outputStream << getDiagnosis(0) << std::endl;
+		outputStream << getDiagnosis(1) << std::endl;
+		outputStream << getDiagnosis(2) << std::endl;
 		break;
 
 	case Mfst::RC_STEP::NS_NORULECHAIN:

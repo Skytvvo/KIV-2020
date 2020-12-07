@@ -46,6 +46,11 @@
 #define LEX_BIGGEROREQUAL       '»'    
 #define LEX_EQUAL_ID            '~'    
 
+#define LEX_NEWLINE				'|'
+
+#define LEX_TILDA		 '_'	// отрицательный идентификатор
+
+
 #define LEX_RIGHT_SQUARE_BRACE	']'
 #define LEX_LEFT_SQUARE_BRACE	'['
 //

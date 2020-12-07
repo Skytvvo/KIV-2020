@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-
 #define SEPSTREMP  "\n;------------------------------\n"
 #define SEPSTR(x)  "\n;----------- " + string(x) + " ------------\n"
 
@@ -47,5 +46,5 @@
 
 namespace Gener
 {
-	bool CodeGeneration(LT::LexTable& lttable,IT::IdTable& idtable, Parm::PARM& parm, Log::LOG& log);
+	bool CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable, Parm::PARM& parm, Log::LOG& log);
 };

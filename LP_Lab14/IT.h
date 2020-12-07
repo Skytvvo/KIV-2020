@@ -40,14 +40,10 @@
 #define TI_SHORT_DEFAULT 0x0000	 
 
 namespace IT {
-	enum IDDATATYPE { INT = 1, STR = 2, SYM = 3,PROC = 4, UNDEF = 5,UINT = 6,SHORT = 7 , DOUBLE = 8};//типы данных идентификаторов: числовой, строковый,символьный неопределенный
+	enum IDDATATYPE { INT = 1, STR = 2,PROC = 4, UNDEF = 5,UINT = 6, DOUBLE = 8};//типы данных идентификаторов: числовой, строковый,символьный неопределенный
 	enum IDTYPE { V = 1, F = 2, P = 3, L = 4, S = 5, Z = 6 };//типы идентификаторов: V = переменная, F = функция, P =параметр, L =литерал, S = стандартная функция Z - знак
 	enum STDFNC { F_POW, F_RANDOM, F_LENGTH, F_NOT_STD, F_CONCAT, F_SIN, };//стандартные функции
-	static const IDDATATYPE POW_PARAMS[] = { IT::IDDATATYPE::INT, IT::IDDATATYPE::INT };
-	static const IDDATATYPE RANDOM_PARAMS[] = { IT::IDDATATYPE::INT };
-    static const IDDATATYPE SIN_PARAMS[] = { IT::IDDATATYPE::INT };
-	static const IDDATATYPE LENGHT_PARAMS[] = { IT::IDDATATYPE::STR };
-	static const IDDATATYPE CONCAT_PARAMS[] = { IT::IDDATATYPE::STR,IT::IDDATATYPE::STR };
+
 
 	struct Entry {
 		int idxfirstLE;
