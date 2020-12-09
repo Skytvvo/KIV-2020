@@ -95,6 +95,7 @@ namespace IT {
 	void Add(IdTable& idtable, const Entry& entry);
 	Entry GetEntry(IdTable& idtable, int n);
 	int IsId(IdTable& idtable, const char scope[SCOPE_MAXSIZE], const char id[ID_MAXSIZE]);
+	int IsId(IdTable& idtable, const char scope[SCOPE_MAXSIZE], const char id[ID_MAXSIZE], bool lexFlag);
 	int IsLiteral(IdTable& idtable, const char literal[TI_STR_MAXSIZE]);
 	int IsLiteral(IdTable& idtable, int literal);
 	void Delete(IdTable& idtable);

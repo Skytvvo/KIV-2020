@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <ctime>
+
 extern "C"
 {
 
@@ -42,6 +43,7 @@ extern "C"
 	}
 	int  outstr(char* ptr)
 	{
+		setlocale(0,"");
 		if (ptr == nullptr)
 		{
 			std::cout << std::endl;
@@ -52,15 +54,16 @@ extern "C"
 	}
 	int  outnumline(int value)
 	{
+		
 		std::cout << value << std::endl;
 		return 0;
 	}
 	int  outstrline(char* ptr)
 	{
-		if (ptr == nullptr)
-		{
+		setlocale(0, "");
+		
 			std::cout << std::endl;
-		}
+		
 		for (int i = 0; ptr[i] != '\0'; i++)
 			std::cout << ptr[i];
 		std::cout << std::endl;

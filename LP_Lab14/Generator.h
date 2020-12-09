@@ -29,9 +29,10 @@
 
 
 
-//namespace Gener
-//{
-//	bool CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable);
-//	int GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdTable& idtable,int pos);
-//	IT::IDDATATYPE DetectType(LT::LexTable lextable, IT::IdTable idtable, int i);
-//};
+namespace Gener
+{
+	bool CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable);
+	int GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdTable& idtable,int pos);
+	IT::IDDATATYPE DetectType(LT::LexTable lextable, IT::IdTable idtable, int i);
+	void LogicOperations(std::ofstream& AsmFile, char lex, int sn);
+};

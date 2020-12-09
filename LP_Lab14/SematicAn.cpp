@@ -1,5 +1,5 @@
 #include "pch.h"
-
+//
 namespace SeAn
 {
 	void SeAn::CheckingReturnInMain(LT::LexTable& lextable, IT::IdTable& idtable)
@@ -326,6 +326,24 @@ namespace SeAn
 					}
 
 					break;
+				case LEX_PRINT:
+				{
+					i += 2;
+					while (lextable.table[i].lexeme != LEX_RIGHTHESIS && i < lextable.size)
+					{
+						amountParams++;
+						i++;
+					}
+					if (amountParams < 1)
+					{
+						throw ERROR_THROW(198);
+					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
+					else if (amountParams > 1)
+					{
+						throw ERROR_THROW(199);//СЛИШКОМ МНОГО
+					}
+					break;
+				}
 				default:
 					throw ERROR_THROW(195);//Ошибка компилятора: неопознаная статическая функция
 					break;
@@ -345,6 +363,8 @@ namespace SeAn
 		case LEX_POW:
 			return true;
 		case LEX_SIN:
+			return true;
+		case LEX_PRINT:
 			return true;
 		default:
 			return false;

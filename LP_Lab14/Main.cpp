@@ -36,11 +36,11 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
 		LA::ShowIDtable(idtable);
 		LA::ShowLexTable(lextable);
-		MFST_TRACE_START
+		/*MFST_TRACE_START
 			MFST::Mfst mfst(lextable, GRB::getGreibach());
 		mfst.start(*log.stream);
 		
-		
+		*/
 
 		SeAn::CheckingReturnInMain(lextable,idtable);
 		SeAn::CheckReturnInUserFunc(lextable, idtable);
@@ -55,17 +55,10 @@ int _tmain(int argc, _TCHAR* argv[]) {
 			}
 		}*/
 	
+		//LA::ShowLexTable(lextable);
+		PN::PolishNotation(lextable, idtable);
 		LA::ShowLexTable(lextable);
-		for (int i = 0; i < lextable.size; i++)
-		{
-			std::cout << lextable.table[i].lexeme;
-			/*if (lextable.table[i].lexeme == POLISH_FUNCTION)
-			{
-				std::cout << 's';
-			}*/
-			
-		}
-	/*	Gener::CodeGeneration(lextable, idtable);*/
+		Gener::CodeGeneration(lextable, idtable);
 		LT::Delete(lextable);
 		IT::Delete(idtable);
 		Log::Close(log);

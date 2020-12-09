@@ -45,6 +45,19 @@ int IT::IsId(IdTable& idtable, const char scope[SCOPE_MAXSIZE], const char id[ID
 	return TI_NULLIDX;
 }
 
+int IT::IsId(IdTable& idtable, const char scope[SCOPE_MAXSIZE], const char id[ID_MAXSIZE], bool lexFlag) {
+	for (int i = 0; i < idtable.size; ++i) {
+		if (!memcmp(scope, idtable.table[i].scope, (strlen(idtable.table[i].scope) < SCOPE_MAXSIZE ?
+				strlen(idtable.table[i].scope) : SCOPE_MAXSIZE))
+			&& !memcmp(id, idtable.table[i].id, (strlen(idtable.table[i].id) < ID_MAXSIZE ?
+				strlen(idtable.table[i].id) : ID_MAXSIZE))) {
+			return i;
+		}
+	}
+
+	return TI_NULLIDX;
+}
+
 int IT::IsLiteral(IdTable& idtable, const char literal[TI_STR_MAXSIZE]) {
 	for (int i = 0; i < idtable.size; ++i) {
 		if (!strcmp(idtable.table[i].value.vstr.str, literal) &&

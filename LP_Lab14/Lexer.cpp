@@ -87,8 +87,12 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 				curFunction.clear();
 			}
 			else if (token == LEX_INTEGER_LITERAL ) {
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::INT, IT::IDTYPE::L });
-				idtable.table[idtable.size - 1].value.vint = atoi(accumulator.c_str());
+				ti_idx = IT::IsId(idtable, curScope.c_str(), accumulator.c_str(), true);
+				if (ti_idx== LT_TI_NULLIDX) {
+					IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::INT, IT::IDTYPE::L });
+					idtable.table[idtable.size - 1].value.vint = atoi(accumulator.c_str());
+				}
+			
 				token = LEX_LITERAL;
 			}
 			else if (token == LEX_DOUBLE_LITERAL)
@@ -103,7 +107,7 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 				
 				IT::Add(idtable, { lextable.size,  curScope.c_str(), "strLength", iddatatype, IT::IDTYPE::S ,{1, IT::LENGHT_PARAMS} });
 				
-				
+				//исправить добавление повторного литерала
 			}
 			else if (token == LEX_POW)
 			{
@@ -120,6 +124,11 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 				
 				IT::Add(idtable, { lextable.size,  curScope.c_str(), "sin", iddatatype, IT::IDTYPE::S , {1, IT::LENGHT_SIN} });
 			}
+			else if (token == LEX_PRINT)
+			{
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "print", iddatatype, IT::IDTYPE::S });
+				idtable.table[idtable.size - 1].value.params.amount = 1;
+			}
 			else if (token == LEX_STRING_LITERAL) {
 				std::string literal = accumulator.substr(1, accumulator.size() - 2);
 				
@@ -130,7 +139,7 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 				token = LEX_LITERAL;
 				
 			}
-			else if (token == LEX_ID || token == LEX_POW || token == LEX_LENGTH || token == LEX_RAND || token == LEX_SIN) {
+			else if (token == LEX_ID || token == LEX_POW || token == LEX_LENGTH || token == LEX_RAND || token == LEX_SIN||token ==LEX_PRINT) {
 				std::string id = accumulator.substr(0, ID_MAXSIZE);
 				ti_idx = IT::IsId(idtable, curScope.c_str(), id.c_str());
 				
@@ -141,7 +150,8 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 					}
 					else if (lextable.size >= 1 && (lextable.table[lextable.size - 1].lexeme == LEX_POW) ||
 						(lextable.table[lextable.size - 1].lexeme == LEX_RAND )|| (lextable.table[lextable.size - 1].lexeme == LEX_LENGTH)||
-						lextable.size >= 1 && (lextable.table[lextable.size - 1].lexeme == LEX_CONCAT)) {
+						lextable.size >= 1 && (lextable.table[lextable.size - 1].lexeme == LEX_SIN) ||
+						lextable.size >= 1 && (lextable.table[lextable.size - 1].lexeme == LEX_PRINT)) {
 						IT::Add(idtable, { lextable.size,  curScope.c_str(), id.c_str(), iddatatype, IT::IDTYPE::V });
 					}
 					else if (lextable.size >= 1 && lextable.table[lextable.size - 1].lexeme == LEX_FUNCTION) {
@@ -181,10 +191,7 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			token = (token == LEX_INTEGER || token == LEX_STRING || token == LEX_DOUBLE) ? LEX_DATATYPE : token;
 
 			
-			if ( accumulator == "fi") {
-				std::cout << std::endl;
-			}
-
+		
 			if (token == LEX_ID  || token == LEX_MAIN) {
 				if (ti_idx == TI_NULLIDX) {
 					LT::Add(lextable, { token, line, idtable.size - 1 });
@@ -195,8 +202,14 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			}
 			else if (token == LEX_LITERAL)
 			{
-				LT::Add(lextable, { token, line, idtable.size - 1 });
+				if (ti_idx == LT_TI_NULLIDX) {
+					LT::Add(lextable, { token, line, idtable.size - 1 });
+				}
+				else
+				{
+					LT::Add(lextable, { token, line, ti_idx});
 
+				}
 			}
 			else if (SeAn::FindSTD(token))
 			{
