@@ -33,6 +33,7 @@
 #define LEX_BRACELET			'}'
 #define LEX_LEFTHESIS			'('
 #define LEX_RIGHTHESIS			')'
+
 #define LEX_PLUS				'+'
 #define LEX_MINUS				'-'
 #define LEX_STAR				'*'

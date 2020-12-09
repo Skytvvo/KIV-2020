@@ -113,4 +113,12 @@ IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDDATATYPE i
 	else {
 		value.vstr.len = TI_STR_DEFAULT;
 	}
+}IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDDATATYPE iddatatype, IDTYPE idtype, Entry::parm value)
+	: idxfirstLE(idxfirstLE), iddatatype(iddatatype), idtype(idtype)
+{
+	memcpy_s(this->id, sizeof(this->id), id, sizeof(this->id));
+	memcpy_s(this->scope, sizeof(this->scope), scope, sizeof(this->scope));
+
+	this->value.params.amount = value.amount;
+	this->value.params.types = value.types;
 }

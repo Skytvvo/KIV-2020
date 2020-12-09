@@ -1,14 +1,18 @@
-#include "stdafx.h"
+
 #include <iostream>
 #include <ctime>
 extern "C"
 {
 
-	int __stdcall power(int a, int b)
+	int  toPow(int a, int b)
 	{
 		return pow(a, b);
 	}
-	int __stdcall random(int a)
+	int  countSin(double value)
+	{
+		return sin(value);
+	}
+	int  random(int a)
 	{
 		if (a < 0)
 			a = -a;
@@ -18,7 +22,7 @@ extern "C"
 		int k = -a + (rand() % (a * 2));
 		return k;
 	}
-	int __stdcall lenght(char* str)
+	int  strLength(char* str)
 	{
 		if (str == nullptr)
 			return 0;
@@ -31,12 +35,12 @@ extern "C"
 			}
 		return len;
 	}
-	int __stdcall outnum(int value)
+	int  outnum(int value)
 	{
 		std::cout << value;
 		return 0;
 	}
-	int __stdcall outstr(char* ptr)
+	int  outstr(char* ptr)
 	{
 		if (ptr == nullptr)
 		{
@@ -46,12 +50,12 @@ extern "C"
 			std::cout << ptr[i];
 		return 0;
 	}
-	int __stdcall outnumline(int value)
+	int  outnumline(int value)
 	{
 		std::cout << value << std::endl;
 		return 0;
 	}
-	int __stdcall outstrline(char* ptr)
+	int  outstrline(char* ptr)
 	{
 		if (ptr == nullptr)
 		{
@@ -62,7 +66,7 @@ extern "C"
 		std::cout << std::endl;
 		return 0;
 	}
-	int __stdcall system_pause()
+	int  system_pause()
 	{
 		system("pause");
 		return 0;

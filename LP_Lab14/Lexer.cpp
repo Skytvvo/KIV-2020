@@ -100,23 +100,25 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			}
 			else if (token == LEX_LENGTH)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "length", iddatatype, IT::IDTYPE::S });
+				
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "strLength", iddatatype, IT::IDTYPE::S ,{1, IT::LENGHT_PARAMS} });
+				
+				
 			}
 			else if (token == LEX_POW)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "pow", iddatatype, IT::IDTYPE::S });
+				
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "pow", iddatatype, IT::IDTYPE::S , {2, IT::LENGHT_POW} });
 			}
 			else if (token == LEX_RAND)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "random", iddatatype, IT::IDTYPE::S });
-			}
-			else if (token == LEX_CONCAT)
-			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "concat", iddatatype, IT::IDTYPE::S });
+			
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "random", iddatatype, IT::IDTYPE::S, {1, IT::LENGHT_RAND} });
 			}
 			else if (token == LEX_SIN)
 			{
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "sin", iddatatype, IT::IDTYPE::S });
+				
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "sin", iddatatype, IT::IDTYPE::S , {1, IT::LENGHT_SIN} });
 			}
 			else if (token == LEX_STRING_LITERAL) {
 				std::string literal = accumulator.substr(1, accumulator.size() - 2);
@@ -179,6 +181,9 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			token = (token == LEX_INTEGER || token == LEX_STRING || token == LEX_DOUBLE) ? LEX_DATATYPE : token;
 
 			
+			if ( accumulator == "fi") {
+				std::cout << std::endl;
+			}
 
 			if (token == LEX_ID  || token == LEX_MAIN) {
 				if (ti_idx == TI_NULLIDX) {
@@ -258,8 +263,7 @@ void LA::WriteDataForFunctions(LT::LexTable& lextable, IT::IdTable& idtable)
 			short sizeParams = 0;
 			idtable.table[lextable.table[i].idxTI].value.params.amount = 0;
 			idtable.table[lextable.table[i].idxTI].value.params.types = new IT::IDDATATYPE;
-			i++;
-			i++;
+			i += 2;
 			while (lextable.table[i].lexeme!=LEX_RIGHTHESIS)
 			{
 				if (lextable.table[i].lexeme == LEX_ID)

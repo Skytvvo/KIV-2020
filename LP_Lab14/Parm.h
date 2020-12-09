@@ -7,7 +7,7 @@
 #define PARM_MAX_SIZE 300
 #define PARM_OUT_DEFAULT_EXT L".out"
 #define PARM_LOG_DEFAULT_EXT L".log"
-
+#define ASM_PATH "../AsmExecute/ASM.asm"
 namespace Parm {
 	struct PARM {
 		wchar_t in[PARM_MAX_SIZE];

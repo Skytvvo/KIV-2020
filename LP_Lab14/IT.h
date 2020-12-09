@@ -44,13 +44,26 @@ namespace IT {
 	enum IDTYPE { V = 1, F = 2, P = 3, L = 4, S = 5, Z = 6 };//типы идентификаторов: V = переменная, F = функция, P =параметр, L =литерал, S = стандартная функция Z - знак
 	enum STDFNC { F_POW, F_RANDOM, F_LENGTH, F_NOT_STD, F_CONCAT, F_SIN, };//стандартные функции
 
-
+	static IDDATATYPE LENGHT_PARAMS[] = { IT::STR };//параметры функции length
+	static IDDATATYPE LENGHT_POW[] = { IT::INT,IT::INT };
+	static IDDATATYPE LENGHT_RAND[] = { IT::INT };
+	static IDDATATYPE LENGHT_SIN[] = { IT::DOUBLE };
 	struct Entry {
 		int idxfirstLE;
 		char scope[SCOPE_MAXSIZE];
 		char id[ID_MAXSIZE];
 		IDDATATYPE iddatatype;
 		IDTYPE idtype;
+		struct parm
+		{
+			IDDATATYPE* types;
+			short amount;
+			parm(int amount, IDDATATYPE* types)
+			{
+				this->amount = amount;
+				this->types = types;
+			}
+		};
 		union {
 			int vint;
 			struct {
@@ -70,6 +83,7 @@ namespace IT {
 		Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtype, double value);
 		Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtype, const char* value);
 		Entry(int idxfirstLE, const char* scope, const char* id, IDDATATYPE iddatatype, IDTYPE idtype);
+		Entry(int idxfirstLE, const char* scope, const char* id, IDDATATYPE iddatatype, IDTYPE idtype, Entry::parm value);
 	};
 
 	struct IdTable {
