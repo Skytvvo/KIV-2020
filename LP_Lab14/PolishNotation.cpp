@@ -1,147 +1,116 @@
+
 #include "pch.h"
-#include "PolishNotation.h"
-
-int getOperationsPriority(char operation) {
-	if (operation == LEX_LEFTHESIS || operation == LEX_RIGHTHESIS)
-		return 1;
-	else if (operation == LEX_PLUS || operation == LEX_MINUS)
-		return 2;
-	else if (operation == LEX_STAR || operation == LEX_DIRSLASH)
-		return 3;
-	return EOF;
-}
-
-std::vector<LT::Entry> convert(std::vector<LT::Entry> entries, IT::IdTable& idtable) {
-	std::vector<LT::Entry> output;
-	std::stack<LT::Entry> stack;
-
-	for (int i = 0; entries[i].lexeme != LEX_SEMICOLON; ++i) {
-		const LT::Entry& entry = entries[i];
-
-		if (entry.lexeme == LEX_PLUS || entry.lexeme == LEX_MINUS || entry.lexeme == LEX_STAR || entry.lexeme == LEX_DIRSLASH) {
-			if (!stack.empty() && stack.top().lexeme != LEX_LEFTHESIS) {
-				while (!stack.empty() && getOperationsPriority(entry.lexeme) <= getOperationsPriority(stack.top().lexeme)) {
-					output.push_back(stack.top());
-					stack.pop();
-				}
-			}
-
-			stack.push(entry);
-		}
-		else if (entry.lexeme == LEX_COMMA) {
-			while (!stack.empty() && stack.top().lexeme != LEX_LEFTHESIS) {
-				output.push_back(stack.top());
-				stack.pop();
-			}
-		}
-		else if (entry.lexeme == LEX_LEFTHESIS) {
-			stack.push(entry);
-		}
-		else if (entry.lexeme == LEX_RIGHTHESIS) {
-			while (stack.top().lexeme != LEX_LEFTHESIS) {
-				output.push_back(stack.top());
-				stack.pop();
-			}
-			stack.pop();
-
-			if (!stack.empty() && stack.top().lexeme == POLISH_FUNCTION) {
-				output.push_back(stack.top());
-				stack.pop();
-			}
-		}
-		else if (entry.lexeme == LEX_LENGTH ||
-			entry.lexeme == LEX_POW || entry.lexeme == LEX_RAND || entry.lexeme == LEX_SIN
-			|| entry.lexeme == LEX_PRINT) {
-			LT::Entry tmp = entry;
-			tmp.lexeme = POLISH_FUNCTION;
-			
-			stack.push(tmp);
-		}
-		else {
-			output.push_back(entry);
-		}
-	}
-
-	while (!stack.empty()) {
-		output.push_back(stack.top());
-		stack.pop();
-	}
-
-	output.push_back(entries.back());
-
-	return output;
-}
-
-bool PolishNotation(int lextable_pos, LT::LexTable& lextable, IT::IdTable& idtable) {
-	std::vector<LT::Entry> infixExpressionEntries;
-	int lefthesisCounter = 0, rightesisCounter = 0;
-	int operandsCounter = 0, operationsCounter = 0;
-
-	for (int i = lextable_pos; i < lextable.size; ++i) {
-		const char& lexeme = lextable.table[i].lexeme;
-		
-		if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F) {
-			LT::Entry tmp = LT::GetEntry(lextable, i);
-			tmp.lexeme = LEX_FUNCTION;
-			infixExpressionEntries.push_back(tmp);
-
-			operandsCounter--;
-		}
-		else {
-			infixExpressionEntries.push_back(LT::GetEntry(lextable, i));
-
-			if (lexeme == LEX_COMMA)
-				operandsCounter--;
-		}
-
-		if (lexeme == LEX_LEFTHESIS)
-			lefthesisCounter++;
-		else if (lexeme == LEX_RIGHTHESIS)
-			rightesisCounter++;
-		else if (lexeme == LEX_PLUS || lexeme == LEX_MINUS || lexeme == LEX_STAR || lexeme == LEX_DIRSLASH)
-			operationsCounter++;
-		else if (lexeme == LEX_ID || lexeme==LEX_LITERAL)
-			operandsCounter++;
-
-		if (lexeme == LEX_SEMICOLON)
-			break;
-	}
-
-	if (lefthesisCounter != rightesisCounter || operandsCounter - operationsCounter != 1)
-		return false;
-
-	std::vector<LT::Entry> postfixExpressionEntries = convert(infixExpressionEntries,idtable);
-	for (int i = 0; i < (int)infixExpressionEntries.size(); ++i) {
-		if (i < (int)postfixExpressionEntries.size()) {
-			lextable.table[i + lextable_pos] = postfixExpressionEntries[i];
-		}
-		else {
-			lextable.table[i + lextable_pos] = { FORBIDDEN_SYMBOL, EOF, EOF };
-		}
-	}
-	ClearLextable(lextable,idtable);
-	return true;
-}
-
-
-void ClearLextable(LT::LexTable& lextable,IT::IdTable& idtable)
-{
-	for (int i = 0; i < lextable.size; i++)
-	{
-
-		if(lextable.table[i].lexeme == FORBIDDEN_SYMBOL)
-		{
-			while (lextable.table[i].sn == EOF) {
-				--lextable.size;
-				for (int j = i; j < lextable.size; j++)
-				{
-					lextable.table[j] = lextable.table[j + 1];
-					if (lextable.table[j].idxTI != LT_TI_NULLIDX)
-					{
-						idtable.table[lextable.table[j].idxTI].idxfirstLE=j;
-					}
-				}
-			}
-		}
-	}
-}
+//
+//namespace PN
+//{
+//	int i = 0, k = 0;
+//
+//	int GetExpr(LT::LexTable lexTable, int i)
+//	{
+//		for (; lexTable.table[i].lexeme != LEX_SEMICOLON; i++);
+//		return i;
+//	}
+//
+//	int Priorities(char operation)
+//	{
+//		if (operation == LEX_LEFTHESIS || operation == LEX_RIGHTHESIS)
+//			return 1;
+//		if (operation == LEX_MINUS || operation == LEX_PLUS)
+//			return 2;
+//		if (operation == LEX_DIRSLASH || operation == LEX_STAR)
+//			return 3;
+//	}
+//
+//	void ConverExpr(LT::Entry* expr, LT::LexTable lexTable)
+//	{
+//		std::stack<LT::Entry> stack;
+//		short leftBracket = 0;
+//
+//		for (int j = GetExpr(lexTable, ++i); i < j; i++)
+//		{
+//			if (lexTable.table[i].lexeme == LEX_ID || lexTable.table[i].lexeme == LEX_LITERAL)
+//			{
+//				expr[k++] = lexTable.table[i];
+//			}
+//			else if (lexTable.table[i].lexeme == LEX_RIGHTHESIS)
+//			{
+//				if (leftBracket == 0)	throw ERROR_THROW_IN(123, lexTable.table[i].sn, -1);
+//				while (stack.size())
+//				{
+//					if (stack.top().lexeme == LEX_LEFTHESIS)	break;
+//					expr[k++] = stack.top();
+//					stack.pop();
+//				}
+//				stack.pop();	leftBracket--;
+//			}
+//			else if (lexTable.table[i].lexeme == LEX_LEFTHESIS)
+//			{
+//				leftBracket++;
+//				stack.push(lexTable.table[i]);
+//			}
+//			else if (stack.size() == 0 || stack.top().lexeme == LEX_LEFTHESIS)
+//			{
+//				if (!CHECKOPERAND && lexTable.table[i].lexeme != LEX_LEFTHESIS) throw ERROR_THROW_IN(121, lexTable.table[i].sn, -1);
+//				stack.push(lexTable.table[i]);
+//			}
+//			else
+//			{
+//				if (!CHECKOPERAND) throw ERROR_THROW_IN(121, lexTable.table[i].sn, -1);
+//				while (stack.size())
+//				{
+//					if (Priorities(lexTable.table[i].lexeme) > Priorities(stack.top().lexeme)) break;
+//					expr[k++] = stack.top();
+//					stack.pop();
+//				}
+//				stack.push(lexTable.table[i]);
+//			}
+//		}
+//		if (leftBracket != 0) throw ERROR_THROW_IN(123, lexTable.table[i - 1].sn, -1);
+//		while (stack.size() != 0)
+//		{
+//			expr[k++] = stack.top();
+//			stack.pop();
+//		}
+//	}
+//
+//	void AddNewExpr(LT::LexTable& lexTable, IT::IdTable& idTable, LT::Entry* expr, int numConver)
+//	{
+//		for (int j = numConver, g = 0; g < k; j++, g++)
+//		{
+//			lexTable.table[j] = expr[g];
+//			if (ELEMIT)		idTable.table[lexTable.table[j].idxTI].idxfirstLE = j;
+//		}
+//	}
+//
+//	void DelNULLEntryLT(LT::LexTable& lexTable, IT::IdTable& idTable, int numConver)
+//	{
+//		for (int r = i - (numConver + k), g = 0; g < r; g++)
+//		{
+//			for (int j = numConver + k; j < lexTable.size; j++)
+//			{
+//				lexTable.table[j] = lexTable.table[j + 1];
+//				if (ELEMIT)		idTable.table[lexTable.table[j].idxTI].idxfirstLE = j;
+//			}
+//			lexTable.size--;
+//		}
+//	}
+//
+//	void PolishNotation(LT::LexTable& lexTable, IT::IdTable& idTable)
+//	{
+//		Check check;
+//		LT::Entry expr[200];
+//		int numConver = 0;
+//		for (; i < lexTable.size; i++, k = 0)
+//		{
+//			if (lexTable.table[i].lexeme == LEX_EQUALS)
+//			{
+//				if (!CHECKLVALUE)	throw ERROR_THROW_IN(122, lexTable.table[i].sn, -1);
+//				numConver = i + 1;
+//				ConverExpr(expr, lexTable);
+//				AddNewExpr(lexTable, idTable, expr, numConver);
+//				DelNULLEntryLT(lexTable, idTable, numConver);
+//			}
+//		}
+//	}
+//}
+//

@@ -5,7 +5,7 @@
 namespace GRB {
 #pragma region Rules
 	const Greibach greibach(NS('S'), TS('$'),
-		6,
+		8,
 		Rule(NS('S'), GRB_ERROR_SERIES + 0,//начало кода
 			7,
 			Rule::Chain(8, TS('m'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';')),
@@ -22,18 +22,14 @@ namespace GRB {
 			Rule::Chain(4, TS('d'), TS('t'), TS('i'), TS(';')),
 			Rule::Chain(5, TS('d'), TS('t'), TS('i'), TS(';'), NS('N')),
 			Rule::Chain(6, TS('d'), TS('t'), TS('i'),TS('='),TS('l'), TS(';')),
-			/*Rule::Chain(6, TS('d'), TS('t'), TS('i'),TS('='),TS('2'), TS(';')),
-			Rule::Chain(6, TS('d'), TS('t'), TS('i'),TS('='),TS('3'), TS(';')),*/
+	
 
 			Rule::Chain(6, TS('d'), TS('t'), TS('i'),TS('='),NS('E'), TS(';')),
-
 			Rule::Chain(7, TS('d'), TS('t'), TS('i'), TS('='),TS('l'),TS(';'), NS('N')),
-		/*	Rule::Chain(7, TS('d'), TS('t'), TS('i'), TS('='),TS('2'),TS(';'), NS('N')),
-			Rule::Chain(7, TS('d'), TS('t'), TS('i'), TS('='),TS('3'),TS(';'), NS('N')),*/
 			Rule::Chain(8, TS('d'), TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS(';')),
 			Rule::Chain(9, TS('d'), TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS(';'), NS('N')),
-			
 			Rule::Chain(3, TS('r'), NS('E'), TS(';')),
+
 			Rule::Chain(4, TS('i'), TS('='), NS('E'), TS(';')),
 			Rule::Chain(5, TS('i'), TS('='), NS('E'), TS(';'), NS('N')),
 			Rule::Chain(4, TS('r'), NS('E'), TS(';'), NS('N')),
@@ -41,18 +37,9 @@ namespace GRB {
 			Rule::Chain(3, TS('p'), NS('E'), TS(';')),
 			
 		
-			//Rule::Chain(4, TS('p'), TS('1'), TS(';'), NS('N')),
-			//Rule::Chain(4, TS('p'), TS('2'), TS(';'), NS('N')),
-			//Rule::Chain(4, TS('p'), TS('3'), TS(';'), NS('N')),
 			Rule::Chain(3, TS('p'), TS('i'), TS(';')),
-
-			Rule::Chain(8, TS('u'), TS('('), NS('E'),TS(')'), TS('['), NS('N'),TS(']'), TS(';') ),
-			Rule::Chain(9, TS('u'), TS('('), NS('E'),TS(')'), TS('['), NS('N'),TS(']'), TS(';'), NS('N') ),
-		
-			
-	/*		Rule::Chain(3, TS('p'), TS('1'), TS(';')),
-			Rule::Chain(3, TS('p'), TS('2'), TS(';')),
-			Rule::Chain(3, TS('p'), TS('3'), TS(';')),*/
+			Rule::Chain(10, TS('u'), TS('('),NS('V'), NS('С'), NS('V'),TS(')'), TS('['), NS('N'),TS(']'), TS(';') ),
+			Rule::Chain(11, TS('u'), TS('('), NS('V'), NS('C'), NS('V'),TS(')'), TS('['), NS('N'),TS(']'), TS(';'), NS('N') ),
 			Rule::Chain(3, TS('p'), TS('l'), TS(';')),
 			Rule::Chain(6, TS('p'), TS('i'), TS('('), NS('W'), TS(')'), TS(';'))
 		),
@@ -86,7 +73,7 @@ namespace GRB {
 		
 		),
 		Rule(NS('M'), GRB_ERROR_SERIES + 3,//операции
-			44,
+			20,
 			Rule::Chain(2, TS('+'), NS('E')),
 			Rule::Chain(4, TS('+'), TS('('), NS('E'), TS(')')),
 			Rule::Chain(5, TS('+'), TS('('), NS('E'), TS(')'), NS('M')),
@@ -106,35 +93,6 @@ namespace GRB {
 			Rule::Chain(5, TS('/'), TS('('), NS('E'), TS(')'), NS('M')),
 			
 			Rule::Chain(3, TS('/'), NS('E'), NS('M')),
-			Rule::Chain(2, TS('>'), NS('E')),
-			Rule::Chain(4, TS('>'), TS('('), NS('E'), TS(')')),
-			Rule::Chain(5, TS('>'), TS('('), NS('E'), TS(')'), NS('M')),
-			Rule::Chain(3, TS('>'), NS('E'), NS('M')),
-			
-			Rule::Chain(2, TS('<'), NS('E')),
-			Rule::Chain(4, TS('<'), TS('('), NS('E'), TS(')')),
-			Rule::Chain(5, TS('<'), TS('('), NS('E'), TS(')'), NS('M')),
-			Rule::Chain(3, TS('<'), NS('E'), NS('M')),
-			Rule::Chain(2, TS('!'), NS('E')),
-			
-			Rule::Chain(4, TS('!'), TS('('), NS('E'), TS(')')),
-			Rule::Chain(5, TS('!'), TS('('), NS('E'), TS(')'), NS('M')),
-			Rule::Chain(3, TS('!'), NS('E'), NS('M')),
-			Rule::Chain(2, TS('~'), NS('E')),
-			Rule::Chain(4, TS('~'), TS('('), NS('E'), TS(')')),
-			
-			Rule::Chain(5, TS('~'), TS('('), NS('E'), TS(')'), NS('M')),
-			Rule::Chain(3, TS('~'), NS('E'), NS('M')),
-			Rule::Chain(2, TS('«'), NS('E')),
-			Rule::Chain(4, TS('«'), TS('('), NS('E'), TS(')')),
-			Rule::Chain(5, TS('«'), TS('('), NS('E'), TS(')'), NS('M')),
-			
-			Rule::Chain(3, TS('«'), NS('E'), NS('M')),
-			Rule::Chain(2, TS('»'), NS('E')),
-			Rule::Chain(4, TS('»'), TS('('), NS('E'), TS(')')),
-			Rule::Chain(5, TS('»'), TS('('), NS('E'), TS(')'), NS('M')),
-			Rule::Chain(3, TS('»'), NS('E'), NS('M')),
-			
 			Rule::Chain(2, TS('%'), NS('E')),
 			Rule::Chain(4, TS('%'), TS('('), NS('E'), TS(')')),
 			Rule::Chain(5, TS('%'), TS('('), NS('E'), TS(')'), NS('M')),
@@ -156,7 +114,29 @@ namespace GRB {
 			Rule::Chain(3, TS('i'), TS(','), NS('W')),
 			Rule::Chain(3, TS('l'), TS(','), NS('W'))
 		
-		)
+		),
+			Rule(NS('C'), GRB_ERROR_SERIES + 6,//операторы истинности
+					6,
+		
+				Rule::Chain(1, TS('>')),
+
+				Rule::Chain(1, TS('<')),
+			
+				Rule::Chain(1, TS('!')),
+
+			
+				Rule::Chain(1, TS('~')),
+				
+				Rule::Chain(1, TS('«')),
+				
+				Rule::Chain(1, TS('»'))
+
+				),
+				Rule(NS('V'), GRB_ERROR_SERIES + 7,//операнды истинности
+					2,
+					Rule::Chain(1, TS('i')),
+					Rule::Chain(1, TS('l'))
+				)
 	);
 #pragma endregion
 
