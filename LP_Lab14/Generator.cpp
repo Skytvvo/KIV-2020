@@ -112,7 +112,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 
 				if (declaredFunc)
 				{
-					AsmFile << "ZEROERROR:\npush OFFSET ZEROMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" << idtable.table[lextable.table[declaredFuncIndex].idxTI].id << " ENDP\n\n"
+					AsmFile << "ZEROERROR:\npush OFFSET ZEROMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" <<
 						"OVERFLOW:\npush OFFSET OVERFLOWMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" << idtable.table[lextable.table[declaredFuncIndex].idxTI].id << " ENDP\n\n";
 					declaredFunc = false;
 				}

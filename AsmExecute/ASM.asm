@@ -15,12 +15,14 @@ EXTRN system_pause:PROC
 .stack 4096
 .const
 ZEROMESSAGE  BYTE 'Ошибка:деление на ноль',0
+OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	fi5 DWORD 5
 	fisd BYTE 'sd', 0
 	fis BYTE 's', 0
 	another1 DWORD 1
 	main5 DWORD 5
 	main1 DWORD 1
+	mains BYTE 's', 0
 	mainhello BYTE 'hello', 0
 	main2 DWORD 2
 .data
@@ -63,6 +65,11 @@ push OFFSET ZEROMESSAGE
 call outstrline
 push -1
 	call		ExitProcess
+OVERFLOW:
+push OFFSET OVERFLOWMESSAGE
+call outstrline
+push -1
+	call		ExitProcess
 fi ENDP
 
 another PROC anothera :  DWORD , anotherb :  DWORD 
@@ -95,6 +102,11 @@ push OFFSET ZEROMESSAGE
 call outstrline
 push -1
 	call		ExitProcess
+OVERFLOW:
+push OFFSET OVERFLOWMESSAGE
+call outstrline
+push -1
+	call		ExitProcess
 another ENDP
 
 main PROC
@@ -113,7 +125,10 @@ push main5
 pop eax
 push eax
 pop mainx
-push main1
+push OFFSET mains
+call strLength
+ pop ecx
+ push eax
 pop eax
 push eax
 pop mainvariable
@@ -167,5 +182,10 @@ push OFFSET ZEROMESSAGE
 call outstrline
 push -1
 	call		ExitProcess
-main ENDP
+OVERFLOW:
+push OFFSET OVERFLOWMESSAGE
+call outstrline
+push -1
+	call		ExitProcess
+ main ENDP
 END main

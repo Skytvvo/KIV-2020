@@ -36,11 +36,11 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
 		LA::ShowIDtable(idtable);
 		LA::ShowLexTable(lextable);
-		MFST_TRACE_START
+		/*MFST_TRACE_START
 			MFST::Mfst mfst(lextable, GRB::getGreibach());
 		mfst.start(*log.stream);
 		
-		
+		*/
 
 		SeAn::CheckingReturnInMain(lextable,idtable);
 		SeAn::CheckReturnInUserFunc(lextable, idtable);
