@@ -24,7 +24,7 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	main5 DWORD 5
 	main1 DWORD 1
 	main4294967295 DWORD 2147483647
-	mainvariable BYTE 'variable', 0
+	mainss BYTE 'ss', 0
 	mainhello BYTE 'hello', 0
 	main2 DWORD 2
 .data
@@ -129,10 +129,16 @@ push main4294967295
 pop eax
 push eax
 pop mainx1
-push OFFSET mainvariable
+push OFFSET mainss
 call strLength
  pop ecx
  push eax
+push main1
+pop eax
+pop ebx
+add eax,ebx
+push eax
+jo OVERFLOW
 pop eax
 push eax
 pop mainvariable1
