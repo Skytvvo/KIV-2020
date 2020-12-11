@@ -19,11 +19,12 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	fi5 DWORD 5
 	fisd BYTE 'sd', 0
 	fis BYTE 's', 0
+	anothersd BYTE 'sd', 0
 	another1 DWORD 1
 	main5 DWORD 5
 	main1 DWORD 1
 	main4294967295 DWORD 2147483647
-	mains BYTE 's', 0
+	mainvariable BYTE 'variable', 0
 	mainhello BYTE 'hello', 0
 	main2 DWORD 2
 .data
@@ -80,12 +81,11 @@ pop eax
 pop ebx
 add eax,ebx
 push eax
-cmp eax,ebx
 jo OVERFLOW
 pop eax
 push eax
 pop anothersum
-push  anothers
+push OFFSET anothersd
 pop eax
 push eax
 pop anothers
@@ -97,7 +97,6 @@ pop eax
 pop ebx
 add eax,ebx
 push eax
-cmp eax,ebx
 jo OVERFLOW
 pop eax
  
@@ -127,17 +126,10 @@ push eax
 call outnum
 SKIP22:
 push main4294967295
-push main1
-pop eax
-pop ebx
-add eax,ebx
-push eax
-cmp eax,ebx
-jo OVERFLOW
 pop eax
 push eax
 pop mainx
-push OFFSET mains
+push OFFSET mainvariable
 call strLength
  pop ecx
  push eax
@@ -186,7 +178,6 @@ pop eax
 pop ebx
 add eax,ebx
 push eax
-cmp eax,ebx
 jo OVERFLOW
 pop eax
 push eax

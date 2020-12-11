@@ -50,7 +50,7 @@ int IT::IsId(IdTable& idtable, const char scope[SCOPE_MAXSIZE], const char id[ID
 		if (!memcmp(scope, idtable.table[i].scope, (strlen(idtable.table[i].scope) < SCOPE_MAXSIZE ?
 				strlen(idtable.table[i].scope) : SCOPE_MAXSIZE))
 			&& !memcmp(id, idtable.table[i].id, (strlen(idtable.table[i].id) < ID_MAXSIZE ?
-				strlen(idtable.table[i].id) : ID_MAXSIZE))) {
+				strlen(idtable.table[i].id) : ID_MAXSIZE))&& (idtable.table[i].idtype == IT::L)) {
 			return i;
 		}
 	}

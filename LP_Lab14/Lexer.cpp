@@ -116,11 +116,6 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			
 				IT::Add(idtable, { lextable.size,  curScope.c_str(), "random", iddatatype, IT::IDTYPE::S, {1, IT::LENGHT_RAND} });
 			}
-			else if (token == LEX_SIN)
-			{
-				
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "sin", iddatatype, IT::IDTYPE::S , {1, IT::LENGHT_SIN} });
-			}
 			else if (token == LEX_PRINT)
 			{
 				IT::Add(idtable, { lextable.size,  curScope.c_str(), "print", iddatatype, IT::IDTYPE::S });
