@@ -7,7 +7,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 	std::ofstream AsmFile(ASM_PATH);
 	if (!AsmFile.is_open())
 	{
-		throw ERROR_THROW(100);//
+		throw ERROR_THROW(101);//
 	}
 	bool gen_ok;
 	AsmFile << BEGIN;

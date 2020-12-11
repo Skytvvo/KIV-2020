@@ -92,7 +92,7 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 					IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::INT, IT::IDTYPE::L });
 					if (atoll(accumulator.c_str()) >_UI32_MAX)
 					{
-						throw ERROR_THROW(270);//
+						throw ERROR_THROW(132);//
 					}
 					idtable.table[idtable.size - 1].value.vint = atoi(accumulator.c_str());
 				}
@@ -109,7 +109,7 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			else if (token == LEX_POW)
 			{
 				
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), "pow", iddatatype, IT::IDTYPE::S , {2, IT::LENGHT_POW} });
+				IT::Add(idtable, { lextable.size,  curScope.c_str(), "toPow", iddatatype, IT::IDTYPE::S , {2, IT::LENGHT_POW} });
 			}
 			else if (token == LEX_RAND)
 			{

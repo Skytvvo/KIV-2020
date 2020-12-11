@@ -5,9 +5,10 @@
 extern "C"
 {
 
-	int  toPow(int a, int b)
+	unsigned int  toPow(unsigned int a, unsigned int b)
 	{
-		return pow(a, b);
+
+		return pow(b, a);
 	}
 	int  countSin(double value)
 	{

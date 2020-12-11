@@ -15,7 +15,7 @@ Error::ERROR errors[ERROR_MAX_ENTRY] = {
 	ERROR_ENTRY_NODEF10(50),
 	ERROR_ENTRY_NODEF10(60), ERROR_ENTRY_NODEF10(70), ERROR_ENTRY_NODEF10(80), ERROR_ENTRY_NODEF10(90),
 	ERROR_ENTRY(100, "Параметр -in должен быть задан"),
-	ERROR_ENTRY_NODEF(101), ERROR_ENTRY_NODEF(102), ERROR_ENTRY_NODEF(103),
+	ERROR_ENTRY(101,"Ошибка при открытии файла .asm"), ERROR_ENTRY_NODEF(102), ERROR_ENTRY_NODEF(103),
 	ERROR_ENTRY(104, "Превышена длина входного параметра"),
 	ERROR_ENTRY_NODEF(105), ERROR_ENTRY_NODEF(106), ERROR_ENTRY_NODEF(107),
 	ERROR_ENTRY_NODEF(108), ERROR_ENTRY_NODEF(109),
@@ -36,7 +36,7 @@ Error::ERROR errors[ERROR_MAX_ENTRY] = {
 	ERROR_ENTRY(129, "Неопознанная лексема"),
 	ERROR_ENTRY(130, "Отсутствует точка входа"),
 	ERROR_ENTRY(131, "Несколько точек входа"),
-	ERROR_ENTRY_NODEF(132),	ERROR_ENTRY_NODEF(133), ERROR_ENTRY_NODEF(134), ERROR_ENTRY_NODEF(135),
+	ERROR_ENTRY(132,"Значение литерала превышает максимальное значение типа uint"),	ERROR_ENTRY_NODEF(133), ERROR_ENTRY_NODEF(134), ERROR_ENTRY_NODEF(135),
 	ERROR_ENTRY_NODEF(136), ERROR_ENTRY_NODEF(137), ERROR_ENTRY_NODEF(138),	ERROR_ENTRY_NODEF(139),
 	ERROR_ENTRY_NODEF10(140), ERROR_ENTRY_NODEF10(150),
 	ERROR_ENTRY_NODEF10(160), ERROR_ENTRY_NODEF10(170), ERROR_ENTRY_NODEF10(180), ERROR_ENTRY_NODEF10(190),
@@ -52,7 +52,18 @@ Error::ERROR errors[ERROR_MAX_ENTRY] = {
 	ERROR_ENTRY_NODEF10(610), ERROR_ENTRY_NODEF10(620), ERROR_ENTRY_NODEF10(630),
 	ERROR_ENTRY_NODEF10(640), ERROR_ENTRY_NODEF10(650), ERROR_ENTRY_NODEF10(660), ERROR_ENTRY_NODEF10(670),
 	ERROR_ENTRY_NODEF10(680), ERROR_ENTRY_NODEF10(690),
-	ERROR_ENTRY_NODEF100(700), ERROR_ENTRY_NODEF100(800), ERROR_ENTRY_NODEF100(900)
+	ERROR_ENTRY(700, "В функции отсутсвует return"),
+	ERROR_ENTRY(701, "Функция не всегда возвращает значение"),
+	ERROR_ENTRY(702, "Попытка объявить функцию в main"), ERROR_ENTRY(703,"Ошибка в блоке main: функция возвращает не целочисленное занчение"),
+	ERROR_ENTRY(704,"Тип возвращаемого значения не соответствует типу функции"), ERROR_ENTRY(705,"Слишком много аргументов передано в функцию"),
+	ERROR_ENTRY(706,"Тип передаваемого аргумента не соответствует типу параметра функции"), ERROR_ENTRY(707,"Слишком мало аргументов передано в функцию"), 
+	ERROR_ENTRY_NODEF(708,"Попытка переопределить библиотечную функцию"), ERROR_ENTRY(709, "Неопознаная библиотечная функция"), 
+	ERROR_ENTRY(710, "В выражении используется не соответствующий тип данных"),
+	ERROR_ENTRY(711, "В выражении используется не соответствующая ,по тиуп данных, функция"),
+	ERROR_ENTRY_NODEF(712), ERROR_ENTRY_NODEF(713), ERROR_ENTRY_NODEF(714), ERROR_ENTRY_NODEF(715),
+	ERROR_ENTRY_NODEF(716), ERROR_ENTRY_NODEF(717), ERROR_ENTRY_NODEF(718), ERROR_ENTRY_NODEF(719), ERROR_ENTRY_NODEF10(730),
+	ERROR_ENTRY_NODEF10(740), ERROR_ENTRY_NODEF10(750), ERROR_ENTRY_NODEF10(760), ERROR_ENTRY_NODEF10(770),
+	ERROR_ENTRY_NODEF10(780), ERROR_ENTRY_NODEF10(790), ERROR_ENTRY_NODEF100(800), ERROR_ENTRY_NODEF100(900)
 };
 
 Error::ERROR Error::geterror(int id) {

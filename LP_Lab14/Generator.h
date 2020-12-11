@@ -11,7 +11,7 @@
 "includelib ..\\Debug\\FuncLib.lib\n"\
 "ExitProcess PROTO:DWORD \n"\
 "EXTRN random: PROC \n"\
-"EXTRN countSin: PROC\n"\
+"EXTRN toPow: PROC\n"\
 "EXTRN strLength: PROC\n"\
 "EXTRN outstr: PROC\n"\
 "EXTRN outnum: PROC\n"\

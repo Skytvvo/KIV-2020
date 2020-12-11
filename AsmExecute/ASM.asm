@@ -5,7 +5,7 @@ includelib kernel32.lib
 includelib ..\Debug\FuncLib.lib
 ExitProcess PROTO:DWORD 
 EXTRN random: PROC 
-EXTRN countSin: PROC
+EXTRN toPow: PROC
 EXTRN strLength: PROC
 EXTRN outstr: PROC
 EXTRN outnum: PROC
@@ -24,9 +24,10 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	main5 DWORD 5
 	main1 DWORD 1
 	main4294967295 DWORD 2147483647
-	mainss BYTE 'ss', 0
-	mainhello BYTE 'hello', 0
 	main2 DWORD 2
+	main3 DWORD 3
+	mainhello BYTE 'hello', 0
+	main4 DWORD 4
 .data
 	fisum1 DWORD ?
 	fish1 DWORD ?
@@ -129,8 +130,9 @@ push main4294967295
 pop eax
 push eax
 pop mainx1
-push OFFSET mainss
-call strLength
+push main2
+push main3
+call toPow
  pop ecx
  push eax
 push main1
@@ -167,6 +169,21 @@ call outstr
 push main1
 push main2
 call another
+ push eax
+pop eax
+push eax
+pop mainx1
+push main3
+push main4
+call toPow
+ pop ecx
+ push eax
+pop eax
+push eax
+pop mainx1
+push main1
+call random
+ pop ecx
  push eax
 pop eax
 push eax
