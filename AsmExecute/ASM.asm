@@ -81,7 +81,7 @@ pop ebx
 add eax,ebx
 push eax
 cmp eax,ebx
-jl OVERFLOW
+jo OVERFLOW
 pop eax
 push eax
 pop anothersum
@@ -98,7 +98,7 @@ pop ebx
 add eax,ebx
 push eax
 cmp eax,ebx
-jl OVERFLOW
+jo OVERFLOW
 pop eax
  
 ret
@@ -133,7 +133,7 @@ pop ebx
 add eax,ebx
 push eax
 cmp eax,ebx
-jl OVERFLOW
+jo OVERFLOW
 pop eax
 push eax
 pop mainx
@@ -187,7 +187,7 @@ pop ebx
 add eax,ebx
 push eax
 cmp eax,ebx
-jl OVERFLOW
+jo OVERFLOW
 pop eax
 push eax
 	call		ExitProcess
