@@ -27,10 +27,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 			{
 				AsmFile << " BYTE " <<'\''<< idtable.table[i].value.vstr.str<<'\'' << ", 0\n";
 			}
-			else if(idtable.table[i].iddatatype == IT::DOUBLE)
-			{
-				AsmFile << " QWORD " << idtable.table[i].value.vdouble << std::endl;
-			}
+
 		}
 	}
 
@@ -40,11 +37,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 	{
 		if (idtable.table[i].idtype == IT::IDTYPE::V)
 		{
-			AsmFile << "\t" << idtable.table[i].scope<< idtable.table[i].id;
-			if (idtable.table[i].iddatatype == IT::DOUBLE)
-			{
-				AsmFile << " QWORD ?\n";
-			}
+			AsmFile << "\t" << idtable.table[i].scope<< idtable.table[i].id<<IT::V;
 			if (idtable.table[i].iddatatype == IT::STR)
 			{
 				AsmFile << " DWORD ?\n";
@@ -76,7 +69,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 						if (lextable.table[i].lexeme == LEX_ID)
 						{
 							
-							AsmFile << idtable.table[lextable.table[i].idxTI].scope << idtable.table[lextable.table[i].idxTI].id << " : ";
+							AsmFile << idtable.table[lextable.table[i].idxTI].scope << idtable.table[lextable.table[i].idxTI].id<<IT::V << " : ";
 							if (idtable.table[lextable.table[i].idxTI].iddatatype == IT::INT)
 							{
 								AsmFile << " DWORD ";
@@ -84,10 +77,6 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 							else if (idtable.table[lextable.table[i].idxTI].iddatatype == IT::STR)
 							{
 								AsmFile << " DWORD ";
-							}
-							else
-							{
-								AsmFile << " QWORD ";
 							}
 						}
 						if(lextable.table[i+1].lexeme!=LEX_RIGHTHESIS&& lextable.table[i].lexeme == LEX_ID)
@@ -150,21 +139,20 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 				{
 					AsmFile << "push eax\ncall outstr\n";
 				}
-				/*else
-				{
-
-				}*/
 				break;
 			}
 			case LEX_EQUALS:
 			{
 				int idx = lextable.table[i - 1].idxTI;
 				i = Gener::GenExpHandler(AsmFile, lextable, idtable, ++i);
-				AsmFile << "push eax\npop " << idtable.table[idx].scope << idtable.table[idx].id << std::endl;
+				AsmFile << "push eax\npop " << idtable.table[idx].scope << idtable.table[idx].id;
+				if (idtable.table[idx].idtype == IT::V)
+					AsmFile << IT::V;
+				AsmFile << std::endl;
 				break;
 			}
 			case LEX_IF:
-			{
+			{//сюда 
 				AsmFile <<
 					"push " << idtable.table[lextable.table[i + 2].idxTI].scope << idtable.table[lextable.table[i + 2].idxTI].id << std::endl<<
 					"push " << idtable.table[lextable.table[i + 4].idxTI].scope << idtable.table[lextable.table[i + 4].idxTI].id << std::endl << 
@@ -233,21 +221,27 @@ int Gener::GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdT
 		{
 			if (idtable.table[LEXTABLE.table[i].idxTI].iddatatype == IT::INT)
 			{
-				AsmFile << "push "  <<idtable.table[LEXTABLE.table[i].idxTI].scope << idtable.table[LEXTABLE.table[i].idxTI].id <<std::endl;
+				AsmFile << "push " << idtable.table[LEXTABLE.table[i].idxTI].scope << idtable.table[LEXTABLE.table[i].idxTI].id;
+				if (idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::V || idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::P)
+					AsmFile << IT::V;
+				AsmFile << std::endl;
 			}
 		
 			else if((idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::L) &&
 				idtable.table[LEXTABLE.table[i].idxTI].iddatatype == IT::STR)
 			{
-				AsmFile<<"push OFFSET " <<
-					idtable.table[LEXTABLE.table[i].idxTI].scope << 
+				AsmFile << "push OFFSET " <<
+					idtable.table[LEXTABLE.table[i].idxTI].scope <<
 					idtable.table[LEXTABLE.table[i].idxTI].id << std::endl;
 			}
 			else
 			{
-				AsmFile<<"push  " <<
-					idtable.table[LEXTABLE.table[i].idxTI].scope << 
-					idtable.table[LEXTABLE.table[i].idxTI].id << std::endl;
+				AsmFile << "push  " <<
+					idtable.table[LEXTABLE.table[i].idxTI].scope <<
+					idtable.table[LEXTABLE.table[i].idxTI].id;
+				if (idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::V|| idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::P)
+					AsmFile << IT::V;
+				AsmFile << std::endl;
 			}
 			break;
 		}

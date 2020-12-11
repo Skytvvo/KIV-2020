@@ -28,29 +28,29 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	mainhello BYTE 'hello', 0
 	main2 DWORD 2
 .data
-	fisum DWORD ?
-	fish DWORD ?
-	anothersum DWORD ?
-	anothers DWORD ?
-	mainx DWORD ?
-	mainvariable DWORD ?
-	mainstr DWORD ?
+	fisum1 DWORD ?
+	fish1 DWORD ?
+	anothersum1 DWORD ?
+	anothers1 DWORD ?
+	mainx1 DWORD ?
+	mainvariable1 DWORD ?
+	mainstr1 DWORD ?
 
 .code
-fi PROC finum :  DWORD 
+fi PROC finum1 :  DWORD 
 push fi5
 pop eax
 push eax
-pop fisum
+pop fisum1
 push OFFSET fisd
 pop eax
 push eax
-pop fish
+pop fish1
 push OFFSET fis
 pop eax
 push eax
 call outstr
-push fisum
+push fisum1
 pop eax
 push eax
 call outnum
@@ -58,7 +58,7 @@ push OFFSET fis
 pop eax
 push eax
 call outstr
-push fisum
+push fisum1
 pop eax
  
 ret
@@ -74,9 +74,9 @@ push -1
 	call		ExitProcess
 fi ENDP
 
-another PROC anothera :  DWORD , anotherb :  DWORD 
-push anothera
-push anotherb
+another PROC anothera1 :  DWORD , anotherb1 :  DWORD 
+push anothera1
+push anotherb1
 pop eax
 pop ebx
 add eax,ebx
@@ -84,11 +84,11 @@ push eax
 jo OVERFLOW
 pop eax
 push eax
-pop anothersum
+pop anothersum1
 push OFFSET anothersd
 pop eax
 push eax
-pop anothers
+pop anothers1
 push another1
 call fi
  push eax
@@ -128,33 +128,33 @@ SKIP22:
 push main4294967295
 pop eax
 push eax
-pop mainx
+pop mainx1
 push OFFSET mainvariable
 call strLength
  pop ecx
  push eax
 pop eax
 push eax
-pop mainvariable
-push mainvariable
+pop mainvariable1
+push mainvariable1
 pop eax
 push eax
 call outnum
 push OFFSET mainhello
 pop eax
 push eax
-pop mainstr
+pop mainstr1
 push main5
 call fi
  push eax
 pop eax
 push eax
-pop mainx
+pop mainx1
 push main1
 pop eax
 push eax
 call outnum
-push  mainstr
+push  mainstr1
 pop eax
 push eax
 call outstr
@@ -164,8 +164,8 @@ call another
  push eax
 pop eax
 push eax
-pop mainx
-push mainx
+pop mainx1
+push mainx1
 pop eax
 push eax
 call outnum
