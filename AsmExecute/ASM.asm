@@ -22,6 +22,7 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	another1 DWORD 1
 	main5 DWORD 5
 	main1 DWORD 1
+	main4294967295 DWORD 2147483647
 	mains BYTE 's', 0
 	mainhello BYTE 'hello', 0
 	main2 DWORD 2
@@ -79,6 +80,8 @@ pop eax
 pop ebx
 add eax,ebx
 push eax
+cmp eax,ebx
+jl OVERFLOW
 pop eax
 push eax
 pop anothersum
@@ -94,6 +97,8 @@ pop eax
 pop ebx
 add eax,ebx
 push eax
+cmp eax,ebx
+jl OVERFLOW
 pop eax
  
 ret
@@ -121,7 +126,14 @@ pop eax
 push eax
 call outnum
 SKIP22:
-push main5
+push main4294967295
+push main1
+pop eax
+pop ebx
+add eax,ebx
+push eax
+cmp eax,ebx
+jl OVERFLOW
 pop eax
 push eax
 pop mainx
@@ -174,6 +186,8 @@ pop eax
 pop ebx
 add eax,ebx
 push eax
+cmp eax,ebx
+jl OVERFLOW
 pop eax
 push eax
 	call		ExitProcess

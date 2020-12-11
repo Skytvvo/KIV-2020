@@ -197,30 +197,35 @@ int Gener::GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdT
 		case LEX_PLUS:
 		{
 			AsmFile << "pop eax" << std::endl <<
-				"pop ebx" << std::endl << "add eax,ebx" << std::endl << "push eax" << std::endl;
+				"pop ebx" << std::endl << "add eax,ebx" << std::endl << "push eax\n" <<
+				"cmp eax,ebx\njl OVERFLOW\n";
 			break;
 		}
 		case LEX_MINUS:
 		{
 			AsmFile << "pop ebx" << std::endl <<
-				"pop eax" << std::endl << "sub eax,ebx" << std::endl << "push eax" << std::endl;
+				"pop eax" << std::endl << "sub eax,ebx" << std::endl << "push eax" << std::endl <<
+				"cmp eax,ebx\njl OVERFLOW\n";
 			break;
 		}
 		case LEX_STAR:
 		{
 			AsmFile << "pop eax" << std::endl <<
-				"pop ebx" << std::endl << "mul eax,ebx" << std::endl << "push eax" << std::endl;
+				"pop ebx" << std::endl << "mul eax,ebx" << std::endl << "push eax" << std::endl << 
+				"cmp eax,ebx\njl OVERFLOW\n";
 			break;
 		}
 		case LEX_DIRSLASH:
 		{
 			//idiv - знаковый , div - беззнаковый
-			AsmFile << "\n\tpop ebx\n\tpop eax\ntest ebx, ebx\njz ZEROERROR\n\tcdq\n\tdiv ebx\n\tpush eax\n";
+			AsmFile << "\n\tpop ebx\n\tpop eax\ntest ebx, ebx\njz ZEROERROR\n\tcdq\n\tdiv ebx\n\tpush eax\n" << 
+				"cmp eax,ebx\njl OVERFLOW\n";
 			break;
 		}
 		case LEX_MOD:
 		{
-			AsmFile << "\n\tpop ebx\n\tpop eax\ntest ebx, ebx\njz ZEROERROR\n\tcdq\n\tdiv ebx\n\tpush edx\n";
+			AsmFile << "\n\tpop ebx\n\tpop eax\ntest ebx, ebx\njz ZEROERROR\n\tcdq\n\tdiv ebx\n\tpush edx\n" <<
+				"cmp eax,ebx\njl OVERFLOW\n";
 			break;
 		}
 		case LEX_LITERAL:
