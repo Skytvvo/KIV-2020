@@ -154,9 +154,15 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 			case LEX_IF:
 			{//сюда 
 				AsmFile <<
-					"push " << idtable.table[lextable.table[i + 2].idxTI].scope << idtable.table[lextable.table[i + 2].idxTI].id << std::endl<<
-					"push " << idtable.table[lextable.table[i + 4].idxTI].scope << idtable.table[lextable.table[i + 4].idxTI].id << std::endl << 
-					"pop ebx\npop eax\ncmp eax, ebx\n";
+					"push " << idtable.table[lextable.table[i + 2].idxTI].scope << idtable.table[lextable.table[i + 2].idxTI].id;
+				if (idtable.table[lextable.table[i+2].idxTI].idtype == IT::V)
+					AsmFile << IT::V;
+				AsmFile << std::endl;
+
+				AsmFile << "push " << idtable.table[lextable.table[i + 4].idxTI].scope << idtable.table[lextable.table[i + 4].idxTI].id;
+				if (idtable.table[lextable.table[i+4].idxTI].idtype == IT::V)
+					AsmFile << IT::V;
+				AsmFile << std::endl<< "pop ebx\npop eax\ncmp eax, ebx\n";
 				ifsn = lextable.table[i].sn;
 				Gener::LogicOperations(AsmFile, lextable.table[i + 3].lexeme, ifsn);
 				break;

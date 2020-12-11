@@ -33,6 +33,7 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	fish1 DWORD ?
 	anothersum1 DWORD ?
 	anothers1 DWORD ?
+	mainmore1 DWORD ?
 	mainx1 DWORD ?
 	mainvariable1 DWORD ?
 	mainstr1 DWORD ?
@@ -116,16 +117,20 @@ another ENDP
 
 main PROC
 push main5
+pop eax
+push eax
+pop mainmore1
+push mainmore1
 push main5
 pop ebx
 pop eax
 cmp eax, ebx
-jne SKIP22
+jne SKIP23
 push main1
 pop eax
 push eax
 call outnum
-SKIP22:
+SKIP23:
 push main4294967295
 pop eax
 push eax
