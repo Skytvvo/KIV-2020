@@ -16,11 +16,6 @@
 	(lexTable.table[i - 1].lexeme == LEX_EQUALS &&\
 	(lexTable.table[i].lexeme == LEX_PLUS || lexTable.table[i].lexeme == LEX_MINUS)))
 
-#define CHECKLVALUE(i)		((lexTable.table[i - 1].lexeme == LEX_ID ||\
-lexTable.table[i].lexeme == LEX_RETURN||lexTable.table[i + 1].lexeme == LEX_PRINT)&&\
-	(lexTable.table[i - 2].lexeme == LEX_SEMICOLON||lexTable.table[i - 2].lexeme == LEX_DATATYPE||\
-lexTable.table[i - 1].lexeme == LEX_SEMICOLON))
-
 #define ELEMIT			lexTable.table[j].lexeme == LEX_ID ||\
 	lexTable.table[j].lexeme == LEX_LITERAL
 #define CHECKFUNCTIONS(i) (idtable.table[lexTable.table[i].idxTI].idtype == IT::F ||\

@@ -65,7 +65,7 @@ namespace IT {
 			}
 		};
 		union {
-			int vint;
+			unsigned int vint;
 			struct {
 				char len;
 				char str[TI_STR_MAXSIZE - 1];

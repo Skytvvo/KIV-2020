@@ -87,10 +87,7 @@ namespace PN
 			expr[sizeExpr++] = stack.top();
 			stack.pop();
 		}
-		for (int m = 0; m < sizeExpr; m++)
-		{
-			std::cout << expr[m].lexeme << m << std::endl;
-		}
+	
 		std::cout << std::endl;
 		return sizeExpr;
 	}

@@ -26,15 +26,11 @@ namespace SeAn
 					if (lextable.table[lexIndexInMain].lexeme == LEX_RETURN)
 					{
 						
-						if (lextable.table[lexIndexInMain + 1].idxTI != LT_TI_NULLIDX && (lextable.table[lexIndexInMain+1].lexeme==LEX_ID)||
-							lextable.table[lexIndexInMain + 1].lexeme == LEX_LITERAL)
+						for ( ; lexIndexInMain <lextable.size&&lextable.table[lexIndexInMain].lexeme!=LEX_SEMICOLON; lexIndexInMain++)
 						{
-							if (idtable.table[lextable.table[lexIndexInMain + 1].idxTI].iddatatype != IT::IDDATATYPE::INT)
-							{
-								throw ERROR_THROW(125);//возвращаемый тип не int
-							}
-						}
-						
+							if (lextable.table[lexIndexInMain].idxTI != LT_TI_NULLIDX && idtable.table[lextable.table[lexIndexInMain].idxTI].iddatatype != IT::INT)
+								throw ERROR_THROW(245);//ЕСЛИ В МЕЙНЕ ВОЗВРАЩАЮТ НЕ INT
+						}	
 
 						if (nestingLevel == 0)
 						{
@@ -67,22 +63,7 @@ namespace SeAn
 			{
 				//сохраняем текущий тип функции
 				IT::IDDATATYPE CurrentTypeOfFunction = idtable.table[lextable.table[i].idxTI].iddatatype;
-				//также и тип литерала
-				/*unsigned char literalType;
-				switch (CurrentTypeOfFunction)
-				{
-				case IT::INT:
-					literalType = LEX_INTEGER_LITERAL;
-					break;
-				case IT::STR:
-					literalType = LEX_STRING_LITERAL;
-					break;
-				case IT::DOUBLE:
-					literalType = LEX_DOUBLE_LITERAL;
-					break;
-				default:
-					break;
-				}*/
+				
 				//когда нашли,скипаем параметры и переходим к телу функции
 				while (lextable.table[i].lexeme != LEX_LEFTBRACE && i < lextable.size)
 				{
@@ -108,9 +89,10 @@ namespace SeAn
 					if (lextable.table[i].lexeme == LEX_RETURN)
 					{
 						//проверяем тип возвращаемого значения
-						if (idtable.table[lextable.table[i + 1].idxTI].iddatatype != CurrentTypeOfFunction)
+						for (; i < lextable.size && lextable.table[i].lexeme != LEX_SEMICOLON; i++)
 						{
-							throw ERROR_THROW(103);//возвращаемый тип не соответствует типу функцииж
+							if (lextable.table[i].idxTI != LT_TI_NULLIDX && idtable.table[lextable.table[i].idxTI].iddatatype != CurrentTypeOfFunction)
+								throw ERROR_THROW(246);//ЕСЛИ возвращение значение не соотвтетсвует ип
 						}
 						if (nestingLevel != 0)
 							warmingID = 1;

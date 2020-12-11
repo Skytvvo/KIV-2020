@@ -90,17 +90,14 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 				ti_idx = IT::IsId(idtable, curScope.c_str(), accumulator.c_str(), true);
 				if (ti_idx== LT_TI_NULLIDX) {
 					IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::INT, IT::IDTYPE::L });
+					if (atoll(accumulator.c_str()) >_UI32_MAX)
+					{
+						throw ERROR_THROW(270);//
+					}
 					idtable.table[idtable.size - 1].value.vint = atoi(accumulator.c_str());
 				}
 			
 				token = LEX_LITERAL;
-			}
-			else if (token == LEX_DOUBLE_LITERAL)
-			{				
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::DOUBLE, IT::IDTYPE::L });
-				idtable.table[idtable.size - 1].value.vdouble = std::stod(accumulator.c_str());
-				token = LEX_LITERAL;
-				
 			}
 			else if (token == LEX_LENGTH)
 			{
@@ -131,11 +128,13 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			}
 			else if (token == LEX_STRING_LITERAL) {
 				std::string literal = accumulator.substr(1, accumulator.size() - 2);
-				
-				IT::Add(idtable, { lextable.size,  curScope.c_str(), literal.c_str(), IT::IDDATATYPE::STR, IT::IDTYPE::L });
-				strcpy_s(idtable.table[idtable.size - 1].value.vstr.str, literal.c_str());
-				idtable.table[idtable.size - 1].value.vstr.len = literal.length();
-				strcpy_s(idtable.table[idtable.size - 1].id, literal.c_str());
+				ti_idx = IT::IsId(idtable, curScope.c_str(), literal.c_str(), true);
+				if (ti_idx == LT_TI_NULLIDX) {
+					IT::Add(idtable, { lextable.size,  curScope.c_str(), literal.c_str(), IT::IDDATATYPE::STR, IT::IDTYPE::L });
+					strcpy_s(idtable.table[idtable.size - 1].value.vstr.str, literal.c_str());
+					idtable.table[idtable.size - 1].value.vstr.len = literal.length();
+					strcpy_s(idtable.table[idtable.size - 1].id, literal.c_str());
+				}
 				token = LEX_LITERAL;
 				
 			}

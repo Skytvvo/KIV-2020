@@ -10,14 +10,11 @@
 #pragma region FST
 
 #pragma region INTEGER
-#define FST_INTEGER FST::FST(8,\
-FST::NODE(1, FST::RELATION('i', 1)),\
-FST::NODE(1, FST::RELATION('n', 2)),\
-FST::NODE(1, FST::RELATION('t', 3)),\
-FST::NODE(1, FST::RELATION('e', 4)),\
-FST::NODE(1, FST::RELATION('g', 5)),\
-FST::NODE(1, FST::RELATION('e', 6)),\
-FST::NODE(1, FST::RELATION('r', 7)),\
+#define FST_INTEGER FST::FST(5,\
+FST::NODE(1, FST::RELATION('u', 1)),\
+FST::NODE(1, FST::RELATION('i', 2)),\
+FST::NODE(1, FST::RELATION('n', 3)),\
+FST::NODE(1, FST::RELATION('t', 4)),\
 FST::NODE())
 #pragma endregion
 

@@ -23,11 +23,11 @@ extern "C"
 		int k = -a + (rand() % (a * 2));
 		return k;
 	}
-	int  strLength(char* str)
+	unsigned int  strLength(char* str)
 	{
 		if (str == nullptr)
 			return 0;
-		int len = 0;
+		unsigned int len = 0;
 		for (int i = 0; i < 256; i++)
 			if (str[i] == '\0')
 			{
@@ -36,7 +36,7 @@ extern "C"
 			}
 		return len;
 	}
-	int  outnum(int value)
+	int  outnum(unsigned int value)
 	{
 		std::cout << value;
 		return 0;
@@ -52,7 +52,7 @@ extern "C"
 			std::cout << ptr[i];
 		return 0;
 	}
-	int  outnumline(int value)
+	int  outnumline(unsigned int value)
 	{
 		
 		std::cout << value << std::endl;

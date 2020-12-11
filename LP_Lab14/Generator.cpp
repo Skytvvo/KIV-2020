@@ -13,6 +13,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 	AsmFile << BEGIN;
 	AsmFile << ".const\n";
 	AsmFile << "ZEROMESSAGE " << " BYTE " << "\'Ошибка:деление на ноль\'," << 0<<std::endl;
+	AsmFile << "OVERFLOWMESSAGE " << " BYTE " << "\'Ошибка:переполнение типа\'," << 0 << std::endl;
 	for (int i = 0; i < idtable.size; i++)
 	{
 		if (idtable.table[i].idtype == IT::L)
@@ -105,22 +106,20 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 				declaredMain = true;
 				break;
 			}
-		/*	case LEX_LEFTBRACE:
-			{
-
-				break;
-			}*/
+		
 			case LEX_BRACELET:
 			{
 
 				if (declaredFunc)
 				{
-					AsmFile << "ZEROERROR:\npush OFFSET ZEROMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" << idtable.table[lextable.table[declaredFuncIndex].idxTI].id << " ENDP\n\n";
+					AsmFile << "ZEROERROR:\npush OFFSET ZEROMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" << idtable.table[lextable.table[declaredFuncIndex].idxTI].id << " ENDP\n\n"
+						"OVERFLOW:\npush OFFSET OVERFLOWMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" << idtable.table[lextable.table[declaredFuncIndex].idxTI].id << " ENDP\n\n";
 					declaredFunc = false;
 				}
 				else
 				{
-					AsmFile << "\tcall\t\tExitProcess\nZEROERROR:\npush OFFSET ZEROMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\nmain ENDP\nEND main";
+					AsmFile << "\tcall\t\tExitProcess\nZEROERROR:\npush OFFSET ZEROMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" <<
+						"OVERFLOW:\npush OFFSET OVERFLOWMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" <<" main ENDP\nEND main";
 				}
 				declaredFuncIndex = 0;
 				break;
@@ -203,8 +202,8 @@ int Gener::GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdT
 		}
 		case LEX_MINUS:
 		{
-			AsmFile << "pop eax" << std::endl <<
-				"pop ebx" << std::endl << "sub eax,ebx" << std::endl << "push eax" << std::endl;
+			AsmFile << "pop ebx" << std::endl <<
+				"pop eax" << std::endl << "sub eax,ebx" << std::endl << "push eax" << std::endl;
 			break;
 		}
 		case LEX_STAR:
@@ -216,12 +215,12 @@ int Gener::GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdT
 		case LEX_DIRSLASH:
 		{
 			//idiv - знаковый , div - беззнаковый
-			AsmFile << "\n\tpop ebx\n\tpop eax\ntest ebx, ebx\njz ZEROERROR\n\tcdq\n\tidiv ebx\n\tpush eax\n";
+			AsmFile << "\n\tpop ebx\n\tpop eax\ntest ebx, ebx\njz ZEROERROR\n\tcdq\n\tdiv ebx\n\tpush eax\n";
 			break;
 		}
 		case LEX_MOD:
 		{
-			AsmFile << "\n\tpop ebx\n\tpop eax\ntest ebx, ebx\njz ZEROERROR\n\tcdq\n\tidiv ebx\n\tpush edx\n";
+			AsmFile << "\n\tpop ebx\n\tpop eax\ntest ebx, ebx\njz ZEROERROR\n\tcdq\n\tdiv ebx\n\tpush edx\n";
 			break;
 		}
 		case LEX_LITERAL:
@@ -232,7 +231,7 @@ int Gener::GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdT
 				AsmFile << "push "  <<idtable.table[LEXTABLE.table[i].idxTI].scope << idtable.table[LEXTABLE.table[i].idxTI].id <<std::endl;
 			}
 		
-			else if(idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::L &&
+			else if((idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::L) &&
 				idtable.table[LEXTABLE.table[i].idxTI].iddatatype == IT::STR)
 			{
 				AsmFile<<"push OFFSET " <<
@@ -249,9 +248,12 @@ int Gener::GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdT
 		}
 		case PL_AT:
 		{
-			AsmFile << "call "<< idtable.table[LEXTABLE.table[i].idxTI].id <<std::endl<<
-				" push eax\n";
+			AsmFile << "call " << idtable.table[LEXTABLE.table[i].idxTI].id << std::endl;
+			if (idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::S)
+				AsmFile << " pop ecx\n";
+			AsmFile<<" push eax\n";
 
+			
 			break;
 		}
 		default:

@@ -17,19 +17,19 @@ EXTRN system_pause:PROC
 ZEROMESSAGE  BYTE 'Ошибка:деление на ноль',0
 	fi5 DWORD 5
 	fisd BYTE 'sd', 0
-	anothersd BYTE 'sd', 0
+	fis BYTE 's', 0
 	another1 DWORD 1
 	main5 DWORD 5
 	main1 DWORD 1
-	main7 DWORD 7
-	main0 DWORD 0
 	mainhello BYTE 'hello', 0
+	main2 DWORD 2
 .data
 	fisum DWORD ?
-	fis DWORD ?
+	fish DWORD ?
 	anothersum DWORD ?
 	anothers DWORD ?
 	mainx DWORD ?
+	mainvariable DWORD ?
 	mainstr DWORD ?
 
 .code
@@ -41,7 +41,19 @@ pop fisum
 push OFFSET fisd
 pop eax
 push eax
-pop fis
+pop fish
+push OFFSET fis
+pop eax
+push eax
+call outstr
+push fisum
+pop eax
+push eax
+call outnum
+push OFFSET fis
+pop eax
+push eax
+call outstr
 push fisum
 pop eax
  
@@ -63,13 +75,18 @@ push eax
 pop eax
 push eax
 pop anothersum
-push OFFSET anothersd
+push  anothers
 pop eax
 push eax
 pop anothers
 push another1
 call fi
  push eax
+push another1
+pop eax
+pop ebx
+add eax,ebx
+push eax
 pop eax
  
 ret
@@ -86,30 +103,21 @@ push main5
 pop ebx
 pop eax
 cmp eax, ebx
-jne SKIP20
+jne SKIP22
 push main1
 pop eax
 push eax
 call outnum
-SKIP20:
+SKIP22:
 push main5
 pop eax
 push eax
 pop mainx
-push main7
-push main0
-
-	pop ebx
-	pop eax
-test ebx, ebx
-jz ZEROERROR
-	cdq
-	idiv ebx
-	push eax
+push main1
 pop eax
 push eax
-pop mainx
-push mainx
+pop mainvariable
+push mainvariable
 pop eax
 push eax
 call outnum
@@ -123,7 +131,7 @@ call fi
 pop eax
 push eax
 pop mainx
-push mainx
+push main1
 pop eax
 push eax
 call outnum
@@ -131,7 +139,26 @@ push  mainstr
 pop eax
 push eax
 call outstr
-push main0
+push main1
+push main2
+call another
+ push eax
+pop eax
+push eax
+pop mainx
+push mainx
+pop eax
+push eax
+call outnum
+push main1
+push main2
+call another
+ push eax
+push main5
+pop eax
+pop ebx
+add eax,ebx
+push eax
 pop eax
 push eax
 	call		ExitProcess
