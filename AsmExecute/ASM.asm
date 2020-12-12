@@ -21,22 +21,21 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	fis BYTE 's', 0
 	anothersd BYTE 'sd', 0
 	another1 DWORD 1
-	main5 DWORD 5
-	main1 DWORD 1
-	main4294967295 DWORD 2147483647
-	main2 DWORD 2
-	main3 DWORD 3
-	mainhello BYTE 'hello', 0
-	main4 DWORD 4
+	5 DWORD 5
+	1 DWORD 1
+	4294967295 DWORD 2147483647
+	2 DWORD 2
+	3 DWORD 3
+	hello BYTE 'hello', 0
+	4 DWORD 4
 .data
 	fisum1 DWORD ?
 	fish1 DWORD ?
 	anothersum1 DWORD ?
 	anothers1 DWORD ?
-	mainmore1 DWORD ?
-	mainx1 DWORD ?
-	mainvariable1 DWORD ?
-	mainstr1 DWORD ?
+	x1 DWORD ?
+	variable1 DWORD ?
+	str1 DWORD ?
 
 .code
 fi PROC finum1 :  DWORD 
@@ -115,110 +114,7 @@ push -1
 	call		ExitProcess
 another ENDP
 
-main PROC
-push main5
+push 5
 pop eax
 push eax
-pop mainmore1
-push mainmore1
-push main5
-pop ebx
-pop eax
-cmp eax, ebx
-jne SKIP23
-push main1
-pop eax
-push eax
-call outnum
-SKIP23:
-push main4294967295
-pop eax
-push eax
-pop mainx1
-push main2
-push main3
-call toPow
- pop ecx
- push eax
-push main1
-pop eax
-pop ebx
-add eax,ebx
-push eax
-jo OVERFLOW
-pop eax
-push eax
-pop mainvariable1
-push mainvariable1
-pop eax
-push eax
-call outnum
-push OFFSET mainhello
-pop eax
-push eax
-pop mainstr1
-push main5
-call fi
- push eax
-pop eax
-push eax
-pop mainx1
-push main1
-pop eax
-push eax
-call outnum
-push  mainstr1
-pop eax
-push eax
-call outstr
-push main1
-push main2
-call another
- push eax
-pop eax
-push eax
-pop mainx1
-push main3
-push main4
-call toPow
- pop ecx
- push eax
-pop eax
-push eax
-pop mainx1
-push main1
-call random
- pop ecx
- push eax
-pop eax
-push eax
-pop mainx1
-push mainx1
-pop eax
-push eax
-call outnum
-push main1
-push main2
-call another
- push eax
-push main5
-pop eax
-pop ebx
-add eax,ebx
-push eax
-jo OVERFLOW
-pop eax
-push eax
-	call		ExitProcess
-ZEROERROR:
-push OFFSET ZEROMESSAGE
-call outstrline
-push -1
-	call		ExitProcess
-OVERFLOW:
-push OFFSET OVERFLOWMESSAGE
-call outstrline
-push -1
-	call		ExitProcess
- main ENDP
-END main
+pop another1

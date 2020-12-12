@@ -25,6 +25,13 @@ FST::NODE(1, FST::RELATION('f', 2)),\
 FST::NODE())
 #pragma endregion
 
+#define FST_WHILE FST::FST(6, \
+	FST::NODE(1, FST::RELATION('w', 1)), \
+	FST::NODE(1, FST::RELATION('h', 2)), \
+	FST::NODE(1, FST::RELATION('i', 3)), \
+	FST::NODE(1, FST::RELATION('l', 4)), \
+	FST::NODE(1, FST::RELATION('e', 5)), \
+	FST::NODE())
 
 #pragma region SHORT
 #define FST_SHORT FST::FST(6,\

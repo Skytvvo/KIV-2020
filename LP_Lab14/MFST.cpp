@@ -27,9 +27,12 @@ MFST::Mfst::Mfst()
 	: tape(0), tape_size(0), tape_position(0), lex(LT::Create(0)), nrule(-1), nrulechain(-1)
 {	}
 
-MFST::Mfst::Mfst(LT::LexTable lex, GRB::Greibach greibach)
+MFST::Mfst::Mfst(LT::LexTable lex, GRB::Greibach greibach, wchar_t outfile[])
 	: lex(lex), greibach(greibach), tape_position(0), nrule(-1), nrulechain(-1), tape_size(lex.size)
 {
+	
+	this->outfile.open(outfile, std::ios_base::app);
+	
 	tape = DBG_NEW short[tape_size];
 
 	for (int k = 0; k < tape_size; ++k) {
@@ -81,7 +84,7 @@ std::string MFST::Mfst::getDiagnosis(short n) {
 
 bool MFST::Mfst::save_state() {
 	storestate.push(MfstState(tape_position, st, nrule, nrulechain));
-	MFST_TRACE6("SAVESTATE:", storestate.size());
+	MFST_TRACE6("SAVESTATE:", storestate.size(), outfile);
 	return true;
 }
 
@@ -96,8 +99,8 @@ bool MFST::Mfst::restore_state() {
 		nrule = state.nrule;
 		nrulechain = state.nrulechain;
 		storestate.pop();
-		MFST_TRACE5("RESTORESTATE")
-			MFST_TRACE2
+		MFST_TRACE5("RESTORESTATE",outfile)
+			MFST_TRACE2(outfile)
 	}
 
 	return output;
@@ -119,15 +122,15 @@ MFST::Mfst::RC_STEP MFST::Mfst::step() {
 			if ((nrule = greibach.getRule(st.top(), rule)) >= 0) {
 				GRB::Rule::Chain chain;
 				if ((nrulechain = rule.getNextChain(tape[tape_position], chain, nrulechain + 1)) >= 0) {
-					MFST_TRACE1
+					MFST_TRACE1(outfile)
 						save_state();
 					st.pop();
 					push_chain(chain);
 					output = Mfst::RC_STEP::NS_OK;
-					MFST_TRACE2
+					MFST_TRACE2(outfile)
 				}
 				else {
-					MFST_TRACE4("TNS_NORULECHAIN/NS_NORULE")
+					MFST_TRACE4("TNS_NORULECHAIN/NS_NORULE", outfile)
 						savediagnosis(Mfst::RC_STEP::NS_NORULECHAIN);
 					output = restore_state() ? Mfst::RC_STEP::NS_NORULECHAIN : Mfst::RC_STEP::NS_NORULE;
 				};
@@ -139,17 +142,17 @@ MFST::Mfst::RC_STEP MFST::Mfst::step() {
 			st.pop();
 			nrulechain = -1;
 			output = Mfst::RC_STEP::TS_OK;
-			MFST_TRACE3
+			MFST_TRACE3(outfile)
 		}
 		else {
-			MFST_TRACE4("TS_NOK/NS_NORULECHAIN")
+			MFST_TRACE4("TS_NOK/NS_NORULECHAIN", outfile)
 				output = restore_state()
 				? Mfst::RC_STEP::TS_NOK : Mfst::RC_STEP::NS_NORULECHAIN;
 		}
 	}
 	else {
 		output = Mfst::RC_STEP::TAPE_END;
-		MFST_TRACE4("TAPE_END")
+		MFST_TRACE4("TAPE_END", outfile)
 	};
 	return output;
 }
@@ -165,14 +168,14 @@ bool MFST::Mfst::start(std::ostream& outputStream) {
 
 	switch (rc_step) {
 	case Mfst::RC_STEP::TAPE_END:
-		MFST_TRACE4("------>TAPE_END");
+		MFST_TRACE4("------>TAPE_END", outfile);
 		outputStream << "-------------------------------------------------------------------------------------" << std::endl;
 		outputStream << "Синтаксический анализ выполнен без ошибок\n";
 		output = true;
 		break;
 
 	case Mfst::RC_STEP::NS_NORULE:
-		MFST_TRACE4("------>NS_NORULE");
+		MFST_TRACE4("------>NS_NORULE", outfile);
 		outputStream << "-------------------------------------------------------------------------------------" << std::endl;
 		outputStream << getDiagnosis(0) << std::endl;
 		outputStream << getDiagnosis(1) << std::endl;
@@ -180,15 +183,15 @@ bool MFST::Mfst::start(std::ostream& outputStream) {
 		break;
 
 	case Mfst::RC_STEP::NS_NORULECHAIN:
-		MFST_TRACE4("------>NS_NORULECHAIN");
+		MFST_TRACE4("------>NS_NORULECHAIN", outfile);
 		break;
 
 	case Mfst::RC_STEP::NS_ERROR:
-		MFST_TRACE4("------>NS_ERROR");
+		MFST_TRACE4("------>NS_ERROR",outfile);
 		break;
 
 	case Mfst::RC_STEP::SURPRISE:
-		MFST_TRACE4("------>SURPRISE");
+		MFST_TRACE4("------>SURPRISE", outfile);
 		break;
 	}
 
@@ -219,7 +222,7 @@ void MFST::Mfst::printrules() {
 	{
 		state = storestate.c[k];
 		rule = greibach.getRule(state.nrule);
-		MFST_TRACE7
+		MFST_TRACE7(outfile)
 	}
 }
 

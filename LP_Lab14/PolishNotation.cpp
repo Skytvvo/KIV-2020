@@ -21,8 +21,13 @@ namespace PN
 			return 3;
 	}
 
-	int ConverExpr(LT::Entry* expr, LT::LexTable lexTable, IT::IdTable idtable, int pos)
+	int ConverExpr(LT::Entry* expr, LT::LexTable lexTable, IT::IdTable idtable, int pos, std::ofstream* outfile)
 	{
+		for (int i = pos, j = GetExpr(lexTable, pos); i < j; i++)
+		{
+			*outfile << lexTable.table[i].lexeme;
+		}
+		*outfile << " => ";
 		std::stack<LT::Entry> stack;
 		int sizeExpr = 0;
 		short leftBracket = 0;
@@ -88,7 +93,11 @@ namespace PN
 			stack.pop();
 		}
 	
-		std::cout << std::endl;
+		for (int i = 0; i < sizeExpr; i++)
+		{
+			*outfile << expr[i].lexeme;
+		}
+		*outfile << std::endl;
 		return sizeExpr;
 	}
 
@@ -114,8 +123,9 @@ namespace PN
 		}
 	}
 
-	void PolishNotation(LT::LexTable& lexTable, IT::IdTable& idTable)
+	void PolishNotation(LT::LexTable& lexTable, IT::IdTable& idTable, std::ofstream* outfile)
 	{
+		*outfile << "\n\t\tPolish Notation:\n";
 		Check check;
 		LT::Entry expr[200];
 		int numConver = 0;
@@ -126,7 +136,7 @@ namespace PN
 		
 				numConver = i + 1;
 				int endExpr = GetExpr(lexTable, numConver);
-				int sizeExpr = ConverExpr(expr, lexTable, idTable, numConver);
+				int sizeExpr = ConverExpr(expr, lexTable, idTable, numConver, outfile);
 				AddNewExpr(lexTable, idTable, expr, numConver,sizeExpr);
 				DelNULLEntryLT(lexTable, idTable, numConver,sizeExpr,endExpr);
 			}

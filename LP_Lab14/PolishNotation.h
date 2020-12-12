@@ -30,9 +30,9 @@ namespace PN
 	};
 
 	int GetExpr(LT::LexTable lexTable, int i);
-	void PolishNotation(LT::LexTable& lexTable, IT::IdTable& idTable);
+	void PolishNotation(LT::LexTable& lexTable, IT::IdTable& idTable, std::ofstream* outfile);
 	int Priorities(char operation);
-	int ConverExpr(LT::Entry* expr, LT::LexTable lexTable, IT::IdTable idtable, int pos);
+	int ConverExpr(LT::Entry* expr, LT::LexTable lexTable, IT::IdTable idtable, int pos, std::ofstream* outfile);
 	void AddNewExpr(LT::LexTable& lexTable, IT::IdTable& idTable, LT::Entry* expr, int numConver, int sizeExpr);
 	void DelNULLEntryLT(LT::LexTable& lexTable, IT::IdTable& idTable, int numConver, int sizeExpr, int endExpr);
 }

@@ -11,36 +11,36 @@
 
 #ifdef TRACE
 
-#define MFST_TRACE_START std::cout << std::setw(4)<<std::left<<"Шаг"<<": " \
+#define MFST_TRACE_START(outfile) outfile << std::setw(4)<<std::left<<"\nШаг"<<": " \
 	<< std::setw(30)	 << std::left << "Правило"  \
 	<< std::setw(30) << std::left << "Входная лента" \
 	<< std::setw(20) << std::left << "Стек" \
 	<< std::endl;
 
-#define MFST_TRACE1 std::cout <<std::setw(4)<<std::left<<++FST_TRACE_n<<": " \
+#define MFST_TRACE1(outfile) outfile <<std::setw(4)<<std::left<<++FST_TRACE_n<<": " \
 	<< std::setw(30) << std::left << rule.getCRule(nrulechain)  \
 	<< std::setw(30) << std::left << getCTape(tape_position) \
 	<< std::setw(20) << std::left << getCSt() \
 	<< std::endl;
 
-#define MFST_TRACE2    std::cout <<std::setw(4)<<std::left<<FST_TRACE_n<<": " \
+#define MFST_TRACE2(outfile)    outfile <<std::setw(4)<<std::left<<FST_TRACE_n<<": " \
 	<< std::setw(30) << std::left << " "  \
 	<< std::setw(30) << std::left << getCTape(tape_position) \
 	<< std::setw(20) << std::left << getCSt() \
 	<< std::endl;
 
-#define MFST_TRACE3     std::cout<<std::setw(4)<<std::left<<++FST_TRACE_n<<": " \
+#define MFST_TRACE3(outfile)     outfile<<std::setw(4)<<std::left<<++FST_TRACE_n<<": " \
 	<< std::setw(30) << std::left << " "  \
 	<< std::setw(30) << std::left << getCTape(tape_position) \
 	<< std::setw(20) << std::left << getCSt() \
 	<< std::endl;
 
-#define MFST_TRACE4(c) std::cout<<std::setw(4)<<std::left<<++FST_TRACE_n<<": "<<std::setw(20)<<std::left<<c<<std::endl;
-#define MFST_TRACE5(c) std::cout<<std::setw(4)<<std::left<<  FST_TRACE_n<<": "<<std::setw(20)<<std::left<<c<<std::endl;
+#define MFST_TRACE4(c, outfile) outfile<<std::setw(4)<<std::left<<++FST_TRACE_n<<": "<<std::setw(20)<<std::left<<c<<std::endl;
+#define MFST_TRACE5(c, outfile) outfile<<std::setw(4)<<std::left<<  FST_TRACE_n<<": "<<std::setw(20)<<std::left<<c<<std::endl;
 
-#define MFST_TRACE6(c,k) std::cout<<std::setw(4)<<std::left<<++FST_TRACE_n<<": "<<std::setw(20)<<std::left<<c<<k<<std::endl;
+#define MFST_TRACE6(c,k,outfile) outfile<<std::setw(4)<<std::left<<++FST_TRACE_n<<": "<<std::setw(20)<<std::left<<c<<k<<std::endl;
 
-#define MFST_TRACE7  std::cout<<std::setw(4)<<std::left<<state.tape_position<<": "\
+#define MFST_TRACE7(outfile)  outfile<<std::setw(4)<<std::left<<state.tape_position<<": "\
 	<< std::setw(20) << std::left << rule.getCRule(state.nrulechain) \
 	<< std::endl;
 
@@ -89,7 +89,7 @@ namespace MFST {
 			TAPE_END,
 			SURPRISE
 		};
-
+		std::ofstream outfile;
 		struct MfstDiagnosis {
 			short tape_position;
 			RC_STEP rc_step;
@@ -111,7 +111,7 @@ namespace MFST {
 		use_container<std::stack<MfstState>> storestate;
 
 		Mfst();
-		Mfst(LT::LexTable lextable, GRB::Greibach greibach);
+		Mfst(LT::LexTable lextable, GRB::Greibach greibach, wchar_t outfile[]);
 
 		std::string getCSt();
 		std::string getCTape(short pos, short n = 25);

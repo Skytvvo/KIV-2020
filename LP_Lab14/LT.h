@@ -21,6 +21,8 @@
 #define LEX_CONCAT				'C' //функция возвращает объединение 2-х строк
 #define LEX_LENGTH				'L' //функция возвращает длину строки
 
+#define LEX_WHILE				'W'
+
 #define LEX_LITERAL				'l'
 #define LEX_FUNCTION			'f'
 #define LEX_DECLARE				'd'

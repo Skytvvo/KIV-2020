@@ -34,14 +34,16 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
 		LA::Scan(lextable, idtable, in, parm, log);
 
-		LA::ShowIDtable(idtable);
-		LA::ShowLexTable(lextable);
-		/*MFST_TRACE_START
-			MFST::Mfst mfst(lextable, GRB::getGreibach());
+	
+	
+		MFST::Mfst mfst(lextable, GRB::getGreibach(),parm.out);
+		LA::ShowIDtable(idtable, &mfst.outfile);
+		LA::ShowLexTable(lextable, &mfst.outfile);
+		MFST_TRACE_START(mfst.outfile);
 		mfst.start(*log.stream);
-		
-		*/
-
+		mfst.outfile << "\nИспользованные правила:\n\n";
+		mfst.printrules();
+		mfst.outfile << "\nСинтаксический анализ окончен\n";
 		SeAn::CheckingReturnInMain(lextable,idtable);
 		SeAn::CheckReturnInUserFunc(lextable, idtable);
 		SeAn::CheckParamsOfFunc(lextable, idtable);
@@ -50,9 +52,10 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
 	
 
-		PN::PolishNotation(lextable, idtable);
-		LA::ShowLexTable(lextable);
+		PN::PolishNotation(lextable, idtable, &mfst.outfile);
+		LA::ShowLexTable(lextable, &mfst.outfile);
 		Gener::CodeGeneration(lextable, idtable);
+		mfst.outfile.close();
 		LT::Delete(lextable);
 		IT::Delete(idtable);
 		Log::Close(log);

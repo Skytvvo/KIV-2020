@@ -4,7 +4,7 @@
 
 
 char LA::Tokenize(const char* string) {
-	FST::FST nanomachinesSon[] = {FST_IF,FST_LEFT_SQUARE_BRACE,FST_RIGHT_SQUARE_BRACE,
+	FST::FST nanomachinesSon[] = {FST_IF,FST_WHILE,FST_LEFT_SQUARE_BRACE,FST_RIGHT_SQUARE_BRACE,
 		FST_INTEGER, FST_STRING, FST_FUNCTION, FST_DECLARE,
 		FST_RETURN, FST_PRINT, FST_MAIN,
 		FST_LEFTHESIS, FST_RIGHTHESIS, FST_SEMICOLON, FST_COMMA,
@@ -14,9 +14,9 @@ char LA::Tokenize(const char* string) {
 		FST_SHORT, FST_DOUBLE, FST_UINT, GRAPH_CONCAT,
 		GRAPH_POW,GRAPH_RANDOM,GRAPH_SIN, FST_MOD, FST_BIGGEROREQUAL,FST_SMALLEROREQUAL,FST_NOTEQUAL,FST_SMALLERTHAN,
 		FST_BIGGERTHAN,FST_EQUALS_TWO,FST_DOUBLE_LITERAL,GRAPH_LENGTH ,FST_ID
-	};
+	};	
 	const int size = sizeof(nanomachinesSon) / sizeof(nanomachinesSon[0]); 
-	const char tokens[] = { LEX_IF,LEX_LEFT_SQUARE_BRACE,LEX_RIGHT_SQUARE_BRACE,
+	const char tokens[] = { LEX_IF, LEX_WHILE,LEX_LEFT_SQUARE_BRACE,LEX_RIGHT_SQUARE_BRACE,
 
 		LEX_INTEGER, LEX_STRING, LEX_FUNCTION, LEX_DECLARE,
 		LEX_RETURN, LEX_PRINT, LEX_MAIN,
@@ -291,23 +291,20 @@ void LA::WriteDataForFunctions(LT::LexTable& lextable, IT::IdTable& idtable)
 	}
 }
 
-void LA::ShowIDtable(IT::IdTable& idtable)
+void LA::ShowIDtable(IT::IdTable& idtable, std::ofstream* outfile)
 {
-	std::cout << "----------------------------------------------------[ID таблица]--------------------------------------------" << std::endl;
-	std::cout << "[ID]----------[SCOPE]---------[TYPE]-----------[IDTYPE]----------[value]--------------[LEidX]---------------" << std::endl;
+	*outfile << "----------------------------------------------------[ID таблица]--------------------------------------------" << std::endl;
+	*outfile << "[ID]----------[SCOPE]---------[TYPE]-----------[IDTYPE]----------[value]--------------[LEidX]---------------" << std::endl;
 	for (int i = 0; i < idtable.size; i++)
 	{
-		std::cout << idtable.table[i].id << '\t' << idtable.table[i].scope << '\t';
+		*outfile <<'['<< i<<"] "<<idtable.table[i].id << "\t\t" << idtable.table[i].scope << "\t\t\t\t";
 		switch (idtable.table[i].iddatatype)
 		{
 		case IT::INT:
-			std::cout << "INT\t";
+			*outfile << "INT\t\t\t\t";
 			break;
 		case IT::STR:
-			std::cout << "STR\t";
-			break;
-		case IT::DOUBLE:
-			std::cout << "DOUBLE\t";
+			*outfile << "STR\t\t\t\t";
 			break;
 		default:
 			break;
@@ -316,19 +313,19 @@ void LA::ShowIDtable(IT::IdTable& idtable)
 		switch (idtable.table[i].idtype)
 		{
 		case IT::IDTYPE::V:
-			std::cout << "variable\t";
+			*outfile << "variable\t\t\t\t";
 			break;
 		case IT::IDTYPE::F:
-			std::cout << "function\t";
+			*outfile << "function\t\t\t\t";
 			break;
 		case IT::IDTYPE::S:
-			std::cout << "std function\t";
+			*outfile << "std function\t\t\t\t";
 			break;
 		case IT::IDTYPE::L:
-			std::cout << "literal\t";
+			*outfile << "literal\t\t\t\t";
 			break;
 		case IT::IDTYPE::P:
-			std::cout << "params\t";
+			*outfile << "params\t\t\t";
 			break;
 		default:
 			break;
@@ -337,36 +334,33 @@ void LA::ShowIDtable(IT::IdTable& idtable)
 		{
 			if (idtable.table[i].iddatatype == IT::IDDATATYPE::INT)
 			{
-				std::cout << idtable.table[i].value.vint;
+				*outfile << idtable.table[i].value.vint;
 			}
-			if (idtable.table[i].iddatatype == IT::IDDATATYPE::DOUBLE)
-			{
-				std::cout << idtable.table[i].value.vdouble;
-			}
+			
 			if (idtable.table[i].iddatatype == IT::IDDATATYPE::STR)
 			{
-				std::cout << idtable.table[i].value.vstr.str;
+				*outfile << idtable.table[i].value.vstr.str;
 			}
 		}
 		else {
-			std::cout << "NULL";
+			*outfile << "NULL";
 		}
-		std::cout << '\t' << idtable.table[i].idxfirstLE << std::endl;
+		*outfile << '\t' << idtable.table[i].idxfirstLE << std::endl;
 	}
-	std::cout << "------------------------------------------------------------------------------------------------------------" << std::endl;
+	*outfile << "------------------------------------------------------------------------------------------------------------" << std::endl;
 }
-void LA::ShowLexTable(LT::LexTable& lextable)
+void LA::ShowLexTable(LT::LexTable& lextable, std::ofstream* outfile)
 {
-	std::cout << "---------------------------------------[LEXTABLE]----------------------------------------------------------" << std::endl;
-	std::cout << "-[LEXEME]--------[строка]-----[idx]------------------------------------------------------------------------" << std::endl;
+	*outfile << "---------------------------------------[LEXTABLE]----------------------------------------------------------" << std::endl;
+	*outfile << "-[LEXEME]--------[строка]-----[idx]------------------------------------------------------------------------" << std::endl;
 	for (int i = 0; i < lextable.size; i++)
 	{
-		std::cout << lextable.table[i].lexeme << '\t' << lextable.table[i].sn<<'\t';
+		*outfile <<'['<< i<<"] " << lextable.table[i].lexeme << '\t' << lextable.table[i].sn<<'\t';
 		if (lextable.table[i].idxTI != TI_NULLIDX)
-			std::cout << lextable.table[i].idxTI;
+			*outfile << lextable.table[i].idxTI;
 		else
-			std::cout << "NULL";
-		std::cout << std::endl;
+			*outfile << "NULL";
+		*outfile << std::endl;
 	}
-	std::cout << "-----------------------------------------------------------------------------------------------------------" << std::endl;
+	*outfile << "-----------------------------------------------------------------------------------------------------------" << std::endl;
 }
