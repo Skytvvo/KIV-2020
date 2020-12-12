@@ -56,7 +56,9 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 			char token = Tokenize(accumulator.c_str());
 			if (token == EOF) {
 				Log::Write(log, accumulator.c_str(), " - ", "");
-				throw ERROR_THROW(129);
+				Error::ERROR temperr = Error::geterrorin(129, line, -1);
+				*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
+					<< " в столбце " << temperr.inext.col << std::endl;
 			}
 
 			int ti_idx = TI_NULLIDX;
@@ -92,7 +94,10 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 					IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::INT, IT::IDTYPE::L });
 					if (atoll(accumulator.c_str()) >_UI32_MAX)
 					{
-						throw ERROR_THROW(132);//
+						Error::ERROR temperr = Error::geterrorin(132, line, -1);
+						*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
+							<< " в столбце " << temperr.inext.col << std::endl;
+						
 					}
 					idtable.table[idtable.size - 1].value.vint = atoi(accumulator.c_str());
 				}
@@ -159,13 +164,19 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 					}
 					else {
 						Log::Write(log, accumulator.c_str(), " - ", "");
-						throw ERROR_THROW(124);
+						Error::ERROR temperr = Error::geterrorin(124, line, -1);
+						*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
+							<< " в столбце " << temperr.inext.col << std::endl;
+						
 					}
 				}
 				else if (lextable.size >= 2 && lextable.table[lextable.size - 2].lexeme == LEX_DECLARE
 					|| lextable.size >= 1 && lextable.table[lextable.size - 1].lexeme == LEX_FUNCTION) {
 					Log::Write(log, accumulator.c_str(), " - ", "");
-					throw ERROR_THROW(123);
+					Error::ERROR temperr = Error::geterrorin(123, line, -1);
+					*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
+						<< " в столбце " << temperr.inext.col << std::endl;
+					
 				}
 
 			}
@@ -174,7 +185,10 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 
 				if (ti_idx != TI_NULLIDX) {
 					Log::Write(log, accumulator.c_str(), " - ", "");
-					throw ERROR_THROW(131);
+					Error::ERROR temperr = Error::geterrorin(131, line, -1);
+					*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
+						<< " в столбце " << temperr.inext.col << std::endl;
+					
 				}
 				curScope.clear();
 				curFunction = accumulator;
@@ -255,6 +269,8 @@ void LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PA
 	}
 
 	if (IT::IsId(idtable, "", "main") == TI_NULLIDX) {//есть ли main
+		Error::ERROR temperr = Error::geterror(130);
+		*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке "<< std::endl;
 		throw ERROR_THROW(130);
 	}
 	LA::WriteDataForFunctions(lextable, idtable);
