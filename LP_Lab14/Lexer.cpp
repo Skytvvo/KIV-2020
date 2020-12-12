@@ -126,13 +126,19 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 				idtable.table[idtable.size - 1].value.params.amount = 1;
 			}
 			else if (token == LEX_STRING_LITERAL) {
+				std::string newId = accumulator.substr(1, accumulator.size() - 2);
+				for (int counterSTR = 0; counterSTR < newId.length(); counterSTR++)
+				{
+					if (newId[counterSTR] == ' ')
+						newId[counterSTR] = '_';
+				}
 				std::string literal = accumulator.substr(1, accumulator.size() - 2);
 				ti_idx = IT::IsId(idtable, curScope.c_str(), literal.c_str(), true);
 				if (ti_idx == LT_TI_NULLIDX) {
-					IT::Add(idtable, { lextable.size,  curScope.c_str(), literal.c_str(), IT::IDDATATYPE::STR, IT::IDTYPE::L });
+					IT::Add(idtable, { lextable.size,  curScope.c_str(), newId.c_str(), IT::IDDATATYPE::STR, IT::IDTYPE::L });
 					strcpy_s(idtable.table[idtable.size - 1].value.vstr.str, literal.c_str());
 					idtable.table[idtable.size - 1].value.vstr.len = literal.length();
-					strcpy_s(idtable.table[idtable.size - 1].id, literal.c_str());
+					strcpy_s(idtable.table[idtable.size - 1].id, newId.c_str());
 				}
 				token = LEX_LITERAL;
 				
