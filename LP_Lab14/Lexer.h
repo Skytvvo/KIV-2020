@@ -6,7 +6,7 @@
 
 namespace LA {
 	char Tokenize(const char* string);
-	void Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PARM& parm, Log::LOG& log);
+	short Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::PARM& parm, Log::LOG& log);
 	void WriteDataForFunctions(LT::LexTable& lextable, IT::IdTable& idtable);
 	void ShowIDtable(IT::IdTable& idtable, std::ofstream* outfile);
 	void ShowLexTable(LT::LexTable& lextable, std::ofstream* outfile);

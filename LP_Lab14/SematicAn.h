@@ -3,23 +3,15 @@
 
 namespace SeAn
 {
-	struct  Semantic
-	{
-		LT::LexTable lextable;
-		IT::IdTable idtable;
-		Semantic(LT::LexTable lextable, IT::IdTable idtable)
-		{
-			this->lextable = lextable;
-			this->idtable = idtable;
-		}
-		
-	};
-	void CheckingReturnInMain(LT::LexTable& lextable, IT::IdTable& idtable);
-	void CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable);
-	void CheckParamsStdFunc(LT::LexTable& lextable, IT::IdTable& idtable);
 	
-	void Types(LT::LexTable& lextable, IT::IdTable& idtable);
-	void CheckReturnInUserFunc(LT::LexTable& lextable, IT::IdTable& idtable);
+	
+
+	short CheckingReturnInMain(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile);
+	short CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile);
+	short CheckParamsStdFunc(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile);
+	
+	short Types(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile);
+	short CheckReturnInUserFunc(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile);
 	
 	bool FindSTD(unsigned char lex);
 }

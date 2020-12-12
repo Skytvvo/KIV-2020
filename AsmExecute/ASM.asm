@@ -41,6 +41,12 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 .code
 fi PROC finum1 :  DWORD 
 push fi5
+push finum1
+pop eax
+pop ebx
+add eax,ebx
+push eax
+jo OVERFLOW
 pop eax
 push eax
 pop fisum1

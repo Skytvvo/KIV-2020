@@ -2,9 +2,10 @@
 //
 namespace SeAn
 {
-	void SeAn::CheckingReturnInMain(LT::LexTable& lextable, IT::IdTable& idtable)
+	 Error::ERROR temperr;
+	short SeAn::CheckingReturnInMain(LT::LexTable& lextable, IT::IdTable& idtable,Log::LOG logfile)
 	{
-
+		short errExist = 0;
 		short nestingLevel = 0;
 		short warmingID = 0;//1 - не весь код возвращает значение(например return только в if блоке)
 		for (int lexema_I = 0; lexema_I < lextable.size; lexema_I++)
@@ -22,20 +23,27 @@ namespace SeAn
 						nestingLevel--;
 					}
 					if (lextable.table[lexIndexInMain].lexeme == LEX_FUNCTION)
-						throw ERROR_THROW(702);//ДОБАВИТЬ ОШИБКУ НА ОБЪЯВЛЕНИЕ ФУНКЦИИ В МЕЙНЕ
+					{
+						errExist++;
+						 temperr = Error::geterrorin(702, lextable.table[lexema_I].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
+					}
 					if (lextable.table[lexIndexInMain].lexeme == LEX_RETURN)
 					{
 						
 						for ( ; lexIndexInMain <lextable.size&&lextable.table[lexIndexInMain].lexeme!=LEX_SEMICOLON; lexIndexInMain++)
 						{
 							if (lextable.table[lexIndexInMain].idxTI != LT_TI_NULLIDX && idtable.table[lextable.table[lexIndexInMain].idxTI].iddatatype != IT::INT)
-								throw ERROR_THROW(703);//ЕСЛИ В МЕЙНЕ ВОЗВРАЩАЮТ НЕ INT
+							{
+								errExist++;
+								 temperr = Error::geterrorin(703, lextable.table[lexema_I].sn, -1);
+								*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
+							}//ЕСЛИ В МЕЙНЕ ВОЗВРАЩАЮТ НЕ INT
 						}	
 
 						if (nestingLevel == 0)
 						{
 							warmingID = -1;
-							return;
 						}
 						else
 							warmingID = 1;
@@ -43,19 +51,28 @@ namespace SeAn
 					
 				}
 				if (warmingID == 1)
-					throw ERROR_THROW(701);//warming - не весь код возвращает return
+				{
+					errExist++;
+					 temperr = Error::geterrorin(701, lextable.table[lexema_I].sn, -1);
+					*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
+				}//warming - не весь код возвращает return
 				if (warmingID == 0)
-					throw ERROR_THROW(700);//warming - нет return
+				{
+					errExist++;
+					 temperr = Error::geterrorin(700, lextable.table[lexema_I].sn, -1);
+					*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
+				}//warming - нет return
 
 				break;
 			}
 			
 		}
+		return errExist;
 	}
 
-	void SeAn::CheckReturnInUserFunc(LT::LexTable& lextable, IT::IdTable& idtable)
+	short SeAn::CheckReturnInUserFunc(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile)
 	{
-
+		short errExist = 0;
 		for (int i = 0; i < lextable.size; i++)
 		{//ищем пользовательскую функцию
 			if (lextable.table[i].lexeme == LEX_ID && idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F 
@@ -92,7 +109,11 @@ namespace SeAn
 						for (; i < lextable.size && lextable.table[i].lexeme != LEX_SEMICOLON; i++)
 						{
 							if (lextable.table[i].idxTI != LT_TI_NULLIDX && idtable.table[lextable.table[i].idxTI].iddatatype != CurrentTypeOfFunction)
-								throw ERROR_THROW(704);//ЕСЛИ возвращение значение не соотвтетсвует тип
+							{
+								errExist++;
+								 temperr = Error::geterrorin(704, lextable.table[i].sn, -1);
+								*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
+							}//ЕСЛИ возвращение значение не соотвтетсвует тип
 						}
 						if (nestingLevel != 0)
 							warmingID = 1;
@@ -105,21 +126,26 @@ namespace SeAn
 				case -1:
 					break;
 				case 0:
-					throw ERROR_THROW(700);//ВЫШЕ ОПИСАНО
+					errExist++;
+					 temperr = Error::geterrorin(700, lextable.table[i].sn, -1);
+					*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//ВЫШЕ ОПИСАНО
 					break;
 				case 1:
-					throw ERROR_THROW(701);//ВЫШЕ ОПИСАНО
+					errExist++;
+					 temperr = Error::geterrorin(701, lextable.table[i].sn, -1);
+					*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//ВЫШЕ ОПИСАНО
 					break;
 				default:
 					break;
 				}
 			}
 		}
+		return errExist;
 	}
 
-	void SeAn::CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable)
+	short SeAn::CheckParamsOfFunc(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile)
 	{
-		
+		short errExist = 0;
 		for (int i = 0; i < lextable.size; i++)
 		{
 			//ищем вызов пользовательской функции
@@ -138,14 +164,20 @@ namespace SeAn
 					{
 					
 						
-							if (idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.amount <= currentIndexParam)
-								throw ERROR_THROW(705);//если аргументов больше чем параметров в функции
+						if (idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.amount <= currentIndexParam)
+						{
+							errExist++;
+							 temperr = Error::geterrorin(705, lextable.table[i].sn, -1);
+							*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
+						}//если аргументов больше чем параметров в функции
 							//проверка на соответствие типов параметров и аргументоав
 							if (idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.types[currentIndexParam] !=
 								idtable.table[lextable.table[i].idxTI].iddatatype
 								)
 							{
-								throw ERROR_THROW(706);//тип аргумента не соответствует типу параметра
+								errExist++;
+								 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+								*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//тип аргумента не соответствует типу параметра
 							}
 							currentIndexParam++;
 						
@@ -153,17 +185,27 @@ namespace SeAn
 					i++;
 				}
 				if (idtable.table[lextable.table[currentFuncIndex].idxTI].value.params.amount != currentIndexParam)
-					throw ERROR_THROW(707);//СЛИШКОМ МАЛО АРГУМЕНТОВ ПЕРЕДАННО
+				{
+					errExist++;
+					 temperr = Error::geterrorin(707, lextable.table[i].sn, -1);
+					*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
+				}//СЛИШКОМ МАЛО АРГУМЕНТОВ ПЕРЕДАННО
 			}
 		}
+		return errExist;
 	}
 	
-	void SeAn::CheckParamsStdFunc(LT::LexTable& lextable, IT::IdTable& idtable)
+	short SeAn::CheckParamsStdFunc(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile)
 	{
+		short errExist = 0;
 		for (int i = 0; i < lextable.size; i++)
 		{
 			if (SeAn::FindSTD(lextable.table[i].lexeme) && lextable.table[i - 1].lexeme == LEX_FUNCTION)
-					throw ERROR_THROW(708);//попытка переопределить библиотечную функцию
+			{
+				errExist++;
+				 temperr = Error::geterrorin(708, lextable.table[i].sn, -1);
+				*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
+			}//попытка переопределить библиотечную функцию
 
 			if (SeAn::FindSTD(lextable.table[i].lexeme))
 			{
@@ -179,7 +221,9 @@ namespace SeAn
 						if (lextable.table[i].lexeme == LEX_ID)
 							if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::STR)
 							{
-								throw ERROR_THROW(706);
+								errExist++;
+								 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+								*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 							}//тип арнгумента не соответсвует типу параметра
 							else
 							{
@@ -189,7 +233,9 @@ namespace SeAn
 							if(idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
 								if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::STR)
 								{
-									throw ERROR_THROW(706);//тип литерала не соответствует типу параметра
+									errExist++;
+									 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+									*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//тип литерала не соответствует типу параметра
 								}
 								else {
 									amountParams++;
@@ -198,11 +244,15 @@ namespace SeAn
 					}
 					if (amountParams < 1)
 					{
-						throw ERROR_THROW(707);
+						errExist++;
+						 temperr = Error::geterrorin(707, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
 					else if(amountParams>1)
 					{
-						throw ERROR_THROW(705);//СЛИШКОМ МНОГО
+						errExist++;
+						 temperr = Error::geterrorin(705, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//СЛИШКОМ МНОГО
 					}
 						
 					break;
@@ -213,7 +263,9 @@ namespace SeAn
 						if (lextable.table[i].lexeme == LEX_ID)
 							if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::INT)
 							{
-								throw ERROR_THROW(706);
+								errExist++;
+								 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+								*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 							}//тип арнгумента не соответсвует типу параметра
 							else
 							{
@@ -223,7 +275,9 @@ namespace SeAn
 							if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
 								if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::INT)
 								{
-									throw ERROR_THROW(706);//тип литерала не соответствует типу параметра
+									errExist++;
+									 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+									*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//тип литерала не соответствует типу параметра
 								}
 								else {
 									amountParams++;
@@ -232,11 +286,15 @@ namespace SeAn
 					}
 					if (amountParams < 1)
 					{
-						throw ERROR_THROW(707);
+						errExist++;
+						 temperr = Error::geterrorin(707, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
 					else if (amountParams > 1)
 					{
-						throw ERROR_THROW(705);//СЛИШКОМ МНОГО
+						errExist++;
+						 temperr = Error::geterrorin(705, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//СЛИШКОМ МНОГО
 					}
 
 					break;
@@ -247,7 +305,9 @@ namespace SeAn
 						if (lextable.table[i].lexeme == LEX_ID)
 							if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::INT)
 							{
-								throw ERROR_THROW(706);
+								errExist++;
+								 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+								*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 							}//тип арнгумента не соответсвует типу параметра
 							else
 							{
@@ -257,7 +317,9 @@ namespace SeAn
 							if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
 								if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::INT)
 								{
-									throw ERROR_THROW(706);//тип литерала не соответствует типу параметра
+									errExist++;
+									 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+									*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//тип литерала не соответствует типу параметра
 								}
 								else {
 									amountParams++;
@@ -266,11 +328,15 @@ namespace SeAn
 					}
 					if (amountParams < 2)
 					{
-						throw ERROR_THROW(707);
+						errExist++;
+						 temperr = Error::geterrorin(707, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
 					else if (amountParams > 2)
 					{
-						throw ERROR_THROW(705);//СЛИШКОМ МНОГО
+						errExist++;
+						 temperr = Error::geterrorin(705, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//СЛИШКОМ МНОГО
 					}
 
 					break;
@@ -281,7 +347,9 @@ namespace SeAn
 						if (lextable.table[i].lexeme == LEX_ID)
 							if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::DOUBLE)
 							{
-								throw ERROR_THROW(706);
+								errExist++;
+								 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+								*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 							}//тип арнгумента не соответсвует типу параметра
 							else
 							{
@@ -291,7 +359,9 @@ namespace SeAn
 							if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
 								if (idtable.table[lextable.table[i].idxTI].iddatatype != IT::IDDATATYPE::DOUBLE)
 								{
-									throw ERROR_THROW(706);//тип литерала не соответствует типу параметра
+									errExist++;
+									 temperr = Error::geterrorin(706, lextable.table[i].sn, -1);
+									*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//тип литерала не соответствует типу параметра
 								}
 								else {
 									amountParams++;
@@ -300,11 +370,15 @@ namespace SeAn
 					}
 					if (amountParams < 1)
 					{
-						throw ERROR_THROW(707);
+						errExist++;
+						 temperr = Error::geterrorin(707, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
 					else if (amountParams > 1)
 					{
-						throw ERROR_THROW(705);//СЛИШКОМ МНОГО
+						errExist++;
+						 temperr = Error::geterrorin(705, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//СЛИШКОМ МНОГО
 					}
 
 					break;
@@ -318,20 +392,27 @@ namespace SeAn
 					}
 					if (amountParams < 1)
 					{
-						throw ERROR_THROW(707);
+						errExist++;
+						 temperr = Error::geterrorin(707, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					}//СЛИШКОМ МАЛО АРГУМЕНТОВ
 					else if (amountParams > 1)
 					{
-						throw ERROR_THROW(705);//СЛИШКОМ МНОГО
+						errExist++;
+						 temperr = Error::geterrorin(705, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//СЛИШКОМ МНОГО
 					}
 					break;
 				}
 				default:
-					throw ERROR_THROW(709);//неопознаная библиотечная функция
+					errExist++;
+					 temperr = Error::geterrorin(709, lextable.table[i].sn, -1);
+					*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//неопознаная библиотечная функция
 					break;
 				}
 			}
 		}
+		return errExist;
 	}
 	bool SeAn::FindSTD(unsigned char lex)
 	{
@@ -354,8 +435,9 @@ namespace SeAn
 		}
 	}
 
-	void SeAn::Types(LT::LexTable& lextable, IT::IdTable& idtable)
+	short SeAn::Types(LT::LexTable& lextable, IT::IdTable& idtable, Log::LOG logfile)
 	{
+		short errExist = 0;
 		IT::IDDATATYPE currentType;
 		for (int i = 0; i < lextable.size; i++)
 		{
@@ -371,12 +453,16 @@ namespace SeAn
 						if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::F ||
 							idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::S)
 						{
-							throw ERROR_THROW(710);
+							errExist++;
+							 temperr = Error::geterrorin(710, lextable.table[i].sn, -1);
+							*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 						}//ФУНКЦИЯ ВОЗВРАЩАЕТ НЕ ТОТ ТИП ДАННЫХ
 						else if(idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::V ||
 							idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::L)
 						{
-							throw ERROR_THROW(710);
+							errExist++;
+							 temperr = Error::geterrorin(710, lextable.table[i].sn, -1);
+							*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 						}//не верный тип данных используется
 					}
 					else if (lextable.table[i].lexeme == LEX_ID
@@ -384,19 +470,27 @@ namespace SeAn
 							idtable.table[lextable.table[i].idxTI].idtype != IT::IDTYPE::S)
 						&& lextable.table[i + 1].lexeme == LEX_LEFTHESIS)
 					{
-						throw ERROR_THROW(711);//не верный вызов функции
+						errExist++;
+						 temperr = Error::geterrorin(711, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;//не верный вызов функции
 					}
 					else if (lextable.table[i].lexeme == LEX_LENGTH && currentType != IT::IDDATATYPE::INT)
 					{
-						throw ERROR_THROW(710);
+						errExist++;
+						 temperr = Error::geterrorin(710, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					}//тип идентификатора не совпадает с типом функции
 					else if (lextable.table[i].lexeme == LEX_RAND && currentType != IT::IDDATATYPE::INT)
 					{
-						throw ERROR_THROW(710);
+						errExist++;
+						 temperr = Error::geterrorin(710, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					}
 					else if (lextable.table[i].lexeme == LEX_POW && currentType != IT::IDDATATYPE::INT)
 					{
-						throw ERROR_THROW(710);
+						errExist++;
+						 temperr = Error::geterrorin(710, lextable.table[i].sn, -1);
+						*logfile.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					}
 					if (SeAn::FindSTD(lextable.table[i].lexeme) ||
 						lextable.table[i].lexeme == LEX_FUNCTION)
@@ -407,6 +501,8 @@ namespace SeAn
 				}
 			}
 		}
+		return errExist;
 	}
+	
 }
 
