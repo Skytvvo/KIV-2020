@@ -19,7 +19,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 		if (idtable.table[i].idtype == IT::L)
 		{
 			AsmFile << "\t" << idtable.table[i].scope<<idtable.table[i].id;
-			if (idtable.table[i].iddatatype == IT::INT)
+			if (idtable.table[i].iddatatype ==IT::UINT)
 			{
 				AsmFile << " DWORD " << idtable.table[i].value.vint << std::endl;
 			}
@@ -42,7 +42,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 			{
 				AsmFile << " DWORD ?\n";
 			}
-			if (idtable.table[i].iddatatype == IT::INT)
+			if (idtable.table[i].iddatatype ==IT::UINT)
 			{
 				AsmFile << " DWORD ?\n";
 			}
@@ -76,7 +76,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 						{
 							
 							AsmFile << idtable.table[lextable.table[i].idxTI].scope << idtable.table[lextable.table[i].idxTI].id<<IT::V << " : ";
-							if (idtable.table[lextable.table[i].idxTI].iddatatype == IT::INT)
+							if (idtable.table[lextable.table[i].idxTI].iddatatype ==IT::UINT)
 							{
 								AsmFile << " DWORD ";
 							}
@@ -137,7 +137,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 			{
 				IT::IDDATATYPE type = Gener::DetectType(lextable, idtable, i + 1);
 				i = Gener::GenExpHandler(AsmFile, lextable, idtable, ++i);
-				if (type == IT::INT)
+				if (type ==IT::UINT)
 				{
 					AsmFile << "push eax\ncall outnumline\n";
 				}
@@ -282,7 +282,7 @@ int Gener::GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdT
 		case LEX_LITERAL:
 		case LEX_ID:
 		{
-			if (idtable.table[LEXTABLE.table[i].idxTI].iddatatype == IT::INT)
+			if (idtable.table[LEXTABLE.table[i].idxTI].iddatatype ==IT::UINT)
 			{
 				AsmFile << "push " << idtable.table[LEXTABLE.table[i].idxTI].scope << idtable.table[LEXTABLE.table[i].idxTI].id;
 				if (idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::V || idtable.table[LEXTABLE.table[i].idxTI].idtype == IT::P)

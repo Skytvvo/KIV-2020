@@ -506,27 +506,9 @@ FST::NODE())
 #pragma endregion
 
 
-#pragma region SIN
-#define GRAPH_SIN FST::FST(4,\
-	FST::NODE(1,FST::RELATION('s',1)),\
-	FST::NODE(1,FST::RELATION('i',2)),\
-	FST::NODE(1,FST::RELATION('n',3)),\
-	FST::NODE())
-#pragma endregion
 
 
-#pragma region CONCAT
-#define GRAPH_CONCAT FST::FST(7,\
-	FST::NODE(1,FST::RELATION('c',1)),\
-	FST::NODE(1,FST::RELATION('o',2)),\
-	FST::NODE(1,FST::RELATION('n',3)),\
-    FST::NODE(1,FST::RELATION('c',4)),\
-    FST::NODE(1,FST::RELATION('a',5)),\
-    FST::NODE(1,FST::RELATION('t',6)),\
-	FST::NODE())
-#pragma endregion
 
-#pragma endregion
 
 namespace FST {
 	struct RELATION {			// ребро:символ -> вершина графа переходов КА

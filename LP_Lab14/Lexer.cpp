@@ -4,17 +4,17 @@
 
 
 char LA::Tokenize(const char* string) {
-	FST::FST nanomachinesSon[] = {FST_ELSE, FST_IF,FST_WHILE,FST_LEFT_SQUARE_BRACE,FST_RIGHT_SQUARE_BRACE,
+	FST::FST GRAPHS[] = {FST_ELSE, FST_IF,FST_WHILE,FST_LEFT_SQUARE_BRACE,FST_RIGHT_SQUARE_BRACE,
 		FST_INTEGER, FST_STRING, FST_FUNCTION, FST_DECLARE,
 		FST_RETURN, FST_PRINT, FST_MAIN,
 		FST_LEFTHESIS, FST_RIGHTHESIS, FST_SEMICOLON, FST_COMMA,
 		FST_LEFTBRACE, FST_BRACELET,
 		FST_PLUS, FST_MINUS, FST_STAR, FST_DIRSLASH, FST_EQUALS,
-		 FST_STRING_LITERAL, FST_INTEGER_LITERAL, FST_DOUBLE, FST_UINT, GRAPH_CONCAT,
-		GRAPH_POW,GRAPH_RANDOM,GRAPH_SIN, FST_MOD, FST_BIGGEROREQUAL,FST_SMALLEROREQUAL,FST_NOTEQUAL,FST_SMALLERTHAN,
+		 FST_STRING_LITERAL, FST_INTEGER_LITERAL, FST_DOUBLE, FST_UINT,
+		GRAPH_POW,GRAPH_RANDOM, FST_MOD, FST_BIGGEROREQUAL,FST_SMALLEROREQUAL,FST_NOTEQUAL,FST_SMALLERTHAN,
 		FST_BIGGERTHAN,FST_EQUALS_TWO,FST_DOUBLE_LITERAL,GRAPH_LENGTH ,FST_ID
 	};	
-	const int size = sizeof(nanomachinesSon) / sizeof(nanomachinesSon[0]); 
+	const int size = sizeof(GRAPHS) / sizeof(GRAPHS[0]);
 	const char tokens[] = {LEX_ELSE, LEX_IF, LEX_WHILE,LEX_LEFT_SQUARE_BRACE,LEX_RIGHT_SQUARE_BRACE,
 
 		LEX_INTEGER, LEX_STRING, LEX_FUNCTION, LEX_DECLARE,
@@ -23,13 +23,13 @@ char LA::Tokenize(const char* string) {
 		LEX_LEFTBRACE, LEX_BRACELET,
 		LEX_PLUS, LEX_MINUS, LEX_STAR, LEX_DIRSLASH, LEX_EQUALS,
 		 LEX_STRING_LITERAL, LEX_INTEGER_LITERAL,
-		LEX_DOUBLE, LEX_UINT, LEX_CONCAT,LEX_POW,LEX_RAND, LEX_SIN, LEX_MOD,LEX_BIGGEROREQUAL,LEX_SMALLEROREQUAL
+		LEX_DOUBLE, LEX_UINT,LEX_POW,LEX_RAND, LEX_MOD,LEX_BIGGEROREQUAL,LEX_SMALLEROREQUAL
 		,LEX_NOTEQUAL,LEX_SMALLERTHEN,LEX_BIGGERTHEN,LEX_EQUAL_ID,LEX_DOUBLE_LITERAL,LEX_LENGTH,LEX_ID
 		
 	};
 	
 	for (int i = 0; i < size; ++i) {
-		if (execute(string, nanomachinesSon[i])) {
+		if (execute(string, GRAPHS[i])) {
 			return tokens[i];
 		}
 	}
@@ -58,16 +58,14 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 				lexErrors++;
 				Log::Write(log, accumulator.c_str(), " - ", "");
 				Error::ERROR temperr = Error::geterrorin(129, line, -1);
-				*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
-					<< " в столбце " << temperr.inext.col << std::endl;
+				*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line<< std::endl;
 			}
 
 			int ti_idx = TI_NULLIDX;
 
 			iddatatype = (token == LEX_INTEGER || token == LEX_INTEGER_LITERAL) ?
-				(IT::IDDATATYPE::INT) :
-				(token == LEX_STRING || token == LEX_STRING_LITERAL) ? IT::IDDATATYPE::STR :
-				(token == LEX_DOUBLE || token == LEX_DOUBLE_LITERAL) ? IT::IDDATATYPE::DOUBLE : iddatatype;
+				(IT::IDDATATYPE::UINT) :
+				(token == LEX_STRING || token == LEX_STRING_LITERAL) ? IT::IDDATATYPE::STR : iddatatype;
 
 			if (token == LEX_LEFTHESIS) {
 				declaredNewFunction = lextable.size >= 2 && lextable.table[lextable.size - 2].lexeme == LEX_FUNCTION;
@@ -92,13 +90,12 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 			else if (token == LEX_INTEGER_LITERAL ) {
 				ti_idx = IT::IsId(idtable, curScope.c_str(), accumulator.c_str(), true);
 				if (ti_idx== LT_TI_NULLIDX) {
-					IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::INT, IT::IDTYPE::L });
+					IT::Add(idtable, { lextable.size,  curScope.c_str(), accumulator.c_str(), IT::IDDATATYPE::UINT, IT::IDTYPE::L });
 					if (atoll(accumulator.c_str()) >_UI32_MAX)
 					{
 						lexErrors++;
 						Error::ERROR temperr = Error::geterrorin(132, line, -1);
-						*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
-							<< " в столбце " << temperr.inext.col << std::endl;
+						*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line<< std::endl;
 						
 					}
 					idtable.table[idtable.size - 1].value.vint = atoi(accumulator.c_str());
@@ -140,7 +137,7 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 				token = LEX_LITERAL;
 				
 			}
-			else if (token == LEX_ID || token == LEX_POW || token == LEX_LENGTH || token == LEX_RAND || token == LEX_SIN||token ==LEX_PRINT) {
+			else if (token == LEX_ID || token == LEX_POW || token == LEX_LENGTH || token == LEX_RAND ||token ==LEX_PRINT) {
 				std::string id = accumulator.substr(0, ID_MAXSIZE);
 				ti_idx = IT::IsId(idtable, curScope.c_str(), id.c_str());
 				
@@ -151,7 +148,6 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 					}
 					else if (lextable.size >= 1 && (lextable.table[lextable.size - 1].lexeme == LEX_POW) ||
 						(lextable.table[lextable.size - 1].lexeme == LEX_RAND )|| (lextable.table[lextable.size - 1].lexeme == LEX_LENGTH)||
-						lextable.size >= 1 && (lextable.table[lextable.size - 1].lexeme == LEX_SIN) ||
 						lextable.size >= 1 && (lextable.table[lextable.size - 1].lexeme == LEX_PRINT)) {
 						IT::Add(idtable, { lextable.size,  curScope.c_str(), id.c_str(), iddatatype, IT::IDTYPE::V });
 					}
@@ -168,8 +164,7 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 						lexErrors++;
 						Log::Write(log, accumulator.c_str(), " - ", "");
 						Error::ERROR temperr = Error::geterrorin(124, line, -1);
-						*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
-							<< " в столбце " << temperr.inext.col << std::endl;
+						*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 						
 					}
 				}
@@ -178,8 +173,7 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 					lexErrors++;
 					Log::Write(log, accumulator.c_str(), " - ", "");
 					Error::ERROR temperr = Error::geterrorin(123, line, -1);
-					*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
-						<< " в столбце " << temperr.inext.col << std::endl;
+					*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					
 				}
 
@@ -191,8 +185,7 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 					lexErrors++;
 					Log::Write(log, accumulator.c_str(), " - ", "");
 					Error::ERROR temperr = Error::geterrorin(131, line, -1);
-					*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line
-						<< " в столбце " << temperr.inext.col << std::endl;
+					*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке " << temperr.inext.line << std::endl;
 					
 				}
 				curScope.clear();
@@ -277,7 +270,6 @@ short LA::Scan(LT::LexTable& lextable, IT::IdTable& idtable, In::IN& in, Parm::P
 		lexErrors++;
 		Error::ERROR temperr = Error::geterror(130);
 		*log.stream << '(' << temperr.id << ')' << temperr.message << " в строке "<< std::endl;
-		throw ERROR_THROW(130);
 	}
 	LA::WriteDataForFunctions(lextable, idtable);
 	outfile.close();
@@ -323,7 +315,7 @@ void LA::ShowIDtable(IT::IdTable& idtable, std::ofstream* outfile)
 		*outfile <<'['<< i<<"] "<<idtable.table[i].id << "\t\t" << idtable.table[i].scope << "\t\t\t\t";
 		switch (idtable.table[i].iddatatype)
 		{
-		case IT::INT:
+		case IT::UINT:
 			*outfile << "INT\t\t\t\t";
 			break;
 		case IT::STR:
@@ -355,7 +347,7 @@ void LA::ShowIDtable(IT::IdTable& idtable, std::ofstream* outfile)
 		}
 		if (idtable.table[i].idtype == IT::IDTYPE::L)
 		{
-			if (idtable.table[i].iddatatype == IT::IDDATATYPE::INT)
+			if (idtable.table[i].iddatatype == IT::IDDATATYPE::UINT)
 			{
 				*outfile << idtable.table[i].value.vint;
 			}

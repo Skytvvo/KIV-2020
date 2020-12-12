@@ -88,7 +88,7 @@ void IT::Delete(IdTable& idtable) {
 }
 
 IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtype, int value)
-	: idxfirstLE(idxfirstLE), iddatatype(IDDATATYPE::INT), idtype(idtype)
+	: idxfirstLE(idxfirstLE), iddatatype(IDDATATYPE::UINT), idtype(idtype)
 {
 	memcpy_s(this->id, sizeof(this->id), id, sizeof(this->id));
 	memcpy_s(this->scope, sizeof(this->scope), scope, sizeof(this->scope));
@@ -96,14 +96,7 @@ IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtyp
 	this->value.vint = value;
 }
 
-IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtype, double value)
-	: idxfirstLE(idxfirstLE), iddatatype(IDDATATYPE::DOUBLE), idtype(idtype)
-{
-	memcpy_s(this->id, sizeof(this->id), id, sizeof(this->id));
-	memcpy_s(this->scope, sizeof(this->scope), scope, sizeof(this->scope));
-	
-	this->value.vdouble = value;
-}
+
 IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDTYPE idtype, const char* value)
 	: idxfirstLE(idxfirstLE), iddatatype(IDDATATYPE::STR), idtype(idtype)
 {
@@ -120,7 +113,7 @@ IT::Entry::Entry(int idxfirstLE, const char* scope, const char* id, IDDATATYPE i
 	memcpy_s(this->id, sizeof(this->id), id, sizeof(this->id));
 	memcpy_s(this->scope, sizeof(this->scope), scope, sizeof(this->scope));
 
-	if (this->iddatatype == IDDATATYPE::INT) {
+	if (this->iddatatype == IDDATATYPE::UINT) {
 		value.vint = TI_INT_DEFAULT;
 	}
 	else {

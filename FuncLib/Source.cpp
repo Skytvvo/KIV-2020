@@ -10,10 +10,6 @@ extern "C"
 
 		return pow(b, a);
 	}
-	int  countSin(double value)
-	{
-		return sin(value);
-	}
 	int  random(int a)
 	{
 		if (a < 0)
