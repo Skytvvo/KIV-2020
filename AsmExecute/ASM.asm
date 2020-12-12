@@ -27,9 +27,9 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	main4294967295 DWORD 2147483647
 	main0 DWORD 0
 	mainhello BYTE 'hello', 0
+	main1 DWORD 1
 	main2 DWORD 2
 	main3 DWORD 3
-	main1 DWORD 1
 	main4 DWORD 4
 .data
 	fisum1 DWORD ?
@@ -172,10 +172,29 @@ push main0
 pop eax
 push eax
 pop mainindex1
+TOWHILE42:
+push mainindex1
+push main5
+pop ebx
+pop eax
+cmp eax, ebx
+jae SKIP42
 push OFFSET mainhello
 pop eax
 push eax
 call outstrline
+push mainindex1
+push main1
+pop eax
+pop ebx
+add eax,ebx
+push eax
+jo OVERFLOW
+pop eax
+push eax
+pop mainindex1
+jmp TOWHILE42
+SKIP42:
 push main2
 push main3
 call toPow

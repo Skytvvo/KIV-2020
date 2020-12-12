@@ -186,6 +186,27 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 				Gener::LogicOperations(AsmFile, lextable.table[i + 3].lexeme, ifsn);
 				break;
 			}
+			case LEX_WHILE:
+			{
+				whileExist = true;
+				whilesn = lextable.table[i].sn;
+				AsmFile << "TOWHILE" << whilesn << ":\n";
+				AsmFile <<
+					"push " << idtable.table[lextable.table[i + 2].idxTI].scope << idtable.table[lextable.table[i + 2].idxTI].id;
+				if (idtable.table[lextable.table[i + 2].idxTI].idtype == IT::V)
+					AsmFile << IT::V;
+				AsmFile << std::endl;
+
+				AsmFile << "push " << idtable.table[lextable.table[i + 4].idxTI].scope << idtable.table[lextable.table[i + 4].idxTI].id;
+				if (idtable.table[lextable.table[i + 4].idxTI].idtype == IT::V)
+					AsmFile << IT::V;
+				AsmFile << std::endl << "pop ebx\npop eax\ncmp eax, ebx\n";
+				currentLogicOperator = lextable.table[i + 3].lexeme;
+				Gener::LogicOperations(AsmFile, lextable.table[i + 3].lexeme, whilesn);
+
+
+				break;
+			}
 			case LEX_RIGHT_SQUARE_BRACE:
 			{
 				if (ifExist)
@@ -203,7 +224,8 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 				}
 				else if (whileExist)
 				{
-
+					AsmFile << "jmp TOWHILE" << whilesn << "\n";
+					AsmFile << "SKIP" << whilesn << ":\n";
 				}
 				break;
 			}
@@ -395,6 +417,49 @@ void Gener::LogicOperationsForElse(std::ofstream& AsmFile, char lex, int sn)
 	case LEX_EQUAL_ID:
 	{
 		AsmFile << "je SKIPELSE" << sn << "\n";
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+void Gener::LogicOperationsForWhile(std::ofstream& AsmFile, char lex, int sn)
+{
+	switch (lex)
+	{
+	case LEX_BIGGERTHEN:
+	{
+		AsmFile << "ja TOWHILE" << sn << "\n";
+		break;
+	}
+	case LEX_BIGGEROREQUAL:
+	{
+		AsmFile << "jae TOWHILE" << sn << "\n";
+
+		break;
+	}
+	case LEX_SMALLERTHEN:
+	{
+		AsmFile << "jb TOWHILE" << sn << "\n";
+
+		break;
+	}
+	case LEX_SMALLEROREQUAL:
+	{
+		AsmFile << "jbe TOWHILE" << sn << "\n";
+
+		break;
+	}
+	case LEX_NOTEQUAL:
+	{
+		AsmFile << "jne TOWHILE" << sn << "\n";
+
+		break;
+	}
+	case LEX_EQUAL_ID:
+	{
+		AsmFile << "je TOWHILE" << sn << "\n";
 
 		break;
 	}

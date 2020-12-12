@@ -36,5 +36,5 @@ namespace Gener
 	IT::IDDATATYPE DetectType(LT::LexTable lextable, IT::IdTable idtable, int i);
 	void LogicOperations(std::ofstream& AsmFile, char lex, int sn);
 	void LogicOperationsForElse(std::ofstream& AsmFile, char lex, int sn);
-
+	void LogicOperationsForWhile(std::ofstream& AsmFile, char lex, int sn);
 };
