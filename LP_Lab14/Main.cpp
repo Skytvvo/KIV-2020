@@ -47,9 +47,14 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		LA::ShowIDtable(idtable, &mfst.outfile);
 		LA::ShowLexTable(lextable, &mfst.outfile);
 		MFST_TRACE_START(mfst.outfile);
-		mfst.start(*log.stream);
+		bool syntaxAnaliz = mfst.start(*log.stream);
 		mfst.outfile << "\nИспользованные правила:\n\n";
 		mfst.printrules();
+		if (!syntaxAnaliz)
+		{
+			*log.stream << "Синтаксический анализ выполнен с ошибками\n";
+			return 1;
+		}
 		mfst.outfile << "\nСинтаксический анализ окончен\n";
 		semanticErrors += SeAn::CheckingReturnInMain(lextable,idtable, log);
 		semanticErrors += SeAn::CheckReturnInUserFunc(lextable, idtable, log);
@@ -69,7 +74,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		if ((lexErrors + semanticErrors) != 0)
 		{
 			*log.stream << "Генерация кода невозможна: были допущены ошибки на предыдущих этапах компилятора\n";
-			system("pause");
 			return 1;
 		}
 		else {
@@ -87,9 +91,5 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
 		Log::WriteError(log, e);
 	}
-
-
-
-	system("pause");
 	return 0;
 }

@@ -63,8 +63,6 @@ extern "C"
 	{
 		setlocale(0, "");
 		
-			std::cout << std::endl;
-		
 		for (int i = 0; ptr[i] != '\0'; i++)
 			std::cout << ptr[i];
 		std::cout << std::endl;

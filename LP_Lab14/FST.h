@@ -241,6 +241,14 @@ FST::NODE())
 	FST::NODE(1, FST::RELATION('%',1)),\
 	FST::NODE())
 #pragma endregion
+#pragma	region ELSE
+#define FST_ELSE FST::FST(5,\
+	FST::NODE(1, FST::RELATION('e',1)),\
+	FST::NODE(1, FST::RELATION('l',2)),\
+	FST::NODE(1, FST::RELATION('s',3)),\
+	FST::NODE(1, FST::RELATION('e',4)),\
+	FST::NODE())
+#pragma endregion
 
 
 #pragma region EQUALS

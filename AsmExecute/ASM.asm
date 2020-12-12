@@ -22,11 +22,14 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	anothersd BYTE 'sd', 0
 	another1 DWORD 1
 	main5 DWORD 5
-	main1 DWORD 1
+	maintrue BYTE 'true', 0
+	mainfalse BYTE 'false', 0
 	main4294967295 DWORD 2147483647
+	main0 DWORD 0
+	mainhello BYTE 'hello', 0
 	main2 DWORD 2
 	main3 DWORD 3
-	mainhello BYTE 'hello', 0
+	main1 DWORD 1
 	main4 DWORD 4
 .data
 	fisum1 DWORD ?
@@ -35,6 +38,7 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	anothers1 DWORD ?
 	mainmore1 DWORD ?
 	mainx1 DWORD ?
+	mainindex1 DWORD ?
 	mainvariable1 DWORD ?
 	mainstr1 DWORD ?
 
@@ -57,15 +61,15 @@ pop fish1
 push OFFSET fis
 pop eax
 push eax
-call outstr
+call outstrline
 push fisum1
 pop eax
 push eax
-call outnum
+call outnumline
 push OFFSET fis
 pop eax
 push eax
-call outstr
+call outstrline
 push fisum1
 pop eax
  
@@ -132,15 +136,46 @@ pop ebx
 pop eax
 cmp eax, ebx
 jne SKIP23
-push main1
+push OFFSET maintrue
 pop eax
 push eax
-call outnum
+call outstrline
+je SKIPELSE27
 SKIP23:
+push OFFSET mainfalse
+pop eax
+push eax
+call outstrline
+SKIPELSE27:
+push main5
+push main5
+pop ebx
+pop eax
+cmp eax, ebx
+jae SKIP31
+push OFFSET maintrue
+pop eax
+push eax
+call outstrline
+jb SKIPELSE35
+SKIP31:
+push OFFSET mainfalse
+pop eax
+push eax
+call outstrline
+SKIPELSE35:
 push main4294967295
 pop eax
 push eax
 pop mainx1
+push main0
+pop eax
+push eax
+pop mainindex1
+push OFFSET mainhello
+pop eax
+push eax
+call outstrline
 push main2
 push main3
 call toPow
@@ -158,7 +193,7 @@ pop mainvariable1
 push mainvariable1
 pop eax
 push eax
-call outnum
+call outnumline
 push OFFSET mainhello
 pop eax
 push eax
@@ -172,11 +207,11 @@ pop mainx1
 push main1
 pop eax
 push eax
-call outnum
+call outnumline
 push  mainstr1
 pop eax
 push eax
-call outstr
+call outstrline
 push main1
 push main2
 call another
@@ -202,7 +237,7 @@ pop mainx1
 push mainx1
 pop eax
 push eax
-call outnum
+call outnumline
 push main1
 push main2
 call another
@@ -215,7 +250,8 @@ push eax
 jo OVERFLOW
 pop eax
 push eax
-	call		ExitProcess
+call	system_pause
+ 	call		ExitProcess
 ZEROERROR:
 push OFFSET ZEROMESSAGE
 call outstrline

@@ -3,7 +3,7 @@
 #define LT_TI_NULLIDX			((int)0xffffffff)
 #define LEX_INTEGER				'n'
 #define LEX_STRING				's'
-#define LEX_SHORT				'S'
+
 #define LEX_UINT				'U'
 #define LEX_DOUBLE				'D'
 #define LEX_DATATYPE			't'
@@ -56,7 +56,7 @@
 
 #define LEX_RIGHT_SQUARE_BRACE	']'
 #define LEX_LEFT_SQUARE_BRACE	'['
-//
+#define LEX_ELSE				'E'
 //
 namespace LT {
 	struct Entry {

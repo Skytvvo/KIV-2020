@@ -53,6 +53,12 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 	bool declaredFunc = false;
 	int declaredFuncIndex;
 	int ifsn = 0;
+	int elsefn = 0;
+	int whilesn = 0;
+	bool whileExist = false;
+	bool elseExist = false;
+	bool ifExist = false;
+	char currentLogicOperator;
 	for (int i = 0; i < lextable.size; i++)
 	{
 		switch (lextable.table[i].lexeme)
@@ -107,7 +113,7 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 				}
 				else
 				{
-					AsmFile << "\tcall\t\tExitProcess\nZEROERROR:\npush OFFSET ZEROMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" <<
+					AsmFile << "call\tsystem_pause\n \tcall\t\tExitProcess\nZEROERROR:\npush OFFSET ZEROMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" <<
 						"OVERFLOW:\npush OFFSET OVERFLOWMESSAGE\ncall outstrline\npush -1\n\tcall\t\tExitProcess\n" <<" main ENDP\nEND main";
 				}
 				declaredFuncIndex = 0;
@@ -133,11 +139,11 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 				i = Gener::GenExpHandler(AsmFile, lextable, idtable, ++i);
 				if (type == IT::INT)
 				{
-					AsmFile << "push eax\ncall outnum\n";
+					AsmFile << "push eax\ncall outnumline\n";
 				}
 				else if(type == IT::STR)
 				{
-					AsmFile << "push eax\ncall outstr\n";
+					AsmFile << "push eax\ncall outstrline\n";
 				}
 				break;
 			}
@@ -153,6 +159,18 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 			}
 			case LEX_IF:
 			{//сюда 
+				int checkerElseIndex = i;
+				while (lextable.table[checkerElseIndex].lexeme!=LEX_RIGHT_SQUARE_BRACE)
+				{
+					checkerElseIndex++;
+				}
+				if (lextable.table[checkerElseIndex + 1].lexeme == LEX_ELSE)
+				{
+					elseExist = true;
+					elsefn = lextable.table[checkerElseIndex+1].sn;
+				}
+				ifExist = true;
+
 				AsmFile <<
 					"push " << idtable.table[lextable.table[i + 2].idxTI].scope << idtable.table[lextable.table[i + 2].idxTI].id;
 				if (idtable.table[lextable.table[i+2].idxTI].idtype == IT::V)
@@ -164,12 +182,29 @@ bool Gener::CodeGeneration(LT::LexTable& lextable, IT::IdTable& idtable)
 					AsmFile << IT::V;
 				AsmFile << std::endl<< "pop ebx\npop eax\ncmp eax, ebx\n";
 				ifsn = lextable.table[i].sn;
+				currentLogicOperator = lextable.table[i + 3].lexeme;
 				Gener::LogicOperations(AsmFile, lextable.table[i + 3].lexeme, ifsn);
 				break;
 			}
 			case LEX_RIGHT_SQUARE_BRACE:
 			{
-				AsmFile << "SKIP" << ifsn << ":\n";
+				if (ifExist)
+				{
+					if(elseExist)
+					Gener::LogicOperationsForElse(AsmFile, currentLogicOperator, elsefn);
+
+					AsmFile << "SKIP" << ifsn << ":\n";
+					ifExist = false;
+				}
+				else if (elseExist)
+				{
+					AsmFile << "SKIPELSE" << elsefn << ":\n";
+					elseExist = false;
+				}
+				else if (whileExist)
+				{
+
+				}
 				break;
 			}
 		default:
@@ -286,24 +321,24 @@ void Gener::LogicOperations(std::ofstream& AsmFile, char lex, int sn)
 	{
 	case LEX_BIGGERTHEN:
 	{
-		AsmFile << "jle SKIP" << sn << "\n";
+		AsmFile << "jbe SKIP" << sn << "\n";
 		break;
 	}
 	case LEX_BIGGEROREQUAL:
 	{
-		AsmFile << "jl SKIP" << sn << "\n";
+		AsmFile << "jb SKIP" << sn << "\n";
 
 		break;
 	}
 	case LEX_SMALLERTHEN:
 	{
-		AsmFile << "jge SKIP" << sn << "\n";
+		AsmFile << "jae SKIP" << sn << "\n";
 
 		break;
 	}
 	case LEX_SMALLEROREQUAL:
 	{
-		AsmFile << "jg SKIP" << sn << "\n";
+		AsmFile << "ja SKIP" << sn << "\n";
 
 		break;
 	}
@@ -316,6 +351,50 @@ void Gener::LogicOperations(std::ofstream& AsmFile, char lex, int sn)
 	case LEX_EQUAL_ID:
 	{
 		AsmFile << "jne SKIP" << sn << "\n";
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void Gener::LogicOperationsForElse(std::ofstream& AsmFile, char lex, int sn)
+{
+	switch (lex)
+	{
+	case LEX_BIGGERTHEN:
+	{
+		AsmFile << "ja SKIPELSE" << sn << "\n";
+		break;
+	}
+	case LEX_BIGGEROREQUAL:
+	{
+		AsmFile << "jae SKIPELSE" << sn << "\n";
+
+		break;
+	}
+	case LEX_SMALLERTHEN:
+	{
+		AsmFile << "jb SKIPELSE" << sn << "\n";
+
+		break;
+	}
+	case LEX_SMALLEROREQUAL:
+	{
+		AsmFile << "jbe SKIPELSE" << sn << "\n";
+
+		break;
+	}
+	case LEX_NOTEQUAL:
+	{
+		AsmFile << "jne SKIPELSE" << sn << "\n";
+
+		break;
+	}
+	case LEX_EQUAL_ID:
+	{
+		AsmFile << "je SKIPELSE" << sn << "\n";
 
 		break;
 	}
