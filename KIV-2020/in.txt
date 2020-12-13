@@ -37,7 +37,7 @@ main
 
 	declare string message = 'new calculating';
 
-	operation = operation % 7;
+	operation = operation % 7 +1;
 
 	if(operation < 5)
 	[

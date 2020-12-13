@@ -216,6 +216,12 @@ jz ZEROERROR
 	div ebx
 	push edx
 jo OVERFLOW
+push main1
+pop eax
+pop ebx
+add eax,ebx
+push eax
+jo OVERFLOW
 pop eax
 push eax
 pop mainoperation1

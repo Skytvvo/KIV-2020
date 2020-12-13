@@ -1,16 +1,14 @@
 #pragma once
 #define LT_MAXSIZE				4096
 #define LT_TI_NULLIDX			((int)0xffffffff)
-#define LEX_INTEGER				'n'
 #define LEX_STRING				's'
 
 #define LEX_UINT				'U'
-#define LEX_DOUBLE				'D'
+
 #define LEX_DATATYPE			't'
 #define LEX_ID					'i'
 #define LEX_INTEGER_LITERAL		'1'
 #define LEX_STRING_LITERAL		'2'
-#define LEX_DOUBLE_LITERAL		'3'
 
 #define LEX_IF					'u'
 
@@ -48,8 +46,6 @@
 #define LEX_EQUAL_ID            '~'    
 
 #define LEX_NEWLINE				'|'
-
-#define LEX_TILDA		 '_'	// отрицательный идентификатор
 
 
 #define LEX_RIGHT_SQUARE_BRACE	']'
