@@ -261,8 +261,8 @@ int Gener::GenExpHandler(std::ofstream& AsmFile, LT::LexTable& LEXTABLE, IT::IdT
 		}
 		case LEX_STAR:
 		{
-			AsmFile << "pop eax" << std::endl <<
-				"pop ebx" << std::endl << "mul eax,ebx" << std::endl << "push eax" << std::endl << 
+			AsmFile << "pop ebx" << std::endl <<
+				"pop eax" << std::endl << "mul ebx" << std::endl << "push eax" << std::endl << 
 				"jo OVERFLOW\n";
 			break;
 		}

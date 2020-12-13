@@ -20,15 +20,16 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	coutsomethcalculating_combocalculating_combo BYTE 'calculating combo', 0
 	main4 DWORD 4
 	main5 DWORD 5
+	main7 DWORD 7
 	main10 DWORD 10
 	maincounting_more_then_10 BYTE 'counting more then 10', 0
 	maincounting_less_then_10 BYTE 'counting less then 10', 0
 	main0 DWORD 0
 	main6 DWORD 6
 	maingo BYTE 'go', 0
+	main3 DWORD 3
 	main1 DWORD 1
 	mainnew_calculating BYTE 'new calculating', 0
-	main7 DWORD 7
 .data
 	mainoperation1 DWORD ?
 	maincounter1 DWORD ?
@@ -106,6 +107,16 @@ call coutsomethingelse
 pop eax
 push eax
 pop mainoperation1
+push main5
+push main7
+pop ebx
+pop eax
+mul ebx
+push eax
+jo OVERFLOW
+pop eax
+push eax
+pop mainoperation1
 push mainoperation1
 pop eax
 push eax
@@ -115,29 +126,29 @@ push main10
 pop ebx
 pop eax
 cmp eax, ebx
-jb SKIP15
+jb SKIP17
 push OFFSET maincounting_more_then_10
 pop eax
 push eax
 call outstrline
-jae SKIPELSE19
-SKIP15:
+jae SKIPELSE21
+SKIP17:
 push OFFSET maincounting_less_then_10
 pop eax
 push eax
 call outstrline
-SKIPELSE19:
+SKIPELSE21:
 push main0
 pop eax
 push eax
 pop maincounter1
-TOWHILE26:
+TOWHILE28:
 push maincounter1
 push main6
 pop ebx
 pop eax
 cmp eax, ebx
-jae SKIP26
+jae SKIP28
 push maincounter1
 call random
  pop ecx
@@ -146,20 +157,34 @@ push OFFSET maingo
 call strLength
  pop ecx
  push eax
-pop eax
-pop ebx
-add eax,ebx
-push eax
-jo OVERFLOW
 push maincounter1
 push maincounter1
 call toPow
  pop ecx
  push eax
+pop ebx
+pop eax
+mul ebx
+push eax
+jo OVERFLOW
 pop eax
 pop ebx
 add eax,ebx
 push eax
+jo OVERFLOW
+pop eax
+push eax
+pop mainoperation1
+push mainoperation1
+push main3
+
+	pop ebx
+	pop eax
+test ebx, ebx
+jz ZEROERROR
+	cdq
+	div ebx
+	push eax
 jo OVERFLOW
 pop eax
 push eax
@@ -178,8 +203,8 @@ jo OVERFLOW
 pop eax
 push eax
 pop maincounter1
-jmp TOWHILE26
-SKIP26:
+jmp TOWHILE28
+SKIP28:
 push OFFSET mainnew_calculating
 pop eax
 push eax
@@ -203,7 +228,7 @@ push main5
 pop ebx
 pop eax
 cmp eax, ebx
-jae SKIP35
+jae SKIP38
 push  mainmessage1
 pop eax
 push eax
@@ -212,7 +237,7 @@ push mainoperation1
 pop eax
 push eax
 call outnumline
-SKIP35:
+SKIP38:
 push main0
 pop eax
 push eax

@@ -146,12 +146,13 @@ FST::NODE())
 
 
 #pragma region PRINT
-#define FST_PRINT FST::FST(6,\
-FST::NODE(1, FST::RELATION('p', 1)),\
-FST::NODE(1, FST::RELATION('r', 2)),\
-FST::NODE(1, FST::RELATION('i', 3)),\
-FST::NODE(1, FST::RELATION('n', 4)),\
-FST::NODE(1, FST::RELATION('t', 5)),\
+#define FST_PRINT FST::FST(7,\
+FST::NODE(1, FST::RELATION('o', 1)),\
+FST::NODE(1, FST::RELATION('u', 2)),\
+FST::NODE(1, FST::RELATION('t', 3)),\
+FST::NODE(1, FST::RELATION('p', 4)),\
+FST::NODE(1, FST::RELATION('u', 5)),\
+FST::NODE(1, FST::RELATION('t', 6)),\
 FST::NODE())
 #pragma endregion
 
