@@ -5,12 +5,12 @@
 extern "C"
 {
 
-	unsigned int  toPow(unsigned int a, unsigned int b)
+	unsigned int toPow(unsigned int a, unsigned int b)
 	{
 
 		return pow(b, a);
 	}
-	unsigned int  random(unsigned int a)
+	unsigned int random(unsigned int a)
 	{
 		
 		if (a == 0)
@@ -19,7 +19,7 @@ extern "C"
 		int k =  (rand() % (a * 2));
 		return k;
 	}
-	unsigned int  strLength(char* str)
+	unsigned int   strLength(char* str)
 	{
 		if (str == nullptr)
 			return 0;
