@@ -21,6 +21,7 @@ main
 	else
 	[
 		output('counting less then 10');
+		output('counting less then 10');
 	];
 	
 	declare uint counter = 0;
@@ -28,7 +29,7 @@ main
 	while(counter < 6)
 	[
 		operation = random(counter) + length('go' ) * pow(counter ,counter);
-		operation = operation / 3 - 1;
+		operation = (operation-1) / 3;
 		output(operation);
 		
 		counter = counter +1;
