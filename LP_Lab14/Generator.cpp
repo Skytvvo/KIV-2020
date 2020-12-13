@@ -398,7 +398,7 @@ void Gener::LogicOperationsForElse(std::ofstream& AsmFile, char lex, int sn)
 	}
 	case LEX_SMALLERTHEN:
 	{
-		AsmFile << "jb SKIPELSE" << sn << "\n";
+		AsmFile << "jbe SKIPELSE" << sn << "\n";
 
 		break;
 	}
@@ -430,7 +430,7 @@ void Gener::LogicOperationsForWhile(std::ofstream& AsmFile, char lex, int sn)
 	{
 	case LEX_BIGGERTHEN:
 	{
-		AsmFile << "ja TOWHILE" << sn << "\n";
+		AsmFile << "jae TOWHILE" << sn << "\n";
 		break;
 	}
 	case LEX_BIGGEROREQUAL:

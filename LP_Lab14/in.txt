@@ -1,0 +1,46 @@
+uint function countsum(uint a, uint b)
+{
+	print('calculating sum');
+	return (a+b);
+};
+uint function coutsomethingelse(uint a, uint b)
+{
+	print('calculating combo');
+	return (a + b + countsum(a,b));
+};
+main
+{
+	declare uint operation = coutsomethingelse(4,5);
+	print(operation);
+	if(operation » 10)
+	[
+		print('counting more then 10');
+	]
+	else
+	[
+		print('counting less then 10');
+	];
+	
+	declare uint counter = 0;
+	
+	while(counter < 6)
+	[
+		operation = random(counter) + length('go' ) + pow(counter ,counter);
+		print(operation);
+		
+		counter = counter +1;
+	];
+
+
+	declare string message = 'new calculating';
+
+	operation = operation % 7;
+
+	if(operation < 5)
+	[
+		print(message);
+		print(operation);
+	];
+
+	return 0;
+};

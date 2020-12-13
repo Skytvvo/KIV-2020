@@ -10,14 +10,13 @@ extern "C"
 
 		return pow(b, a);
 	}
-	int  random(int a)
+	unsigned int  random(unsigned int a)
 	{
-		if (a < 0)
-			a = -a;
+		
 		if (a == 0)
 			return 0;
 		srand(time(NULL));
-		int k = -a + (rand() % (a * 2));
+		int k =  (rand() % (a * 2));
 		return k;
 	}
 	unsigned int  strLength(char* str)
