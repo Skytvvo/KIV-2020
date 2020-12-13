@@ -48,13 +48,13 @@ extern "C"
 			std::cout << ptr[i];
 		return 0;
 	}
-	int  outnumline(unsigned int value)
+	unsigned int  outnumline(unsigned int value)
 	{
 		
 		std::cout << value << std::endl;
 		return 0;
 	}
-	int  outstrline(char* ptr)
+	unsigned int  outstrline(char* ptr)
 	{
 		setlocale(0, "");
 		
