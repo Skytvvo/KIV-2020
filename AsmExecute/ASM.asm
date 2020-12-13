@@ -20,7 +20,6 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	coutsomethcalculating_combocalculating_combo BYTE 'calculating combo', 0
 	main4 DWORD 4
 	main5 DWORD 5
-	main7 DWORD 7
 	main10 DWORD 10
 	maincounting_more_then_10 BYTE 'counting more then 10', 0
 	maincounting_less_then_10 BYTE 'counting less then 10', 0
@@ -30,6 +29,7 @@ OVERFLOWMESSAGE  BYTE 'Ошибка:переполнение типа',0
 	main3 DWORD 3
 	main1 DWORD 1
 	mainnew_calculating BYTE 'new calculating', 0
+	main7 DWORD 7
 .data
 	mainoperation1 DWORD ?
 	maincounter1 DWORD ?
@@ -104,16 +104,6 @@ push main4
 push main5
 call coutsomethingelse
  push eax
-pop eax
-push eax
-pop mainoperation1
-push main5
-push main7
-pop ebx
-pop eax
-mul ebx
-push eax
-jo OVERFLOW
 pop eax
 push eax
 pop mainoperation1

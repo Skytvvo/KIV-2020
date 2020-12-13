@@ -28,7 +28,7 @@ main
 	while(counter < 6)
 	[
 		operation = random(counter) + length('go' ) * pow(counter ,counter);
-		operation = operation / 3;
+		operation = operation / 3 - 1;
 		output(operation);
 		
 		counter = counter +1;
